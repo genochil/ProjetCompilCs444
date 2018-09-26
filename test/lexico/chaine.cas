@@ -1,0 +1,6 @@
+program
+begin
+    str1 := "chaine1";
+    str2:="chaine""2";
+    str3:= "chaine"3"; -- erreur
+end.

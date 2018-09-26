@@ -1,0 +1,399 @@
+// ---------------------------------------------------------------------------
+// syntaxe.cup
+// Fichier cup qui dÃ©finit l'analyseur syntaxique
+// ---------------------------------------------------------------------------
+
+package fr.esisar.compilation.syntaxe;
+
+import java_cup.runtime.*;
+import fr.esisar.compilation.global.src.*;
+import java.io.InputStream;
+
+/* Code pour l'analyseur syntaxique. */
+parser code {:
+
+   /**
+    * RÃ©alise l'analyse syntaxique du fichier passÃ© en argument (ou de 
+    * l'entrÃ©e standard si args est un tableau vide) et retourne 
+    * l'abstrait correspondant.
+    * LÃ¨ve l'exception ErreurLexicale en cas d'erreur lexicale, et 
+    * ErreurSyntaxe en cas d'erreur de syntaxe.
+    */
+   public static Arbre analyseSyntaxique(String[] args) 
+         throws Exception, ErreurLexicale, ErreurSyntaxe {
+
+      // On rÃ©cupÃ¨re le fichier Ã  analyser
+      InputStream fichierCas = ArgsFichier.ouvrir(args);
+
+      // CrÃ©ation de l'analyseur lexical
+      Lexical analyseurLex = new Lexical(fichierCas);
+
+      // CrÃ©ation de l'analyseur syntaxique
+      parser analyseurSynt = new parser(analyseurLex);
+
+      // Appel de l'analyseur syntaxique et rÃ©cupÃ©ration de l'arbre rÃ©sultat
+      Object result = analyseurSynt.parse().value;
+      Arbre arbre = (Arbre) result;
+      
+      // On retourne l'arbre abstrait construit
+      return arbre;
+   }
+
+   /**
+    * Affiche un message d'erreur en cas d'erreur de syntaxe.
+    */
+   public void syntax_error(Symbol cur_token) {
+      // Affichage du message d'erreur, avec le numÃ©ro de ligne 
+      System.out.println("Erreur de syntaxe ... ligne " + numLigne()) ;
+   }
+
+   /**
+    * MÃ©thode appelÃ©e en cas d'erreur de syntaxe.
+    */
+   public void unrecovered_syntax_error(Symbol cur_token)
+         throws ErreurSyntaxe {
+      throw new ErreurSyntaxe();
+   }
+
+   /**
+    * Retourne le numÃ©ro de ligne courant.
+    */
+   public int numLigne() {
+      // On rÃ©cupÃ¨re l'analyseur lexical
+      Lexical anaLex = (Lexical) getScanner();
+      return anaLex.numLigne();
+   }
+:};
+
+/* Terminaux (tokens retournÃ©s par l'analyseur lexical. */
+terminal String IDF;          // Identificateur
+terminal Integer CONST_ENT;   // Constante entiÃ¨re
+terminal Float CONST_REEL;    // Constante rÃ©elle
+terminal String CONST_CHAINE; // Constante chaÃ®ne
+
+/* Mots rÃ©servÃ©s */
+terminal   AND,         ARRAY,       BEGIN;
+terminal   DIV,         DO,          DOWNTO;
+terminal   ELSE,        END,         FOR;
+terminal   IF,          MOD,         NEW_LINE;
+terminal   NOT,         NULL,        OF;
+terminal   OR,          PROGRAM,     READ;
+terminal   THEN,        TO,          WHILE;
+terminal   WRITE;
+
+/* OpÃ©rateurs */
+terminal INF, SUP, EGAL, DIFF, // "<", ">", "=", "/="
+         INF_EGAL, SUP_EGAL,   // "<=", ">="
+         PLUS, MOINS,          // "+", "-"
+         MULT, DIV_REEL;       // "*", "/"
+
+/* Autres terminaux */
+terminal PAR_OUVR, PAR_FERM; // "(", ")" 
+terminal DOUBLE_POINT;       // ".."
+terminal DEUX_POINTS;        // ":"
+terminal VIRGULE;            // ","
+terminal POINT_VIRGULE;      // ";"
+terminal CROCH_OUVR;         // "["
+terminal CROCH_FERM;         // "]"
+terminal AFFECT;             // ":="
+terminal POINT;              // "."
+
+/* DÃ©finition des non terminaux de la grammaire */
+non terminal Arbre program;
+non terminal Arbre liste_decl;
+non terminal Arbre liste_inst;
+non terminal Arbre inst;
+non terminal Arbre decl;
+non terminal Arbre liste_idf;
+non terminal Arbre type;
+non terminal Arbre idf;
+non terminal Arbre type_intervalle;
+non terminal Arbre constante;
+non terminal Arbre const;
+non terminal Arbre pas;
+non terminal Arbre liste_exp;
+non terminal Arbre exp;
+non terminal Arbre facteur;
+non terminal Arbre place;
+
+/*
+   On dÃ©finit les prioritÃ©s des opÃ©rateurs
+   Les prioritÃ©s vont dans l'ordre croissant
+   On dÃ©clare egalement l'associativitÃ© des opÃ©rateurs
+   (left, right, ou nonassoc)
+*/
+
+precedence nonassoc INF, SUP, EGAL, DIFF, INF_EGAL, SUP_EGAL;
+precedence left PLUS, MOINS, OR;
+precedence left MULT, DIV_REEL, DIV, MOD, AND;
+precedence nonassoc NOT;
+
+program ::= PROGRAM:p liste_decl:a1 BEGIN liste_inst:a2 END POINT
+   {:
+      RESULT = Arbre.creation2(Noeud.Programme, a1, a2, pleft);
+      // pleft : NumÃ©ro de ligne du mot rÃ©servÃ© "program".
+   :}
+   ;
+liste_decl ::= liste_decl:a1 decl:a2 POINT_VIRGULE
+   {:
+      RESULT = Arbre.creation2(Noeud.ListeDecl, a1, a2, a2.getNumLigne());
+   :}
+   |  // epsilon
+   {:
+      RESULT = Arbre.creation0(Noeud.Vide, parser.numLigne());
+   :}
+   ;
+
+// ---------------------------------------------
+// ECRIRE LES ACTIONS POUR LES REGLES SUIVANTES
+// ---------------------------------------------
+
+
+
+decl ::= liste_idf:a DEUX_POINTS type:b
+   {:
+   	
+   	RESULT = Arbre.creation2(Noeud.Decl,a,b, parser.numLigne());
+      
+   :}
+   ;
+liste_idf ::= liste_idf:a VIRGULE idf:b
+   {: 
+      	RESULT = Arbre.creation2(Noeud.ListeIdent,a,b, parser.numLigne());
+   :}
+   |  idf:a
+   {:
+      RESULT = Arbre.creation2(Noeud.ListeIdent,
+      Arbre.creation0(Noeud.Vide, parser.numLigne()),a,parser.numLigne());
+   :}
+   ;
+
+type ::= idf:a
+   {:
+      RESULT = a;
+   :}
+   |  type_intervalle:a
+   {:
+      RESULT= a;
+   :}
+   |  ARRAY CROCH_OUVR type_intervalle:a CROCH_FERM OF type:b
+   {:
+      RESULT = Arbre.creation2(Noeud.Tableau,a,b, parser.numLigne());
+   :}
+   ;
+
+type_intervalle ::= constante:a DOUBLE_POINT constante:b
+   {:
+      RESULT = Arbre.creation2(Noeud.Intervalle,a,b, parser.numLigne());
+   :}
+   ;
+
+constante ::= PLUS const:a
+   {:
+      RESULT=Arbre.creation1(Noeud.PlusUnaire,a,parser.numLigne());
+   :}
+   |  MOINS const:a
+   {: 
+      RESULT=Arbre.creation1(Noeud.MoinsUnaire,a,parser.numLigne());
+   :}
+   |  const:a
+   {:
+      RESULT=a;
+   :}
+   ;
+
+const ::= CONST_ENT:a
+   {:
+      RESULT=Arbre.creationEntier(a,parser.numLigne());
+   :}
+   |  idf:a
+   {:
+      RESULT=a;
+   :}
+   ;
+idf ::= IDF:a
+   {:
+       RESULT = Arbre.creationIdent(a, parser.numLigne());
+   :}
+   ;
+
+liste_inst ::= liste_inst:a inst:b POINT_VIRGULE
+   {: 
+      RESULT = Arbre.creation2(Noeud.ListeInst,a,b, parser.numLigne());
+   :}
+   |  inst:a POINT_VIRGULE
+   {:
+      RESULT = Arbre.creation2(Noeud.ListeInst, 
+      Arbre.creation0(Noeud.Vide, parser.numLigne()),a, parser.numLigne());
+   :}
+   ;
+
+inst ::= NULL
+   {:
+		RESULT = Arbre.creation0(Noeud.Nop, parser.numLigne());
+   :}
+   |  place:a AFFECT exp:b
+   {:
+      RESULT = Arbre.creation2(Noeud.Affect,a,b, parser.numLigne());
+   :}
+   |  FOR pas:a DO liste_inst:b END
+   {:
+       RESULT = Arbre.creation2(Noeud.Pour,a,b, parser.numLigne());
+   :}
+   |  WHILE exp:a DO liste_inst:b END
+   {:
+       RESULT = Arbre.creation2(Noeud.TantQue,a,b, parser.numLigne());
+   :}
+   |  IF exp:a THEN liste_inst:b END
+   {:
+      
+      RESULT = Arbre.creation3(Noeud.Si, a, b, 
+      Arbre.creation2(Noeud.ListeInst,
+      Arbre.creation0(Noeud.Vide, parser.numLigne()),
+      Arbre.creation0(Noeud.Vide, parser.numLigne()), parser.numLigne()), parser.numLigne());
+   :}
+   |  IF exp:a THEN liste_inst:b ELSE liste_inst:c END
+   {:
+      RESULT = Arbre.creation3(Noeud.Si,a,b,c, parser.numLigne()); 
+   :}
+   |  WRITE PAR_OUVR liste_exp:a PAR_FERM
+   {:
+      RESULT = Arbre.creation1(Noeud.Ecriture,a,parser.numLigne());
+   :}
+   |  READ PAR_OUVR place:a PAR_FERM
+   {:
+      RESULT = Arbre.creation1(Noeud.Lecture,a,parser.numLigne());
+   :}
+   |  NEW_LINE
+   {:
+      RESULT = Arbre.creation0(Noeud.Ligne,parser.numLigne());
+   :}
+   ;
+
+pas ::= idf:a AFFECT exp:b TO exp:c
+   {:
+       RESULT = Arbre.creation3(Noeud.Increment,a,b,c, parser.numLigne()); 
+   :}
+   |  idf:a AFFECT exp:b DOWNTO exp:c
+   {: 
+      RESULT = Arbre.creation3(Noeud.Decrement,a,b,c, parser.numLigne()); 
+   :}
+   ;
+
+liste_exp ::= liste_exp:a VIRGULE exp:b
+   {:
+      RESULT = Arbre.creation2(Noeud.ListeExp,a,b,parser.numLigne()); 
+   :}
+   |  exp:b
+   {:
+      RESULT = Arbre.creation2(Noeud.ListeExp,
+      Arbre.creation0(Noeud.Vide,parser.numLigne())
+      ,b, parser.numLigne()); 
+   :}
+   ;
+   
+exp ::= facteur:a
+   {:
+      RESULT = a;
+   :}
+   |  exp:a AND exp:b
+   {:
+      RESULT = Arbre.creation2(Noeud.Et, a, b, parser.numLigne());
+   :}
+   |  exp:a OR exp:b
+   {:
+       RESULT = Arbre.creation2(Noeud.Ou, a, b, parser.numLigne());
+   :}
+   |  exp:a EGAL exp:b
+   {:
+       RESULT = Arbre.creation2(Noeud.Egal, a, b, parser.numLigne());
+   :}
+   |  exp:a INF_EGAL exp:b
+   {:
+      RESULT = Arbre.creation2(Noeud.InfEgal, a, b, parser.numLigne()); 
+   :}
+   |  exp:a SUP_EGAL exp:b
+   {:
+       RESULT = Arbre.creation2(Noeud.SupEgal, a, b, parser.numLigne());
+   :}
+   |  exp:a DIFF exp:b
+   {:
+      RESULT = Arbre.creation2(Noeud.NonEgal, a, b, parser.numLigne()); 
+   :}
+   |  exp:a INF exp:b
+   {:
+       RESULT = Arbre.creation2(Noeud.Inf, a, b, parser.numLigne());
+   :}
+   |  exp:a SUP exp:b
+   {:
+       RESULT = Arbre.creation2(Noeud.Sup, a, b, parser.numLigne());
+   :}
+   |  exp:a PLUS exp:b
+   {:
+       RESULT = Arbre.creation2(Noeud.Plus, a, b, parser.numLigne());
+   :}
+   |  exp:a MOINS exp:b
+   {:
+       RESULT = Arbre.creation2(Noeud.Moins, a, b, parser.numLigne());
+   :}
+   |  exp:a MULT exp:b
+   {:
+       RESULT = Arbre.creation2(Noeud.Mult, a, b, parser.numLigne());
+   :}
+   |  exp:a DIV_REEL exp:b
+   {:
+       RESULT = Arbre.creation2(Noeud.DivReel, a, b, parser.numLigne());
+   :}
+   |  exp:a MOD exp:b
+   {:
+       RESULT = Arbre.creation2(Noeud.Reste, a, b, parser.numLigne());
+   :}
+   |  exp:a DIV exp:b
+   {:
+       RESULT = Arbre.creation2(Noeud.Quotient, a, b, parser.numLigne());
+   :}
+   |  PLUS facteur:a
+   {: 
+       RESULT = Arbre.creation1(Noeud.PlusUnaire, a, parser.numLigne());
+   :}
+   |  MOINS facteur:a
+   {: 
+      RESULT = Arbre.creation1(Noeud.MoinsUnaire, a, parser.numLigne());
+   :}
+   |  NOT facteur:a
+   {: 
+      RESULT = Arbre.creation1(Noeud.Non, a, parser.numLigne());
+   :}
+   ;
+
+facteur ::= CONST_ENT:a
+   {:
+      RESULT=Arbre.creationEntier(a,parser.numLigne());
+   :}
+   |  CONST_REEL:a
+   {: 
+       RESULT=Arbre.creationReel(a,parser.numLigne());
+   :}
+   |  CONST_CHAINE:a
+   {:
+       RESULT=Arbre.creationChaine(a,parser.numLigne());
+   :}
+   |  place:a
+   {:
+      RESULT=a;
+   :}
+   |  PAR_OUVR exp:a PAR_FERM
+   {:
+      RESULT=a;
+   :}
+   ;
+
+place ::= idf:a
+   {:
+      RESULT=a;
+   :}
+   |  place:a CROCH_OUVR exp:b CROCH_FERM
+   {:
+      RESULT = Arbre.creation2(Noeud.Index,a,b,parser.numLigne());
+   :}
+   ;

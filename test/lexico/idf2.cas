@@ -1,0 +1,5 @@
+program
+begin
+    e5 := 1.0;
+    a := 3.0+e5+3.0e5+3.0e+3;
+end.

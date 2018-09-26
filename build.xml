@@ -1,0 +1,105 @@
+<project name="compilation" basedir=".">
+
+	<property name="src.dir" value="src"/>
+	<property name="classes.dir" value="classes"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="output.dir" value="output"/>
+	<property name="input.dir" value="input"/>
+	<property name="html.dir" value="html"/>
+
+
+
+	<taskdef classname="java_cup.anttask.CUPTask" name="cup" classpath="${lib.dir}/java-cup-11a.jar" />
+	<taskdef classname="JFlex.anttask.JFlexTask" name="jflex" classpath="${lib.dir}/JFlex.jar" />
+
+	<target name="flex">
+		<mkdir dir="${output.dir}"/>
+		<jflex file="${input.dir}/lexical.flex" destdir="${output.dir}" />
+		<copy file="${output.dir}/fr/esisar/compilation/syntaxe/Lexical.java" tofile="${src.dir}/fr/esisar/compilation/syntaxe/Lexical.java"/>
+	</target>
+
+	<target name="cup">
+		<mkdir dir="${output.dir}"/>
+		<cup  srcfile="${input.dir}/syntaxe.cup" destdir="${output.dir}" interface="true" />
+		<copy file="${output.dir}/fr/esisar/compilation/syntaxe/parser.java" tofile="${src.dir}/fr/esisar/compilation/syntaxe/parser.java"/>
+		<copy file="${output.dir}/fr/esisar/compilation/syntaxe/sym.java" tofile="${src.dir}/fr/esisar/compilation/syntaxe/sym.java"/>
+
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${classes.dir}"/>
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false">
+			<classpath>
+				<pathelement location="${lib.dir}/java-cup-11a-runtime.jar"/>
+				<pathelement location="${lib.dir}/java-cup-11a.jar"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="tp-compilation.jar">
+			<fileset dir="${classes.dir}"/>
+		</jar>
+	</target>
+
+	<target name="runlex" depends="jar">
+
+		<java classname="fr.esisar.compilation.syntaxe.TestLex">
+			<classpath>
+				<pathelement location="tp-compilation.jar"/>
+				<pathelement location="${lib.dir}/java-cup-11a.jar"/>
+				<pathelement location="${lib.dir}/java-cup-11a-runtime.jar"/>
+			</classpath>
+			<arg value="test/lexico/simple.cas"/>
+		</java>
+	</target>
+
+	<target name="runsyntax" depends="jar">
+		<java classname="fr.esisar.compilation.syntaxe.TestSynt">
+			<classpath>
+				<pathelement location="tp-compilation.jar"/>
+				<pathelement location="${lib.dir}/java-cup-11a-runtime.jar"/>
+				<pathelement location="${lib.dir}/java-cup-11a.jar"/>
+			</classpath>
+			<arg value="test/syntaxe/simple.cas"/>
+		</java>
+	</target>
+	
+	<target name="runverif" depends="jar">
+	    <java classname="fr.esisar.compilation.verif.TestVerif">
+	        <classpath>
+		         <pathelement location="tp-compilation.jar"/>	
+				 <pathelement location="${lib.dir}/java-cup-11a-runtime.jar"/>
+				 <pathelement location="${lib.dir}/java-cup-11a.jar"/>
+			</classpath>
+			<arg value="test/verif/simple.cas"/>
+	    </java>
+	</target>
+
+	<target name="rungencode" depends="jar">
+	    <java classname="fr.esisar.compilation.gencode.JCasc">
+	        <classpath>
+		         <pathelement location="tp-compilation.jar"/>	
+				 <pathelement location="${lib.dir}/java-cup-11a-runtime.jar"/>
+				 <pathelement location="${lib.dir}/java-cup-11a.jar"/>
+			</classpath>
+			<arg value="test/gencode/simple.cas"/>
+	    </java>
+	</target>
+	
+	<target name="html">
+		<mkdir dir="html"/>
+		<javadoc sourcepath="${src.dir}" destdir="${html.dir}">
+	        <classpath>
+				 <pathelement location="${lib.dir}/java-cup-11a-runtime.jar"/>
+				 <pathelement location="${lib.dir}/java-cup-11a.jar"/>
+			</classpath>
+		</javadoc>
+	</target>
+	
+	<target name="clean">
+		<delete dir="${output.dir}"/>
+		<!--delete dir="${html.dir}"/-->
+		<delete dir="${classes.dir}"/>
+	</target>
+</project>
