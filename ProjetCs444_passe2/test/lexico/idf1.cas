@@ -1,0 +1,7 @@
+program
+begin
+    var :=3;
+    VaR := 3;
+-- les deux id sont les memes
+
+end.
