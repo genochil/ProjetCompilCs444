@@ -1,4 +1,0 @@
-program
-begin
-    for := 3;
-end.

@@ -1,6 +1,0 @@
-program
-begin
-    var1 := 16e-9; --CONST_ENT + id + CONST_ENT
-    var2:= 3.0e3; --CONST_REEL
-    var3 := -2.65e6.2 -- CONST_REEL + POINT + CONST_ENT
-end.

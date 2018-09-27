@@ -1,8 +1,0 @@
-program
-  BEGIN
-    if a=1 then
-      write("a = 1") ;
-   else
-      write("a != 1") ;
-   end ;
-end.
