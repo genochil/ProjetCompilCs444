@@ -38,34 +38,29 @@ public class Verif {
       def = Defn.creationType(Type.Integer);
       def.setGenre(Genre.PredefInteger);
       env.enrichir("integer", def);
-      
-      // ------------
-      // A COMPLETER
-      // ------------
-   
-   // boolean
+    //boolean
  		def = Defn.creationType(Type.Boolean);
  		def.setGenre(Genre.PredefBoolean);
  		env.enrichir("boolean", def);
- 		//true
+ 	//true
  		def = Defn.creationConstBoolean(true);
  		def.setGenre(Genre.PredefBoolean);
  		env.enrichir("true", def);
- 		//false
+ 	//false
  		def = Defn.creationConstBoolean(false);
  		def.setGenre(Genre.PredefBoolean);
  		env.enrichir("false", def);
- 		// String
+    //string
    		def = Defn.creationType(Type.String);
    		env.enrichir("string", def);
-   		// real
+   	//real
    		def = Defn.creationType(Type.Real);
    		def.setGenre(Genre.PredefReal);
-   		env.enrichir("real", def);
-   		//max_int
+   		env.enrichir("real", def);	
+   	//max_int
    		def = Defn.creationConstInteger(java.lang.Integer.MAX_VALUE);
    		def.setGenre(Genre.PredefInteger);
-   env.enrichir("max_int", def);
+   		env.enrichir("max_int", def);
    }
 
    /**************************************************************************
