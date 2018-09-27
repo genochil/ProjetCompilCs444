@@ -1,0 +1,4 @@
+F=fait, EC=en cours, AP=arrive pas
+			Champey		Couvignou	Clémentin	Loic
+Methodes		F EC AP		F EC AP		F EC AP		F EC AP
+
