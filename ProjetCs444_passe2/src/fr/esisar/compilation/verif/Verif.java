@@ -82,7 +82,7 @@ public class Verif {
 			verifier_DECL(a.getFils2());
 			return;
 		default:
-			throw new ErreurInterneVerif("Liste decl : "+ a.getNumLigne());
+			throw new ErreurInterneVerif("Liste decl : " + a.getNumLigne());
 		}
 	}
 
@@ -98,23 +98,81 @@ public class Verif {
 			verifier_INST(a.getFils2());
 			return;
 		default:
-			throw new ErreurInterneVerif("Liste inst : "+ a.getNumLigne());
+			throw new ErreurInterneVerif("Liste inst : " + a.getNumLigne());
 		}
 	}
 
-	private void verifier_INST(Arbre a) {
-		switch(a.getNoeud())
-		{
+	private void verifier_INST(Arbre a) throws ErreurVerif {
+		switch (a.getNoeud()) {
 		case Nop:
 			return;
 		case Affect:
-			verifier_place(a.getFils1());
-			verifier_exp(a.getFils2());
+			verifier_PLACE(a.getFils1());
+			verifier_EXP(a.getFils2());
+			// NOEUD CONVERSION A FAIRE !
+			return;
+		case Pour:
+			verifier_PAS(a.getFils1());
+			verifier_LISTE_INST(a.getFils2());
+			return;
+		case TantQue:
+			verifier_EXP(a.getFils1());
+			verifier_LISTE_INST(a.getFils2());
+			Type exp_type_tq = a.getFils1().getDecor().getDefn().getType();
+			if (!(exp_type_tq.equals(Type.Boolean))) {
+				ErreurContext err = ErreurContext.TypesIncompatibles;
+				err.leverErreurContext("Type " + exp_type_tq + "non valide, type attendu : Boolean",
+						a.getFils1().getNumLigne());
+			}
+			return;
+		case Si:
+			verifier_EXP(a.getFils1());
+			Type exp_type_si = a.getFils1().getDecor().getDefn().getType();
+			if (!(exp_type_si.equals(Type.Boolean))) {
+				ErreurContext err = ErreurContext.TypesIncompatibles;
+				err.leverErreurContext("Type " + exp_type_si + "non valide, type attendu : Boolean",
+						a.getFils1().getNumLigne());
+			}
+			verifier_LISTE_INST(a.getFils2());
+			verifier_LISTE_INST(a.getFils3());
+			return;
+		case Ecriture:
+			verifier_LISTE_EXP(a.getFils1());
+			if (a.getFils1().getNoeud() != Noeud.Vide) {
+				Type exp_type_w = a.getFils1().getDecor().getDefn().getType();
+				if (!(exp_type_w instanceof TypeInterval) && !(exp_type_w.equals(Type.Real))
+						&& !(exp_type_w.equals(Type.String))) {
+					ErreurContext err = ErreurContext.TypesIncompatibles;
+					err.leverErreurContext("Type " + exp_type_w + "non valide, type attendu : Interval, Real ou String",
+							a.getFils1().getNumLigne());
+				}
+			}
+			return;
+		case Lecture:
+			verifier_LISTE_PLACE(a.getFils1());
+			Type exp_type_r = a.getFils1().getDecor().getDefn().getType();
+			if (!(exp_type_r instanceof TypeInterval) && !(exp_type_r.equals(Type.Real))) {
+				ErreurContext err = ErreurContext.TypesIncompatibles;
+				err.leverErreurContext("Type " + exp_type_r + "non valide, type attendu : Interval ou Real",
+						a.getFils1().getNumLigne());
+			}
+			return;
+		case Ligne:
+			return;
 		default:
-			throw new ErreurInterneVerif("inst : "+ a.getNumLigne());
+			throw new ErreurInterneVerif("inst : " + a.getNumLigne());
 		}
+
+	}
+
+	private void verifier_LISTE_PLACE(Arbre fils1) {
+		// TODO Auto-generated method stub
 		
-		
+	}
+
+	private void verifier_LISTE_EXP(Arbre a) {
+		// TODO Auto-generated method stub
+
 	}
 
 	// ------------------------------------------------------------------------
@@ -122,14 +180,19 @@ public class Verif {
 	// les constructions d'arbres
 	// ------------------------------------------------------------------------
 
-	private void verifier_exp(Arbre a) {
+	private void verifier_PAS(Arbre fils1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	private void verifier_place(Arbre a) {
+	private void verifier_EXP(Arbre fils2) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	private void verifier_PLACE(Arbre fils1) {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**************************************************************************

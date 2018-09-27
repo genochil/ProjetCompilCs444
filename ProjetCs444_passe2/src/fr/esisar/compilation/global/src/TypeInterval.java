@@ -4,7 +4,7 @@ package fr.esisar.compilation.global.src;
  * Classe des types intervalles.
  */
 
-class TypeInterval extends Type {
+public class TypeInterval extends Type {
 
    private int borneInf; // La borne inférieure de ce type intervalle
    private int borneSup; // La borne supérieure de ce type intervalle

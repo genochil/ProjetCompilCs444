@@ -13,11 +13,14 @@ package fr.esisar.compilation.verif;
 
 public enum ErreurContext {
    
-   ErreurNonRepertoriee;
+   ErreurNonRepertoriee,
+	TypesIncompatibles;
 
    void leverErreurContext(String s, int numLigne) throws ErreurVerif {
       System.err.println("Erreur contextuelle : ");
       switch (this) {
+      case TypesIncompatibles:
+    	  System.err.print("Types incompatibles : "+s);
          default:
             System.err.print("non repertoriee");
       }
