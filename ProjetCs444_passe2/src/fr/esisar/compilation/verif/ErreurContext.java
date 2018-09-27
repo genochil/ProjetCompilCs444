@@ -12,22 +12,23 @@
 package fr.esisar.compilation.verif;
 
 public enum ErreurContext {
-   
-   ErreurNonRepertoriee,
-	TypesIncompatibles;
 
-   void leverErreurContext(String s, int numLigne) throws ErreurVerif {
-      System.err.println("Erreur contextuelle : ");
-      switch (this) {
-      case TypesIncompatibles:
-    	  System.err.print("Types incompatibles : "+s);
-         default:
-            System.err.print("non repertoriee");
-      }
-      System.err.println(" ... ligne " + numLigne);
-      throw new ErreurVerif();
-   }
+	ErreurNonRepertoriee, IndexationIncorrect, TypesIncompatibles, IndexTypeIncorrect;
+
+	void leverErreurContext(String s, int numLigne) throws ErreurVerif {
+		System.err.println("Erreur contextuelle : ");
+		switch (this) {
+		case TypesIncompatibles:
+			System.err.print("Types incompatibles : " + s);
+		case IndexationIncorrect:
+			System.err.print("Indexation possible uniquement avec un Type Array ");
+		case IndexTypeIncorrect:
+			System.err.print("Type d'index incorrect : ");
+		default:
+			System.err.print("non repertoriee");
+		}
+		System.err.println(" ... ligne " + numLigne);
+		throw new ErreurVerif();
+	}
 
 }
-
-

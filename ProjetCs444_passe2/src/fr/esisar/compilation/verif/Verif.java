@@ -165,10 +165,40 @@ public class Verif {
 
 	}
 
-	private void verifier_LISTE_PLACE(Arbre fils1) {
+	private void verifier_LISTE_PLACE(Arbre a) throws ErreurVerif {
+		// TODO Auto-generated method stub
+		switch(a.getNoeud())
+		{
+		case Ident :
+			verifier_IDF(a.getFils1(),NatureDefn.Var);	
+			return;
+		case Index:
+			verifier_PLACE(a.getFils1());
+			Type place_type_index = a.getFils1().getDecor().getDefn().getType();
+			if(!(place_type_index instanceof TypeArray))
+			{
+				ErreurContext err= ErreurContext.IndexTypeIncorrect;
+				err.leverErreurContext("", a.getFils1().getNumLigne());
+			}
+			verifier_EXP(a.getFils2());
+			Type exp_type_index = a.getFils1().getDecor().getDefn().getType();
+			if(!(exp_type_index instanceof TypeInterval))
+			{
+				ErreurContext err= ErreurContext.IndexTypeIncorrect;
+				err.leverErreurContext("Type :"+exp_type_index+" incorrect, type Interval attendu", a.getFils2().getNumLigne());
+			}
+			return;
+		default:
+			throw new ErreurInterneVerif("place : " + a.getNumLigne());
+		}
+
+	}
+
+	private void verifier_IDF(Arbre fils1, NatureDefn var) {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 	private void verifier_LISTE_EXP(Arbre a) {
 		// TODO Auto-generated method stub
