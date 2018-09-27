@@ -76,11 +76,11 @@ public class Verif {
 	private void verifier_LISTE_DECL(Arbre a) throws ErreurVerif {
 		switch (a.getNoeud()) {
 		case Vide:
-			break;
+			return;
 		case ListeDecl:
 			verifier_LISTE_DECL(a.getFils1());
 			verifier_DECL(a.getFils2());
-			break;
+			return;
 		default:
 			throw new ErreurInterneVerif("Liste decl : "+ a.getNumLigne());
 		}
@@ -90,13 +90,47 @@ public class Verif {
 	 * LISTE_INST
 	 **************************************************************************/
 	private void verifier_LISTE_INST(Arbre a) throws ErreurVerif {
-		// A COMPLETER
+		switch (a.getNoeud()) {
+		case Vide:
+			;
+		case ListeDecl:
+			verifier_LISTE_INST(a.getFils1());
+			verifier_INST(a.getFils2());
+			return;
+		default:
+			throw new ErreurInterneVerif("Liste inst : "+ a.getNumLigne());
+		}
+	}
+
+	private void verifier_INST(Arbre a) {
+		switch(a.getNoeud())
+		{
+		case Nop:
+			return;
+		case Affect:
+			verifier_place(a.getFils1());
+			verifier_exp(a.getFils2());
+		default:
+			throw new ErreurInterneVerif("inst : "+ a.getNumLigne());
+		}
+		
+		
 	}
 
 	// ------------------------------------------------------------------------
 	// COMPLETER les operations de vérifications et de décoration pour toutes
 	// les constructions d'arbres
 	// ------------------------------------------------------------------------
+
+	private void verifier_exp(Arbre a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void verifier_place(Arbre a) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	/**************************************************************************
 	 * DECL
