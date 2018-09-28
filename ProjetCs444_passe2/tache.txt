@@ -1,5 +1,4 @@
-F=fait, EC=en cours, AP=arrive pas
-				Champey		Couvignou	Clémentin	Loic
-Methodes			F EC AP		F EC AP		F EC AP		F EC AP
-initialiserEnv()								x  
-verifier_LISTE_DECL(Arbre a)							x
+Champey = arbre abstrait
+Couvignou = +Docs et test
+Clémentin = +test et doc
+Loic = Verif.java
