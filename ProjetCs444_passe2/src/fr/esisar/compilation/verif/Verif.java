@@ -194,7 +194,7 @@ public class Verif {
 
 	}
 
-	private void verifier_IDF(Arbre fils1, NatureDefn var) {
+	private void verifier_IDF(Arbre a, NatureDefn var) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -210,17 +210,17 @@ public class Verif {
 	// les constructions d'arbres
 	// ------------------------------------------------------------------------
 
-	private void verifier_PAS(Arbre fils1) {
+	private void verifier_PAS(Arbre a) {
 		// TODO Auto-generated method stub
 
 	}
 
-	private void verifier_EXP(Arbre fils2) {
+	private void verifier_EXP(Arbre a) {
 		// TODO Auto-generated method stub
 
 	}
 
-	private void verifier_PLACE(Arbre fils1) {
+	private void verifier_PLACE(Arbre a) {
 		// TODO Auto-generated method stub
 
 	}
@@ -229,7 +229,7 @@ public class Verif {
 	 * DECL
 	 **************************************************************************/
 
-	private void verifier_DECL(Arbre fils2) throws ErreurVerif {
+	private void verifier_DECL(Arbre a) throws ErreurVerif {
 		// TODO Auto-generated method stub
 
 	}
