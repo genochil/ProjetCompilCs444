@@ -211,7 +211,7 @@ public class Verif {
 
 	}
 
-	private void verifier_LISTE_EXP(Arbre a) {
+	private void verifier_LISTE_EXP(Arbre a) throws ErreurVerif {
 		// TODO Auto-generated method stub
 		switch (a.getNoeud()) {
 		case Vide:
@@ -258,14 +258,32 @@ public class Verif {
 				erreur.leverErreurContext("Type " + type_exp2 + "non valide, type attendu : Interval",
 						a.getFils3().getNumLigne());
 			}
-
+			return;
 		default:
 			throw new ErreurInterneVerif("Pas : " + a.getNumLigne());
 		}
 
 	}
 
-	private void verifier_EXP(Arbre a) {
+	private void verifier_CONSTANTE(Arbre a) {
+		switch (a.getNoeud()) {
+		case MoinsUnaire:
+		case PlusUnaire:
+			verifier_CONSTANTE(a.getFils1());
+			a.setDecor(new Decor(a.getFils1().getDecor().getType()));
+			return;
+		case Entier: // CONST_ENT
+			a.setDecor(new Decor(Type.Integer));
+		case Ident:
+			verifier_IDF(a, NatureDefn.ConstInteger);
+			return;
+		default:
+			throw new ErreurInterneVerif("Constante : " + a.getNumLigne());
+
+		}
+	}
+
+	private void verifier_EXP(Arbre a) throws ErreurVerif {
 		// TODO Auto-generated method stub
 		switch (a.getNoeud()) {
 		case Et:
@@ -282,15 +300,52 @@ public class Verif {
 		case DivReel:
 		case Reste:
 		case Quotient:
+			verifier_EXP(a.getFils1());
+			verifier_EXP(a.getFils2());
+			Type t1 = a.getFils1().getDecor().getType();
+			Type t2 = a.getFils2().getDecor().getType();
+			ResultatBinaireCompatible rbc = ReglesTypage.binaireCompatible(a.getNoeud(), t1, t2);
+			if (rbc.getOk()) {
+				if (rbc.getConv1()) {
+					// arbreAbstrait
+				}
+				if (rbc.getConv2()) {
+					// arbreAbstrait
+				}
+				a.setDecor(new Decor(rbc.getTypeRes()));
+			} else {
+				ErreurContext erreur = ErreurContext.TypesIncompatibles;
+				erreur.leverErreurContext("Type :" + t1.toString() + "," + t2.toString() + "non compatibles",
+						a.getNumLigne());
+			}
+
+			return;
+
+		// facteur
 		case Chaine:
 		case Ident:
 		case Index:
 		case Entier:
 		case Reel:
+			verifier_FACTEUR(a);
+			return;
 		case PlusUnaire:
 		case MoinsUnaire:
 		case Non:
+			verifier_EXP(a.getFils1());
+			Type t = a.getFils1().getDecor().getType();
+			ResultatUnaireCompatible ruc = ReglesTypage.unaireCompatible(a.getNoeud(), t);
+			if (ruc.getOk()) {
+				a.setDecor(new Decor(ruc.getTypeRes()));
+			} else {
+				ErreurContext erreur = ErreurContext.TypesIncompatibles;
+				erreur.leverErreurContext("Type : " + t.toString() + " non compatible", a.getNumLigne());
+
+			}
+
 			return;
+		default:
+			throw new ErreurInterneVerif("Exp : " + a.getNumLigne());
 		}
 	}
 
@@ -352,6 +407,8 @@ public class Verif {
 
 	private Type verifier_INTERVALLE(Arbre a) {
 		// min = fils1
+		verifier_CONSTANTE(a.getFils1());
+		verifier_CONSTANTE(a.getFils2());
 		int borneInf;
 		if (a.getFils1().getNoeud().equals(Noeud.MoinsUnaire)) {
 			borneInf = -a.getFils1().getFils1().getEntier();
