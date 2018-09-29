@@ -92,7 +92,7 @@ public class Verif {
 	private void verifier_LISTE_INST(Arbre a) throws ErreurVerif {
 		switch (a.getNoeud()) {
 		case Vide:
-			;
+			return;
 		case ListeDecl:
 			verifier_LISTE_INST(a.getFils1());
 			verifier_INST(a.getFils2());
@@ -120,8 +120,8 @@ public class Verif {
 			verifier_LISTE_INST(a.getFils2());
 			Type exp_type_tq = a.getFils1().getDecor().getDefn().getType();
 			if (!(exp_type_tq.equals(Type.Boolean))) {
-				ErreurContext err = ErreurContext.TypesIncompatibles;
-				err.leverErreurContext("Type " + exp_type_tq + "non valide, type attendu : Boolean",
+				ErreurContext erreur = ErreurContext.TypesIncompatibles;
+				erreur.leverErreurContext("Type " + exp_type_tq + "non valide, type attendu : Boolean",
 						a.getFils1().getNumLigne());
 			}
 			return;
@@ -129,8 +129,8 @@ public class Verif {
 			verifier_EXP(a.getFils1());
 			Type exp_type_si = a.getFils1().getDecor().getDefn().getType();
 			if (!(exp_type_si.equals(Type.Boolean))) {
-				ErreurContext err = ErreurContext.TypesIncompatibles;
-				err.leverErreurContext("Type " + exp_type_si + "non valide, type attendu : Boolean",
+				ErreurContext erreur = ErreurContext.TypesIncompatibles;
+				erreur.leverErreurContext("Type " + exp_type_si + "non valide, type attendu : Boolean",
 						a.getFils1().getNumLigne());
 			}
 			verifier_LISTE_INST(a.getFils2());
@@ -142,18 +142,19 @@ public class Verif {
 				Type exp_type_w = a.getFils1().getDecor().getDefn().getType();
 				if (!(exp_type_w instanceof TypeInterval) && !(exp_type_w.equals(Type.Real))
 						&& !(exp_type_w.equals(Type.String))) {
-					ErreurContext err = ErreurContext.TypesIncompatibles;
-					err.leverErreurContext("Type " + exp_type_w + "non valide, type attendu : Interval, Real ou String",
+					ErreurContext erreur = ErreurContext.TypesIncompatibles;
+					erreur.leverErreurContext(
+							"Type " + exp_type_w + "non valide, type attendu : Interval, Real ou String",
 							a.getFils1().getNumLigne());
 				}
 			}
 			return;
 		case Lecture:
-			verifier_LISTE_PLACE(a.getFils1());
+			verifier_PLACE(a.getFils1());
 			Type exp_type_r = a.getFils1().getDecor().getDefn().getType();
 			if (!(exp_type_r instanceof TypeInterval) && !(exp_type_r.equals(Type.Real))) {
-				ErreurContext err = ErreurContext.TypesIncompatibles;
-				err.leverErreurContext("Type " + exp_type_r + "non valide, type attendu : Interval ou Real",
+				ErreurContext erreur = ErreurContext.TypesIncompatibles;
+				erreur.leverErreurContext("Type " + exp_type_r + "non valide, type attendu : Interval ou Real",
 						a.getFils1().getNumLigne());
 			}
 			return;
@@ -165,27 +166,25 @@ public class Verif {
 
 	}
 
-	private void verifier_LISTE_PLACE(Arbre a) throws ErreurVerif {
+	private void verifier_PLACE(Arbre a) throws ErreurVerif {
 		// TODO Auto-generated method stub
-		switch(a.getNoeud())
-		{
-		case Ident :
-			verifier_IDF(a.getFils1(),NatureDefn.Var);	
+		switch (a.getNoeud()) {
+		case Ident:
+			verifier_IDF(a.getFils1(), NatureDefn.Var);
 			return;
 		case Index:
 			verifier_PLACE(a.getFils1());
 			Type place_type_index = a.getFils1().getDecor().getDefn().getType();
-			if(!(place_type_index instanceof TypeArray))
-			{
-				ErreurContext err= ErreurContext.IndexTypeIncorrect;
-				err.leverErreurContext("", a.getFils1().getNumLigne());
+			if (!(place_type_index instanceof TypeArray)) {
+				ErreurContext erreur = ErreurContext.IndexTypeIncorrect;
+				erreur.leverErreurContext("", a.getFils1().getNumLigne());
 			}
 			verifier_EXP(a.getFils2());
 			Type exp_type_index = a.getFils1().getDecor().getDefn().getType();
-			if(!(exp_type_index instanceof TypeInterval))
-			{
-				ErreurContext err= ErreurContext.IndexTypeIncorrect;
-				err.leverErreurContext("Type :"+exp_type_index+" incorrect, type Interval attendu", a.getFils2().getNumLigne());
+			if (!(exp_type_index instanceof TypeInterval)) {
+				ErreurContext erreur = ErreurContext.IndexTypeIncorrect;
+				erreur.leverErreurContext("Type :" + exp_type_index + " incorrect, type Interval attendu",
+						a.getFils2().getNumLigne());
 			}
 			return;
 		default:
@@ -196,12 +195,35 @@ public class Verif {
 
 	private void verifier_IDF(Arbre a, NatureDefn var) {
 		// TODO Auto-generated method stub
-		
-	}
+		Defn inEnv = env.chercher(a.getChaine().toLowerCase());
+		// On recherche la définition liée a notre arbre afin de vérifier si cette
+		// dernière est comprise dans l'environnement définit plus haut
+		if (inEnv == null) {
+			// erreureurContext identinconnu
+		}
+		a.setDecor(new Decor(inEnv, inEnv.getType()));
+		// On redéfinit le decor de notre arbre a selon la définition récupéré
+		// précédement
+		NatureDefn nature = a.getDecor().getDefn().getNature(); // on récupère la nature de notre nouveau Decor
+		if (!nature.equals(var)) {
+			// erreureurContext MauvaiseNature
+		}
 
+	}
 
 	private void verifier_LISTE_EXP(Arbre a) {
 		// TODO Auto-generated method stub
+		switch (a.getNoeud()) {
+		case Vide:
+			return;
+		case ListeExp:
+			verifier_LISTE_EXP(a.getFils1());
+			verifier_EXP(a.getFils2());
+			return;
+
+		default:
+			throw new ErreurInterneVerif("Liste_EXP : " + a.getNumLigne());
+		}
 
 	}
 
@@ -210,19 +232,66 @@ public class Verif {
 	// les constructions d'arbres
 	// ------------------------------------------------------------------------
 
-	private void verifier_PAS(Arbre a) {
+	private void verifier_PAS(Arbre a) throws ErreurVerif {
 		// TODO Auto-generated method stub
+		switch (a.getNoeud()) {
+		case Decrement:
+		case Increment:
+			verifier_IDF(a.getFils1(), NatureDefn.Var);
+			Type type_idf = a.getFils1().getDecor().getType();
+			if (!(type_idf instanceof TypeInterval)) {
+				ErreurContext erreur = ErreurContext.TypesIncompatibles;
+				erreur.leverErreurContext("Type " + type_idf + "non valide, type attendu : Interval",
+						a.getFils1().getNumLigne());
+			}
+			verifier_EXP(a.getFils2());
+			Type type_exp1 = a.getFils2().getDecor().getType();
+			if (!(type_exp1 instanceof TypeInterval)) {
+				ErreurContext erreur = ErreurContext.TypesIncompatibles;
+				erreur.leverErreurContext("Type " + type_exp1 + "non valide, type attendu : Interval",
+						a.getFils2().getNumLigne());
+			}
+			verifier_EXP(a.getFils3());
+			Type type_exp2 = a.getFils3().getDecor().getType();
+			if (!(type_exp2 instanceof TypeInterval)) {
+				ErreurContext erreur = ErreurContext.TypesIncompatibles;
+				erreur.leverErreurContext("Type " + type_exp2 + "non valide, type attendu : Interval",
+						a.getFils3().getNumLigne());
+			}
+
+		default:
+			throw new ErreurInterneVerif("Pas : " + a.getNumLigne());
+		}
 
 	}
 
 	private void verifier_EXP(Arbre a) {
 		// TODO Auto-generated method stub
-
-	}
-
-	private void verifier_PLACE(Arbre a) {
-		// TODO Auto-generated method stub
-
+		switch (a.getNoeud()) {
+		case Et:
+		case Ou:
+		case Egal:
+		case InfEgal:
+		case SupEgal:
+		case NonEgal:
+		case Inf:
+		case Sup:
+		case Plus:
+		case Moins:
+		case Mult:
+		case DivReel:
+		case Reste:
+		case Quotient:
+		case Chaine:
+		case Ident:
+		case Index:
+		case Entier:
+		case Reel:
+		case PlusUnaire:
+		case MoinsUnaire:
+		case Non:
+			return;
+		}
 	}
 
 	/**************************************************************************
@@ -231,7 +300,104 @@ public class Verif {
 
 	private void verifier_DECL(Arbre a) throws ErreurVerif {
 		// TODO Auto-generated method stub
+		Type type_decl = verifier_TYPE(a.getFils2());
+		verifier_LISTE_IDF(a.getFils1(), type_decl);
 
+	}
+
+	private void verifier_LISTE_IDF(Arbre a, Type type) {
+		// TODO Auto-generated method stub
+		switch (a.getNoeud()) {
+		case Vide:
+			return;
+		case ListeIdent:
+			verifier_LISTE_IDF(a.getFils1(), type);
+			Boolean decl_existe = env.enrichir(a.getFils1().getChaine().toLowerCase(), Defn.creationVar(type));
+			// On tente d'ajouter la déclaration dans l'environnment, si elle existe déja
+			// enrichir() retourne true
+			if (decl_existe) {
+				// error_redefinition_var
+			}
+			a.getFils2().setDecor(new Decor(Defn.creationVar(type), type));
+			verifier_IDF(a.getFils2(), NatureDefn.Var);
+			return;
+		default:
+			throw new ErreurInterneVerif("Liste_idf : " + a.getNumLigne());
+		}
+	}
+
+	private Type verifier_TYPE(Arbre a) {
+		switch (a.getNoeud()) {
+		case Ident:
+			verifier_IDF(a, NatureDefn.Type);
+			return env.chercher(a.getChaine().toLowerCase()).getType();
+		case Intervalle:
+			Type type_interval = verifier_INTERVALLE(a);
+			return type_interval;
+		case Tableau:
+			Type type_array = verifier_TABLEAU(a);
+			return type_array;
+		default:
+			throw new ErreurInterneVerif("Type : " + a.getNumLigne());
+		}
+	}
+
+	private Type verifier_TABLEAU(Arbre a) {
+		Type typeIndice = verifier_INTERVALLE(a.getFils1());
+		Type typeElement = verifier_TYPE(a.getFils2());
+		Type tab = Type.creationArray(typeIndice, typeElement);
+		a.setDecor(new Decor(tab));
+		return tab;
+	}
+
+	private Type verifier_INTERVALLE(Arbre a) {
+		// min = fils1
+		int borneInf;
+		if (a.getFils1().getNoeud().equals(Noeud.MoinsUnaire)) {
+			borneInf = -a.getFils1().getFils1().getEntier();
+		} else if (a.getFils1().getNoeud().equals(Noeud.PlusUnaire)) {
+			borneInf = a.getFils1().getFils1().getEntier();
+		} else {
+			borneInf = a.getFils1().getEntier();
+		}
+		// max = fils2
+		int borneSup;
+		if (a.getFils2().getNoeud().equals(Noeud.MoinsUnaire)) {
+			borneSup = -a.getFils2().getFils2().getEntier();
+		} else if (a.getFils2().getNoeud().equals(Noeud.PlusUnaire)) {
+			borneSup = a.getFils2().getFils2().getEntier();
+		} else {
+			borneSup = a.getFils2().getEntier();
+		}
+		Type inter = Type.creationInterval(borneInf, borneSup);
+		a.setDecor(new Decor(inter));
+		return inter;
+	}
+	
+	private void verifier_FACTEUR(Arbre a) throws ErreurVerif
+	{
+		switch(a.getNoeud())
+		{
+		case Reel:
+			a.setDecor(new Decor(Type.Real));
+			return;
+		case Chaine:
+			a.setDecor(new Decor(Type.String));
+			return;
+		case Entier:
+			a.setDecor(new Decor(Type.Integer));
+			return;
+		case Index:
+			verifier_PLACE(a);
+			return;
+		case Ident:
+			verifier_PLACE(a);
+			//....?
+			
+		default:
+			throw new ErreurInterneVerif("Facteur : " + a.getNumLigne());
+		}
+		}
 	}
 
 }
