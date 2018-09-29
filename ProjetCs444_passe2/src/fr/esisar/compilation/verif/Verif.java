@@ -373,11 +373,9 @@ public class Verif {
 		a.setDecor(new Decor(inter));
 		return inter;
 	}
-	
-	private void verifier_FACTEUR(Arbre a) throws ErreurVerif
-	{
-		switch(a.getNoeud())
-		{
+
+	private void verifier_FACTEUR(Arbre a) throws ErreurVerif {
+		switch (a.getNoeud()) {
 		case Reel:
 			a.setDecor(new Decor(Type.Real));
 			return;
@@ -392,12 +390,10 @@ public class Verif {
 			return;
 		case Ident:
 			verifier_PLACE(a);
-			//....?
-			
+			// ....?
+
 		default:
 			throw new ErreurInterneVerif("Facteur : " + a.getNumLigne());
 		}
-		}
 	}
-
 }
