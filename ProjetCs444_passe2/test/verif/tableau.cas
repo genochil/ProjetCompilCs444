@@ -1,0 +1,8 @@
+program
+    T : array[1..5] of REAL ; -- Ok
+begin
+    T[1] := 0 ;
+     T[2] := 0 ;
+      T[3] := 0 ;
+       T[6] := 0 ;
+end.
