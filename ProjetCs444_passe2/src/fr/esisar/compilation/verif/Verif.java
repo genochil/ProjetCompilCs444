@@ -89,11 +89,11 @@ public class Verif {
 	/**************************************************************************
 	 * LISTE_INST
 	 **************************************************************************/
-	private void verifier_LISTE_INST(Arbre a) throws ErreurVerif {
+	private void verifier_LISTE_INST(Arbre a) throws ErreurVerif,ErreurInterneVerif {
 		switch (a.getNoeud()) {
 		case Vide:
 			return;
-		case ListeDecl:
+		case ListeInst:
 			verifier_LISTE_INST(a.getFils1());
 			verifier_INST(a.getFils2());
 			return;
