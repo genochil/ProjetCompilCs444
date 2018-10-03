@@ -1,4 +1,0 @@
-Champey = arbre abstrait
-Couvignou = +Docs et test
-Clémentin = +test et doc
-Loic = Verif.java
