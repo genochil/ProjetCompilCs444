@@ -170,7 +170,7 @@ public class Verif {
 		// TODO Auto-generated method stub
 		switch (a.getNoeud()) {
 		case Ident:
-			verifier_IDF(a.getFils1(), NatureDefn.Var);
+			verifier_IDF(a, NatureDefn.Var);
 			return;
 		case Index:
 			verifier_PLACE(a.getFils1());
@@ -200,6 +200,7 @@ public class Verif {
 		// dernière est comprise dans l'environnement définit plus haut
 		if (inEnv == null) {
 			// erreureurContext identinconnu
+			return;
 		}
 		a.setDecor(new Decor(inEnv, inEnv.getType()));
 		// On redéfinit le decor de notre arbre a selon la définition récupéré
@@ -274,6 +275,7 @@ public class Verif {
 			return;
 		case Entier: // CONST_ENT
 			a.setDecor(new Decor(Type.Integer));
+			return;
 		case Ident:
 			verifier_IDF(a, NatureDefn.ConstInteger);
 			return;
@@ -360,14 +362,14 @@ public class Verif {
 
 	}
 
-	private void verifier_LISTE_IDF(Arbre a, Type type) {
+	private void verifier_LISTE_IDF(Arbre a, Type type) throws ErreurInterneVerif {
 		// TODO Auto-generated method stub
 		switch (a.getNoeud()) {
 		case Vide:
 			return;
 		case ListeIdent:
 			verifier_LISTE_IDF(a.getFils1(), type);
-			Boolean decl_existe = env.enrichir(a.getFils1().getChaine().toLowerCase(), Defn.creationVar(type));
+			Boolean decl_existe = env.enrichir(a.getFils2().getChaine().toLowerCase(), Defn.creationVar(type));
 			// On tente d'ajouter la déclaration dans l'environnment, si elle existe déja
 			// enrichir() retourne true
 			if (decl_existe) {
@@ -448,7 +450,7 @@ public class Verif {
 		case Ident:
 			verifier_PLACE(a);
 			// ....?
-
+			return;
 		default:
 			throw new ErreurInterneVerif("Facteur : " + a.getNumLigne());
 		}
