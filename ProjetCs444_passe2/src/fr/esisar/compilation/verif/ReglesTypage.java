@@ -163,9 +163,46 @@ public class ReglesTypage {
     * Teste si le type t est compatible pour l'opération binaire représentée 
     * dans noeud.
     */
-   static ResultatUnaireCompatible unaireCompatible
-         (Noeud noeud, Type t) {
-      return null;
+   static ResultatUnaireCompatible unaireCompatible (Noeud noeud, Type t) 
+   {
+	   ResultatUnaireCompatible ruc = new ResultatUnaireCompatible();
+	   
+	   switch(noeud)
+	   {
+		   case Non:
+			   if(t.getNature()== NatureType.Boolean)
+			   {
+				ruc.setTypeRes(Type.Boolean);   
+				ruc.setOk(true);
+			   }
+			   else
+			   {
+				   ruc.setOk(false);
+			   }
+			   return ruc;
+		   case PlusUnaire:
+		   case MoinsUnaire:
+			   if(t.getNature()== NatureType.Interval)
+			   {
+				ruc.setTypeRes(Type.Integer);   
+				ruc.setOk(true);
+			   }
+			   else if(t.getNature()== NatureType.Real)
+			   {
+				ruc.setTypeRes(Type.Real);   
+				ruc.setOk(true);
+			   }
+			   else
+			   {
+				   ruc.setOk(false);
+			   }
+			   return ruc;
+	   
+	   default:
+		   ruc.setOk(false);
+		   return ruc;
+	   }
+		   
    }
          
 }
