@@ -65,15 +65,18 @@ public class Verif {
 	 * PROGRAMME
 	 **************************************************************************/
 	private void verifier_PROGRAMME(Arbre a) throws ErreurVerif {
+		System.out.println("PROGRAM");
 		initialiserEnv();
 		verifier_LISTE_DECL(a.getFils1());
 		verifier_LISTE_INST(a.getFils2());
+		System.out.println("NULLPOINTER");
 	}
 
 	/**************************************************************************
 	 * LISTE_DECL
 	 **************************************************************************/
 	private void verifier_LISTE_DECL(Arbre a) throws ErreurVerif {
+		System.out.println("LIST_DECL");
 		switch (a.getNoeud()) {
 		case Vide:
 			return;
@@ -89,7 +92,8 @@ public class Verif {
 	/**************************************************************************
 	 * LISTE_INST
 	 **************************************************************************/
-	private void verifier_LISTE_INST(Arbre a) throws ErreurVerif,ErreurInterneVerif {
+	private void verifier_LISTE_INST(Arbre a) throws ErreurVerif, ErreurInterneVerif {
+		System.out.println("LISTE_INST");
 		switch (a.getNoeud()) {
 		case Vide:
 			return;
@@ -103,12 +107,15 @@ public class Verif {
 	}
 
 	private void verifier_INST(Arbre a) throws ErreurVerif {
+		System.out.println("INST");
+		
 		switch (a.getNoeud()) {
 		case Nop:
 			return;
 		case Affect:
 			verifier_PLACE(a.getFils1());
 			verifier_EXP(a.getFils2());
+			System.out.println("ENd Affect");
 			// NOEUD CONVERSION A FAIRE !
 			return;
 		case Pour:
@@ -167,6 +174,7 @@ public class Verif {
 	}
 
 	private void verifier_PLACE(Arbre a) throws ErreurVerif {
+		System.out.println("PLACE");
 		// TODO Auto-generated method stub
 		switch (a.getNoeud()) {
 		case Ident:
@@ -194,6 +202,7 @@ public class Verif {
 	}
 
 	private void verifier_IDF(Arbre a, NatureDefn var) {
+		System.out.println("IDF");
 		// TODO Auto-generated method stub
 		Defn inEnv = env.chercher(a.getChaine().toLowerCase());
 		// On recherche la définition liée a notre arbre afin de vérifier si cette
@@ -213,6 +222,7 @@ public class Verif {
 	}
 
 	private void verifier_LISTE_EXP(Arbre a) throws ErreurVerif {
+		System.out.println("LISTE_EXP");
 		// TODO Auto-generated method stub
 		switch (a.getNoeud()) {
 		case Vide:
@@ -234,6 +244,7 @@ public class Verif {
 	// ------------------------------------------------------------------------
 
 	private void verifier_PAS(Arbre a) throws ErreurVerif {
+		System.out.println("PAS");
 		// TODO Auto-generated method stub
 		switch (a.getNoeud()) {
 		case Decrement:
@@ -267,6 +278,7 @@ public class Verif {
 	}
 
 	private void verifier_CONSTANTE(Arbre a) {
+		System.out.println("CONSTANTE");
 		switch (a.getNoeud()) {
 		case MoinsUnaire:
 		case PlusUnaire:
@@ -286,7 +298,9 @@ public class Verif {
 	}
 
 	private void verifier_EXP(Arbre a) throws ErreurVerif {
-		// TODO Auto-generated method stub
+		System.out.println("EXP");
+		System.out.println("A : " + a.getNoeud().toString());
+		System.out.println("Ligne : " + a.getNumLigne());
 		switch (a.getNoeud()) {
 		case Et:
 		case Ou:
@@ -304,23 +318,25 @@ public class Verif {
 		case Quotient:
 			verifier_EXP(a.getFils1());
 			verifier_EXP(a.getFils2());
+			System.out.println("End Plus,Moins,...");
 			Type t1 = a.getFils1().getDecor().getType();
 			Type t2 = a.getFils2().getDecor().getType();
 			ResultatBinaireCompatible rbc = ReglesTypage.binaireCompatible(a.getNoeud(), t1, t2);
-			if (rbc.getOk()) {
-				if (rbc.getConv1()) {
+			System.out.println("End Plus,Moins,...");
+			/*if (rbc.getOk()) {
+				/*if (rbc.getConv1()) {
 					// arbreAbstrait
 				}
 				if (rbc.getConv2()) {
 					// arbreAbstrait
 				}
-				a.setDecor(new Decor(rbc.getTypeRes()));
+				//a.setDecor(new Decor(rbc.getTypeRes()));
 			} else {
 				ErreurContext erreur = ErreurContext.TypesIncompatibles;
 				erreur.leverErreurContext("Type :" + t1.toString() + "," + t2.toString() + "non compatibles",
 						a.getNumLigne());
-			}
-
+			}*/
+			System.out.println("End...");
 			return;
 
 		// facteur
@@ -330,6 +346,7 @@ public class Verif {
 		case Entier:
 		case Reel:
 			verifier_FACTEUR(a);
+			System.out.println("End verif facteur");
 			return;
 		case PlusUnaire:
 		case MoinsUnaire:
@@ -356,6 +373,7 @@ public class Verif {
 	 **************************************************************************/
 
 	private void verifier_DECL(Arbre a) throws ErreurVerif {
+		System.out.println("DECL");
 		// TODO Auto-generated method stub
 		Type type_decl = verifier_TYPE(a.getFils2());
 		verifier_LISTE_IDF(a.getFils1(), type_decl);
@@ -363,6 +381,7 @@ public class Verif {
 	}
 
 	private void verifier_LISTE_IDF(Arbre a, Type type) throws ErreurInterneVerif {
+		System.out.println("LISTE_IDF");
 		// TODO Auto-generated method stub
 		switch (a.getNoeud()) {
 		case Vide:
@@ -384,6 +403,7 @@ public class Verif {
 	}
 
 	private Type verifier_TYPE(Arbre a) {
+		System.out.println("TYPE");
 		switch (a.getNoeud()) {
 		case Ident:
 			verifier_IDF(a, NatureDefn.Type);
@@ -400,6 +420,7 @@ public class Verif {
 	}
 
 	private Type verifier_TABLEAU(Arbre a) {
+		System.out.println("TABLEAU");
 		Type typeIndice = verifier_INTERVALLE(a.getFils1());
 		Type typeElement = verifier_TYPE(a.getFils2());
 		Type tab = Type.creationArray(typeIndice, typeElement);
@@ -408,6 +429,7 @@ public class Verif {
 	}
 
 	private Type verifier_INTERVALLE(Arbre a) {
+		System.out.println("INTERVALLE");
 		// min = fils1
 		verifier_CONSTANTE(a.getFils1());
 		verifier_CONSTANTE(a.getFils2());
@@ -434,6 +456,7 @@ public class Verif {
 	}
 
 	private void verifier_FACTEUR(Arbre a) throws ErreurVerif {
+		System.out.println("FACTEUR");
 		switch (a.getNoeud()) {
 		case Reel:
 			a.setDecor(new Decor(Type.Real));
@@ -448,8 +471,17 @@ public class Verif {
 			verifier_PLACE(a);
 			return;
 		case Ident:
-			verifier_PLACE(a);
-			// ....?
+			Defn type_ident = env.chercher(a.getChaine().toLowerCase());
+			if(type_ident == null) {
+				ErreurContext erreur = ErreurContext.ErreurNonRepertoriee;//A modifier, erreur pas encore crée
+				erreur.leverErreurContext(a.getChaine(), a.getNumLigne());
+			}
+			NatureDefn nature = type_ident.getNature();
+			if (nature != NatureDefn.Var && nature != NatureDefn.ConstInteger && nature != NatureDefn.ConstBoolean) {
+				ErreurContext err = ErreurContext.ErreurNonRepertoriee;//a modifier erreur pas encore crée
+				err.leverErreurContext(nature+" ", a.getNumLigne());
+			}
+			a.setDecor(new Decor(type_ident,type_ident.getType())); 
 			return;
 		default:
 			throw new ErreurInterneVerif("Facteur : " + a.getNumLigne());
