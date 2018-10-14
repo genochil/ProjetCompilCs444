@@ -1,0 +1,6 @@
+program
+	B : String
+	A : boolean;
+begin
+	B := A;
+end.

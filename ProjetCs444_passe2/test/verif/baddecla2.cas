@@ -1,0 +1,9 @@
+program
+	v1 : array[1..10] of integer ;
+	m : array[1..5] of array[1..10] of integer ;
+	v2 : array[1..10] of integer ; 
+begin
+	v1 := v2 ; -- ok
+	m[1] := v1 ; -- ok
+	m := v1 ; 
+end.

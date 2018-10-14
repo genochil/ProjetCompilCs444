@@ -1,0 +1,10 @@
+program
+	i : boolean;
+	j : 1..3;
+begin
+	i := true;
+	if 12 do 
+      		null ; 
+  	end ; 
+	
+end
