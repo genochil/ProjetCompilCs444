@@ -309,10 +309,14 @@ public class Verif {
 			ResultatBinaireCompatible rbc = ReglesTypage.binaireCompatible(a.getNoeud(), t1, t2);
 			if (rbc.getOk()) {
 				if (rbc.getConv1()) {
-					// arbreAbstrait
+					Arbre arb = Arbre.creation1(Noeud.Conversion, a.getFils1(), a.getFils1().getNumLigne());
+					a.setFils1(arb);
+					a.getFils1().setDecor(new Decor(Type.Real));
 				}
-				if (rbc.getConv2()) {
-					// arbreAbstrait
+				else if (rbc.getConv2()) {
+					Arbre arb = Arbre.creation1(Noeud.Conversion, a.getFils2(), a.getFils2().getNumLigne());
+					a.setFils2(arb);
+					a.getFils2().setDecor(new Decor(Type.Real));
 				}
 				a.setDecor(new Decor(rbc.getTypeRes()));
 			} else {
