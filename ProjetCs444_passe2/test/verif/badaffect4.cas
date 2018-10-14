@@ -1,0 +1,6 @@
+program
+	B : 12;
+	A : boolean;
+begin
+	B := A;
+end.
