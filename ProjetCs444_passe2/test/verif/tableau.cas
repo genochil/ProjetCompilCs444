@@ -1,5 +1,5 @@
 program
-    T : array[1..5] of REAL ; -- Ok
+    T : array[1..5] of integer ; -- Ok
 begin
     T[1] := 0 ;
      T[2] := 0 ;

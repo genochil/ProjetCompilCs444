@@ -3,5 +3,4 @@ program
    B : real;
 begin
     B := A;
-end
-
+end.

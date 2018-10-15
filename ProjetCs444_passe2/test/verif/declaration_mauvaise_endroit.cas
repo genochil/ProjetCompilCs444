@@ -1,7 +1,0 @@
--- Recherche dichotomique dans un tableau trie 
-program
-   a : mauvaistype;
-	a := 45;
-begin
-	NULL;
-end.

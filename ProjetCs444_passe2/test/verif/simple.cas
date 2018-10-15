@@ -1,6 +1,7 @@
 program
-	A : 1..3;
-	B : real;
+	i : integer;
+	r : real;
 begin
-	B:=A;
+	i:=3;
+	r:=i + 1;
 end.

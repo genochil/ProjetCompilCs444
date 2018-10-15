@@ -1,7 +1,6 @@
 program
    i : integer ;
-   j : i ; // Erreur contextuelle : identificateur de type attendu
+   j : i ; 
 begin
   NULL;
 end.
-
