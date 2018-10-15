@@ -99,7 +99,7 @@
 	
 	<target name="clean">
 		<delete dir="${output.dir}"/>
-		<delete dir="${html.dir}"/>
+		<!--delete dir="${html.dir}"-->
 		<delete dir="${classes.dir}"/>
 	</target>
 	

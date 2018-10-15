@@ -228,7 +228,7 @@ public class Verif {
 		verifier_PLACE(a.getFils1());
 		Type place_type_index = a.getFils1().getDecor().getDefn().getType();
 		if (!(place_type_index instanceof TypeArray)) {
-			ErreurContext erreur = ErreurContext.WrongArrayIndex;
+			ErreurContext erreur = ErreurContext.NotArrayIndexation;
 			erreur.leverErreurContext("", a.getFils1().getNumLigne());
 		}
 		verifier_EXP(a.getFils2());
