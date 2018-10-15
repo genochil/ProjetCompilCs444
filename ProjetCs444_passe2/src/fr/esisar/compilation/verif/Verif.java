@@ -135,7 +135,22 @@ public class Verif {
 	private void verifier_Affect(Arbre a) throws ErreurVerif {
 		verifier_PLACE(a.getFils1());
 		verifier_EXP(a.getFils2());
-		// NOEUD CONVERSION A FAIRE !
+		Type typeGauche = a.getFils1().getDecor().getType();
+		Type typeDroit = a.getFils2().getDecor().getType();
+		ResultatAffectCompatible res = ReglesTypage.affectCompatible(typeGauche, typeDroit);
+		if (res.getOk() == true) {
+			if (res.getConv2() == true) {
+				a.setFils2(Arbre.creation1(Noeud.Conversion, a.getFils2(), a.getFils2().getNumLigne()));
+				a.getFils2().setDecor(new Decor(Type.Real));
+			}
+			a.setDecor(new Decor(typeGauche));
+		} else {
+			ErreurContext err = ErreurContext.TypesIncompatibles;
+			err.leverErreurContext(a.getNoeud() + "=>" + "(" + typeGauche.toString() + "," + typeDroit.toString() + ")",
+					a.getNumLigne());
+		}
+
+		return;
 	}
 
 	private void verifier_Pour(Arbre a) throws ErreurVerif {
@@ -212,13 +227,13 @@ public class Verif {
 		verifier_PLACE(a.getFils1());
 		Type place_type_index = a.getFils1().getDecor().getDefn().getType();
 		if (!(place_type_index instanceof TypeArray)) {
-			ErreurContext erreur = ErreurContext.IndexTypeIncorrect;
+			ErreurContext erreur = ErreurContext.WrongArrayIndex;
 			erreur.leverErreurContext("", a.getFils1().getNumLigne());
 		}
 		verifier_EXP(a.getFils2());
 		Type exp_type_index = a.getFils1().getDecor().getDefn().getType();
 		if (!(exp_type_index instanceof TypeInterval)) {
-			ErreurContext erreur = ErreurContext.IndexTypeIncorrect;
+			ErreurContext erreur = ErreurContext.WrongArrayIndex;
 			erreur.leverErreurContext("Type :" + exp_type_index + " incorrect, type Interval attendu",
 					a.getFils2().getNumLigne());
 		}
@@ -226,15 +241,18 @@ public class Verif {
 
 	/**************************************************************************
 	 * IDF
+	 * 
+	 * @throws ErreurVerif
 	 **************************************************************************/
 
-	private void verifier_IDF(Arbre a, NatureDefn var) {
+	private void verifier_IDF(Arbre a, NatureDefn var) throws ErreurVerif {
 		// TODO Auto-generated method stub
 		Defn inEnv = env.chercher(a.getChaine().toLowerCase());
 		// On recherche la définition liée a notre arbre afin de vérifier si cette
 		// dernière est comprise dans l'environnement définit plus haut
 		if (inEnv == null) {
-			// erreureurContext identinconnu
+			ErreurContext erreur = ErreurContext.MissingDeclaration;
+			erreur.leverErreurContext(a.getChaine(), a.getNumLigne());
 			return;
 		}
 		a.setDecor(new Decor(inEnv, inEnv.getType()));
@@ -242,7 +260,8 @@ public class Verif {
 		// précédement
 		NatureDefn nature = a.getDecor().getDefn().getNature(); // on récupère la nature de notre nouveau Decor
 		if (!nature.equals(var)) {
-			// erreureurContext MauvaiseNature
+			ErreurContext erreur = ErreurContext.WrongNatureId;
+			erreur.leverErreurContext(a.getChaine(), a.getNumLigne());
 		}
 
 	}
@@ -309,9 +328,11 @@ public class Verif {
 
 	/**************************************************************************
 	 * CONSTANTE
+	 * 
+	 * @throws ErreurVerif
 	 **************************************************************************/
 
-	private void verifier_CONSTANTE(Arbre a) {
+	private void verifier_CONSTANTE(Arbre a) throws ErreurVerif {
 		switch (a.getNoeud()) {
 		case MoinsUnaire:
 		case PlusUnaire:
@@ -394,7 +415,7 @@ public class Verif {
 					a.getNumLigne());
 		}
 	}
-	
+
 	private void verifier_EXP_Unaire(Arbre a) throws ErreurVerif {
 		verifier_EXP(a.getFils1());
 		Type t = a.getFils1().getDecor().getType();
@@ -407,7 +428,7 @@ public class Verif {
 
 		}
 	}
-	
+
 	/**************************************************************************
 	 * DECL
 	 **************************************************************************/
@@ -421,9 +442,11 @@ public class Verif {
 
 	/**************************************************************************
 	 * LISTE_IDF
+	 * 
+	 * @throws ErreurVerif
 	 **************************************************************************/
 
-	private void verifier_LISTE_IDF(Arbre a, Type type) throws ErreurInterneVerif {
+	private void verifier_LISTE_IDF(Arbre a, Type type) throws ErreurInterneVerif, ErreurVerif {
 		// TODO Auto-generated method stub
 		switch (a.getNoeud()) {
 		case Vide:
@@ -436,13 +459,15 @@ public class Verif {
 		}
 	}
 
-	private void verifier_Liste_Ident(Arbre a, Type type) {
+	private void verifier_Liste_Ident(Arbre a, Type type) throws ErreurVerif {
 		verifier_LISTE_IDF(a.getFils1(), type);
 		Boolean decl_existe = env.enrichir(a.getFils2().getChaine().toLowerCase(), Defn.creationVar(type));
 		// On tente d'ajouter la déclaration dans l'environnment, si elle existe déja
 		// enrichir() retourne true
 		if (decl_existe) {
-			// error_redefinition_var
+			ErreurContext erreur = ErreurContext.DoubleDeclarationId;
+			erreur.leverErreurContext(a.getFils2().getChaine(), a.getFils2().getNumLigne());
+
 		}
 		a.getFils2().setDecor(new Decor(Defn.creationVar(type), type));
 		verifier_IDF(a.getFils2(), NatureDefn.Var);
@@ -450,9 +475,11 @@ public class Verif {
 
 	/**************************************************************************
 	 * TYPE
+	 * 
+	 * @throws ErreurVerif
 	 **************************************************************************/
 
-	private Type verifier_TYPE(Arbre a) {
+	private Type verifier_TYPE(Arbre a) throws ErreurVerif {
 		switch (a.getNoeud()) {
 		case Ident:
 			verifier_IDF(a, NatureDefn.Type);
@@ -470,9 +497,11 @@ public class Verif {
 
 	/**************************************************************************
 	 * TABLEAU
+	 * 
+	 * @throws ErreurVerif
 	 **************************************************************************/
 
-	private Type verifier_TABLEAU(Arbre a) {
+	private Type verifier_TABLEAU(Arbre a) throws ErreurVerif {
 		Type typeIndice = verifier_INTERVALLE(a.getFils1());
 		Type typeElement = verifier_TYPE(a.getFils2());
 		Type tab = Type.creationArray(typeIndice, typeElement);
@@ -482,9 +511,11 @@ public class Verif {
 
 	/**************************************************************************
 	 * INTERVALLE
+	 * 
+	 * @throws ErreurVerif
 	 **************************************************************************/
 
-	private Type verifier_INTERVALLE(Arbre a) {
+	private Type verifier_INTERVALLE(Arbre a) throws ErreurVerif {
 		// min = fils1
 		verifier_CONSTANTE(a.getFils1());
 		verifier_CONSTANTE(a.getFils2());
@@ -531,11 +562,17 @@ public class Verif {
 		case Ident:
 			Defn Ident_definition = env.chercher(a.getChaine().toLowerCase());
 			if (Ident_definition == null) {
-				// error ident inconnu
+				ErreurContext erreur = ErreurContext.MissingDeclaration;
+				erreur.leverErreurContext(a.getChaine(), a.getNumLigne());
+
 			}
 			NatureDefn nature = Ident_definition.getNature();
 			if (nature != NatureDefn.Var && nature != NatureDefn.ConstInteger && nature != NatureDefn.ConstBoolean) {
-				// Ident bad nature
+				ErreurContext erreur = ErreurContext.WrongNatureId;
+				erreur.leverErreurContext(
+						"Nature Inconrrect : " + nature + " Attendue : Var, ConstInteger ou ConstBoolean",
+						a.getNumLigne());
+
 			}
 			a.setDecor(new Decor(Ident_definition, Ident_definition.getType()));
 			return;

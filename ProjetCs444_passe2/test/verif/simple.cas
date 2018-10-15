@@ -3,5 +3,5 @@ program
 	r : real;
 begin
 	i:=3;
-	r:=i + 0.5;
+	r:=i + 1;
 end.
