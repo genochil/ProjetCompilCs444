@@ -161,7 +161,7 @@ public class Verif {
 
 	private void verifier_Si(Arbre a) throws ErreurVerif {
 		verifier_EXP(a.getFils1());
-		Type exp_type_si = a.getFils1().getDecor().getDefn().getType();
+		Type exp_type_si = a.getFils1().getDecor().getType();
 		if (!(exp_type_si.equals(Type.Boolean))) {
 			ErreurContext erreur = ErreurContext.TypesIncompatibles;
 			erreur.leverErreurContext("Type " + exp_type_si + "non valide, type attendu : Boolean",
@@ -174,7 +174,7 @@ public class Verif {
 	private void verifier_TantQue(Arbre a) throws ErreurVerif {
 		verifier_EXP(a.getFils1());
 		verifier_LISTE_INST(a.getFils2());
-		Type exp_type_tq = a.getFils1().getDecor().getDefn().getType();
+		Type exp_type_tq = a.getFils1().getDecor().getType();
 		if (!(exp_type_tq.equals(Type.Boolean))) {
 			ErreurContext erreur = ErreurContext.TypesIncompatibles;
 			erreur.leverErreurContext("Type " + exp_type_tq + "non valide, type attendu : Boolean",
@@ -184,20 +184,22 @@ public class Verif {
 
 	private void verifier_Ecriture(Arbre a) throws ErreurVerif {
 		verifier_LISTE_EXP(a.getFils1());
-		if (a.getFils1().getNoeud() != Noeud.Vide) {
-			Type exp_type_w = a.getFils1().getDecor().getDefn().getType();
-			if (!(exp_type_w instanceof TypeInterval) && !(exp_type_w.equals(Type.Real))
-					&& !(exp_type_w.equals(Type.String))) {
+		Arbre parcours = a.getFils1();
+		while (parcours.getNoeud() != Noeud.Vide) {
+			Type exp_type_w = parcours.getFils2().getDecor().getType();
+			if (!(exp_type_w instanceof TypeInterval) && !(exp_type_w.equals(Type.String))
+					&& !(exp_type_w.equals(Type.Real))) {
 				ErreurContext erreur = ErreurContext.TypesIncompatibles;
 				erreur.leverErreurContext("Type " + exp_type_w + "non valide, type attendu : Interval, Real ou String",
-						a.getFils1().getNumLigne());
+						parcours.getNumLigne());
 			}
+			parcours = parcours.getFils1();
 		}
 	}
 
 	private void verifier_Lecture(Arbre a) throws ErreurVerif {
 		verifier_PLACE(a.getFils1());
-		Type exp_type_r = a.getFils1().getDecor().getDefn().getType();
+		Type exp_type_r = a.getFils1().getDecor().getType();
 		if (!(exp_type_r instanceof TypeInterval) && !(exp_type_r.equals(Type.Real))) {
 			ErreurContext erreur = ErreurContext.TypesIncompatibles;
 			erreur.leverErreurContext("Type " + exp_type_r + "non valide, type attendu : Interval ou Real",
@@ -226,13 +228,18 @@ public class Verif {
 
 	private void verifier_Index(Arbre a) throws ErreurVerif {
 		verifier_PLACE(a.getFils1());
-		Type place_type_index = a.getFils1().getDecor().getDefn().getType();
+		
+		Type place_type_index = a.getFils1().getDecor().getType();
 		if (!(place_type_index instanceof TypeArray)) {
 			ErreurContext erreur = ErreurContext.NotArrayIndexation;
 			erreur.leverErreurContext("", a.getFils1().getNumLigne());
 		}
+		System.out.println("Type : "+place_type_index);
+		Type array_type = ((TypeArray)(a.getFils1().getDecor().getType())).getElement();
+		a.setDecor(new Decor(array_type)) ;
+		
 		verifier_EXP(a.getFils2());
-		Type exp_type_index = a.getFils1().getDecor().getDefn().getType();
+		Type exp_type_index = a.getFils2().getDecor().getType();
 		if (!(exp_type_index instanceof TypeInterval)) {
 			ErreurContext erreur = ErreurContext.WrongArrayIndex;
 			erreur.leverErreurContext("Type :" + exp_type_index + " incorrect, type Interval attendu",
