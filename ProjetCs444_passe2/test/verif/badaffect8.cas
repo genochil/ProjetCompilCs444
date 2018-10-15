@@ -1,6 +1,6 @@
 program
-	B : 12;
+	B : real;
 	A : boolean;
 begin
-	B := not B
+	B := not B;
 end.

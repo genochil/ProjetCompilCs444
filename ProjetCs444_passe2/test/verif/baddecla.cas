@@ -1,6 +1,6 @@
 program
-	B : String
-	A : boolean;
+	B : String;
+	A : real;
 begin
 	B := A;
 end.

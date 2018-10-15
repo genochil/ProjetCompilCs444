@@ -2,8 +2,8 @@ program
 	i : real;
 	j : 1..3;
 begin
-	for 1 to 20 do 
+	for j:= j to 20 do 
       		null ; 
   	end ; 
 	
-end
+end.

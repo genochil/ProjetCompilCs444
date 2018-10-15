@@ -1,7 +1,8 @@
 -- Recherche dichotomique dans un tableau trie 
 program
    a : mauvaistype;
-	a := 45;
+	
 begin
+	a := 45;	
 	NULL;
 end.

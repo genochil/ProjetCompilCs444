@@ -1,6 +1,6 @@
 program
 	B : boolean;
-	A : 12;
+	A : real;
 begin
 	B := A;
 end.

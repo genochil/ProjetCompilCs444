@@ -1,5 +1,5 @@
 program
-	B : 12;
+	B : real;
 	A : boolean;
 begin
 	B := A;
