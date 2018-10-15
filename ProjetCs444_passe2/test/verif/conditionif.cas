@@ -1,9 +1,0 @@
-program
-	i : real;
-	j : 1..3;
-begin
-	if true do 
-      		null ; 
-  	end ; 
-	
-end
