@@ -23,18 +23,186 @@ public class ReglesTypage {
     * binaire représentée dans noeud.
     */
 
-   static ResultatBinaireCompatible binaireCompatible
-      (Noeud noeud, Type t1, Type t2) {
-      return null;
+   static ResultatBinaireCompatible binaireCompatible (Noeud noeud, Type t1, Type t2) {
+	   ResultatBinaireCompatible rbc = new ResultatBinaireCompatible();
+
+	   rbc.setConv1(false);
+	   rbc.setConv2(false);
+	   
+   
+	   if(t1.getNature()==NatureType.Interval && t2.getNature()==NatureType.Real)
+	   {  
+		   rbc.setConv1(true);
+	   }
+	   else if(t1.getNature()==NatureType.Real && t2.getNature()==NatureType.Interval)
+	   {  
+		   rbc.setConv2(true);
+	   }
+	   
+	   switch(noeud)
+	   {
+	   case Plus:
+	   case Moins:
+	   case Mult:
+		   if(t1.getNature()== NatureType.Real && t2.getNature()==NatureType.Real)
+		   {
+			   rbc.setTypeRes(Type.Real);
+			   rbc.setOk(true);
+		   }
+		   else if(t1.getNature()== NatureType.Interval && t2.getNature()==NatureType.Real)
+		   {
+			   rbc.setTypeRes(Type.Real);
+			   rbc.setOk(true);
+		   }
+		   else if(t1.getNature()== NatureType.Real && t2.getNature()==NatureType.Interval)
+		   {
+			   rbc.setTypeRes(Type.Real);
+			   rbc.setOk(true);
+		   }
+		   else if(t1.getNature()== NatureType.Interval && t2.getNature()==NatureType.Interval)
+		   {
+			   rbc.setTypeRes(Type.Integer);
+			   rbc.setOk(true);
+		   }
+		   else
+		   {
+			   rbc.setOk(false);
+		   }
+		   return rbc;
+		   
+	   case Et:
+	   case Ou:
+		   if(t1.getNature()== NatureType.Boolean && t2.getNature()==NatureType.Boolean)
+		   {
+			   rbc.setTypeRes(Type.Boolean);
+			   rbc.setOk(true);
+		   }
+		   else
+		   {
+			   rbc.setOk(false);
+		   }
+		   return rbc;
+		   
+	   case Sup:
+	   case SupEgal:
+	   case Inf:
+	   case InfEgal:
+	   case Egal:
+	   case NonEgal:
+		   if(t1.getNature()== NatureType.Real && t2.getNature()==NatureType.Real)
+		   {
+			   rbc.setTypeRes(Type.Boolean);
+			   rbc.setOk(true);
+		   }
+		   else if(t1.getNature()== NatureType.Interval && t2.getNature()==NatureType.Real)
+		   {
+			   rbc.setTypeRes(Type.Boolean);
+			   rbc.setOk(true);
+		   }
+		   else if(t1.getNature()== NatureType.Real && t2.getNature()==NatureType.Interval)
+		   {
+			   rbc.setTypeRes(Type.Boolean);
+			   rbc.setOk(true);
+		   }
+		   else if(t1.getNature()== NatureType.Interval && t2.getNature()==NatureType.Interval)
+		   {
+			   rbc.setTypeRes(Type.Boolean);
+			   rbc.setOk(true);
+		   }
+		   else
+		   {
+			   rbc.setOk(false);
+		   }
+		   return rbc;
+	   case Quotient:
+	   case Reste:
+		   if(t1.getNature()== NatureType.Interval && t2.getNature()==NatureType.Interval)
+		   {
+			   rbc.setTypeRes(Type.Integer);
+			   rbc.setOk(true);
+		   }
+		   else
+		   {
+			   rbc.setOk(false);
+		   }
+		   return rbc;
+	   case DivReel:
+		   if(t1.getNature()== NatureType.Real && t2.getNature()==NatureType.Real)
+		   {
+			   rbc.setTypeRes(Type.Real);
+			   rbc.setOk(true);
+		   }
+		   else if(t1.getNature()== NatureType.Interval && t2.getNature()==NatureType.Real)
+		   {
+			   rbc.setTypeRes(Type.Real);
+			   rbc.setOk(true);
+		   }
+		   else if(t1.getNature()== NatureType.Real && t2.getNature()==NatureType.Interval)
+		   {
+			   rbc.setTypeRes(Type.Real);
+			   rbc.setOk(true);
+		   }
+		   else if(t1.getNature()== NatureType.Interval && t2.getNature()==NatureType.Interval)
+		   {
+			   rbc.setTypeRes(Type.Real);
+			   rbc.setOk(true);
+		   }
+		   else
+		   {
+			   rbc.setOk(false);
+		   }
+		   return rbc;
+	default:
+		rbc.setOk(false);
+		return rbc;
+		   
+	   }
    }
 
    /**
     * Teste si le type t est compatible pour l'opération binaire représentée 
     * dans noeud.
     */
-   static ResultatUnaireCompatible unaireCompatible
-         (Noeud noeud, Type t) {
-      return null;
+   static ResultatUnaireCompatible unaireCompatible (Noeud noeud, Type t) 
+   {
+	   ResultatUnaireCompatible ruc = new ResultatUnaireCompatible();
+	   
+	   switch(noeud)
+	   {
+		   case Non:
+			   if(t.getNature()== NatureType.Boolean)
+			   {
+				ruc.setTypeRes(Type.Boolean);   
+				ruc.setOk(true);
+			   }
+			   else
+			   {
+				   ruc.setOk(false);
+			   }
+			   return ruc;
+		   case PlusUnaire:
+		   case MoinsUnaire:
+			   if(t.getNature()== NatureType.Interval)
+			   {
+				ruc.setTypeRes(Type.Integer);   
+				ruc.setOk(true);
+			   }
+			   else if(t.getNature()== NatureType.Real)
+			   {
+				ruc.setTypeRes(Type.Real);   
+				ruc.setOk(true);
+			   }
+			   else
+			   {
+				   ruc.setOk(false);
+			   }
+			   return ruc;
+	   
+	   default:
+		   ruc.setOk(false);
+		   return ruc;
+	   }
+		   
    }
          
 }
