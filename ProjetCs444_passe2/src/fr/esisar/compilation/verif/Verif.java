@@ -135,19 +135,20 @@ public class Verif {
 	private void verifier_Affect(Arbre a) throws ErreurVerif {
 		verifier_PLACE(a.getFils1());
 		verifier_EXP(a.getFils2());
-		Type typeGauche = a.getFils1().getDecor().getType();
-		Type typeDroit = a.getFils2().getDecor().getType();
-		ResultatAffectCompatible res = ReglesTypage.affectCompatible(typeGauche, typeDroit);
-		if (res.getOk() == true) {
-			if (res.getConv2() == true) {
-				a.setFils2(Arbre.creation1(Noeud.Conversion, a.getFils2(), a.getFils2().getNumLigne()));
+
+		Type t1 = a.getFils1().getDecor().getType();
+		Type t2 = a.getFils2().getDecor().getType();
+		ResultatAffectCompatible rac = ReglesTypage.affectCompatible(t1, t2);
+		if (rac.getOk()) {
+			if (rac.getConv2()) {
+				Arbre arb = Arbre.creation1(Noeud.Conversion, a.getFils2(), a.getFils2().getNumLigne());
+				a.setFils2(arb);
 				a.getFils2().setDecor(new Decor(Type.Real));
 			}
-			a.setDecor(new Decor(typeGauche));
+			a.setDecor(new Decor(t1));
 		} else {
 			ErreurContext err = ErreurContext.TypesIncompatibles;
-			err.leverErreurContext(a.getNoeud() + "=>" + "(" + typeGauche.toString() + "," + typeDroit.toString() + ")",
-					a.getNumLigne());
+			err.leverErreurContext("Type :" + t1.toString() + "," + t2.toString() + "non compatibles", a.getNumLigne());
 		}
 
 		return;
