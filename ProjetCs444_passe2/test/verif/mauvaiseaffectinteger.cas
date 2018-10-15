@@ -1,8 +1,0 @@
--- Recherche dichotomique dans un tableau trie 
-program
-   a : integer;
-   a : real;
-	
-begin
-	NULL;
-end.
