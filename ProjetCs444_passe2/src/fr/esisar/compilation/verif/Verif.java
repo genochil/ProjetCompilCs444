@@ -142,7 +142,7 @@ public class Verif {
 		if (rac.getOk()) {
 			if (rac.getConv2()) {
 				Arbre arb = Arbre.creation1(Noeud.Conversion, a.getFils2(), a.getFils2().getNumLigne());
-				a.setFils2(arb);
+				//a.setFils2(arb);
 				a.getFils2().setDecor(new Decor(Type.Real));
 			}
 			a.setDecor(new Decor(t1));
