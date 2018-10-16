@@ -1,0 +1,7 @@
+program
+	i : 1..3;
+	j : real;
+	erreur : Integer;
+begin
+	erreur := i * j;
+end.
