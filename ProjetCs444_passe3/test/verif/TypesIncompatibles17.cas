@@ -1,0 +1,7 @@
+program
+	i : real;
+	j : real;
+	erreur : integer;
+begin
+	erreur := i < j;
+end.

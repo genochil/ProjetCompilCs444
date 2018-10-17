@@ -1,0 +1,9 @@
+program
+	i : real;
+	j : 1..3;
+begin
+	while true do 
+      		null ; 
+  	end ; 
+	
+end.

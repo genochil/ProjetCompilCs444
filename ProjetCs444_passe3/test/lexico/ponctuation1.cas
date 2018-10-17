@@ -1,0 +1,8 @@
+program
+begin
+    if a /=/ 3 then
+      null;
+    else if b =/= 4 then
+      null;
+    end
+end.
