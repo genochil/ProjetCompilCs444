@@ -142,7 +142,7 @@ public class Verif {
 		if (rac.getOk()) {
 			if (rac.getConv2()) {
 				Arbre arb = Arbre.creation1(Noeud.Conversion, a.getFils2(), a.getFils2().getNumLigne());
-				//a.setFils2(arb);
+				a.setFils2(arb);
 				a.getFils2().setDecor(new Decor(Type.Real));
 			}
 			a.setDecor(new Decor(t1));
@@ -150,8 +150,6 @@ public class Verif {
 			ErreurContext err = ErreurContext.TypesIncompatibles;
 			err.leverErreurContext("Type :" + t1.toString() + "," + t2.toString() + "non compatibles", a.getNumLigne());
 		}
-
-		return;
 	}
 
 	private void verifier_Pour(Arbre a) throws ErreurVerif {
@@ -173,13 +171,14 @@ public class Verif {
 
 	private void verifier_TantQue(Arbre a) throws ErreurVerif {
 		verifier_EXP(a.getFils1());
-		verifier_LISTE_INST(a.getFils2());
+		
 		Type exp_type_tq = a.getFils1().getDecor().getType();
 		if (!(exp_type_tq.equals(Type.Boolean))) {
 			ErreurContext erreur = ErreurContext.TypesIncompatibles;
 			erreur.leverErreurContext("Type " + exp_type_tq + "non valide, type attendu : Boolean",
 					a.getFils1().getNumLigne());
 		}
+		verifier_LISTE_INST(a.getFils2());
 	}
 
 	private void verifier_Ecriture(Arbre a) throws ErreurVerif {
@@ -343,11 +342,14 @@ public class Verif {
 	private void verifier_CONSTANTE(Arbre a) throws ErreurVerif {
 		switch (a.getNoeud()) {
 		case MoinsUnaire:
+			verifier_CONSTANTE(a.getFils1());
+			a.setDecor(new Decor(a.getFils1().getDecor().getType()));
+			return;
 		case PlusUnaire:
 			verifier_CONSTANTE(a.getFils1());
 			a.setDecor(new Decor(a.getFils1().getDecor().getType()));
 			return;
-		case Entier: // CONST_ENT
+		case Entier: 
 			a.setDecor(new Decor(Type.Integer));
 			return;
 		case Ident:
@@ -491,7 +493,8 @@ public class Verif {
 		switch (a.getNoeud()) {
 		case Ident:
 			verifier_IDF(a, NatureDefn.Type);
-			return env.chercher(a.getChaine().toLowerCase()).getType();
+			Defn temp = env.chercher(a.getChaine().toLowerCase());
+			return temp.getType();
 		case Intervalle:
 			Type type_interval = verifier_INTERVALLE(a);
 			return type_interval;
@@ -527,6 +530,7 @@ public class Verif {
 		// min = fils1
 		verifier_CONSTANTE(a.getFils1());
 		verifier_CONSTANTE(a.getFils2());
+
 		int borneInf;
 		if (a.getFils1().getNoeud().equals(Noeud.MoinsUnaire)) {
 			borneInf = -a.getFils1().getFils1().getEntier();
@@ -538,9 +542,9 @@ public class Verif {
 		// max = fils2
 		int borneSup;
 		if (a.getFils2().getNoeud().equals(Noeud.MoinsUnaire)) {
-			borneSup = -a.getFils2().getFils2().getEntier();
+			borneSup = -a.getFils2().getFils1().getEntier();
 		} else if (a.getFils2().getNoeud().equals(Noeud.PlusUnaire)) {
-			borneSup = a.getFils2().getFils2().getEntier();
+			borneSup = a.getFils2().getFils1().getEntier();
 		} else {
 			borneSup = a.getFils2().getEntier();
 		}
