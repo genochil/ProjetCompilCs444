@@ -1,0 +1,13 @@
+; Test de LOAD
+   LOAD #1, R15
+   CMP #1, R15
+   BEQ ok
+   WSTR "erreur"
+   WNL
+   BRA fin
+ok:
+   WSTR "ok"
+   WNL
+fin:
+   HALT
+

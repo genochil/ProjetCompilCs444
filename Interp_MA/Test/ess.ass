@@ -1,0 +1,12 @@
+
+WSTR "ok"
+WNL
+WSTR """"
+WNL
+WSTR ""
+WNL
+LOAD #1, R1
+WINT
+WNL
+HALT
+

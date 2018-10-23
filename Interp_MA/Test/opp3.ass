@@ -1,0 +1,15 @@
+; Test de OPP
+   LOAD #2, R1
+   STORE R1, 1(GB)
+   OPP 1(GB), R0
+   CMP #-2, R0
+   BEQ ok
+   WSTR "erreur"
+   WNL
+   BRA fin
+ok:
+   WSTR "ok"
+   WNL
+fin:
+   HALT
+
