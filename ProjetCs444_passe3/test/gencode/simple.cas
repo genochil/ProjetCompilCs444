@@ -1,5 +1,5 @@
 program
 begin
-   null;
+   new_line;
 end.
 

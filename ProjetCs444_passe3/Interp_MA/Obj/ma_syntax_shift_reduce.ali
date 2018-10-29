@@ -1,0 +1,23 @@
+V "GNAT Lib v7"
+A -g
+A -gnato
+P ZX
+
+RN
+RV SPARK_05
+
+U ma_syntax_shift_reduce%s  ma_syntax_shift_reduce.ads  7ffda9a3 NE OO PK
+
+D ma_syntax_shift_reduce.ads  20080421140621 7ffda9a3 ma_syntax_shift_reduce%s
+D system.ads		20170510173650 4635ec04 system%s
+X 1 ma_syntax_shift_reduce.ads
+1K9*Ma_Syntax_Shift_Reduce 292l5 292e27
+3I10*Small_Integer<short_integer> 6r15 7r15
+5R10*Shift_Reduce_Entry 8e15 9r17 15r57
+6i9*T{3I10}
+7i9*Act{3I10}
+11I13*Row{integer} 15r39
+15A10*Shift_Reduce_Array(5R10)<integer> 17r36
+17a5*Shift_Reduce_Matrix{15A10}
+279a1*SHIFT_REDUCE_OFFSET(integer)
+

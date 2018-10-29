@@ -1,0 +1,17 @@
+; Test de SUB
+   LOAD #10, R0
+   LOAD #11, R1
+   LOAD #1, R2
+   STORE R1, 2(GB)
+   SUB 1(GB, R2), R0
+   CMP #-1, R0
+   BEQ ok
+   WSTR "erreur"
+   WNL
+   BRA fin
+ok:
+   WSTR "ok"
+   WNL
+fin:
+   HALT
+

@@ -1,0 +1,27 @@
+V "GNAT Lib v7"
+A -g
+A -gnato
+P ZX
+
+RN
+RV SPARK_05
+
+U ma_syntax_goto%s	ma_syntax_goto.ads	aca433ca NE OO PK
+
+D ma_syntax_goto.ads	20080421140622 aca433ca ma_syntax_goto%s
+D system.ads		20170510173650 4635ec04 system%s
+X 1 ma_syntax_goto.ads
+1K9*Ma_Syntax_Goto 272l5 272e19
+3I10*Small_Integer<short_integer> 6r20 7r20
+5R10*Goto_Entry 8e15 14r54
+6i9*Nonterm{3I10}
+7i9*Newstate{3I10}
+12I13*Row{integer} 14r37
+14A10*Goto_Parse_Table(5R10)<integer> 16r28
+16a5*Goto_Matrix{14A10}
+235a1*GOTO_OFFSET(integer)
+249I9*Rule{natural} 252r25 262r25
+250I9*Nonterminal{integer} 262r50
+252a4*Rule_Length(natural)
+262a4*Get_LHS_Rule(250I9)
+

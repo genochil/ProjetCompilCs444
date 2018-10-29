@@ -1,0 +1,145 @@
+V "GNAT Lib v7"
+A -g
+A -gnato
+P ZX
+
+RN
+RV NO_EXCEPTION_HANDLERS
+RV NO_EXCEPTIONS
+RV NO_IO
+RV NO_RECURSION
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_DEFAULT_INITIALIZATION
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_ELABORATION_CODE
+RV NO_OBSOLESCENT_FEATURES
+RV SPARK_05
+
+U ma_lexico_io%b	ma_lexico_io.adb	ce8c6475 NE OO PK IU
+W ada.exceptions%s	a-except.adb		a-except.ali
+W interfaces%s		interfac.ads		interfac.ali
+
+U ma_lexico_io%s	ma_lexico_io.ads	e7886c03 EE OO PK IU
+W ada%s			ada.ads			ada.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W ma_lexico_dfa%s	ma_lexico_dfa.adb	ma_lexico_dfa.ali
+W system%s		system.ads		system.ali
+W system.exception_table%s  s-exctab.adb	s-exctab.ali
+W system.standard_library%s  s-stalib.adb	s-stalib.ali
+
+D ada.ads		20170106103348 76789da1 ada%s
+D a-except.ads		20151016123252 291912d5 ada.exceptions%s
+D a-ioexce.ads		20140225151544 e4a01f64 ada.io_exceptions%s
+D a-stream.ads		20141120112812 119b8fb3 ada.streams%s
+D a-tags.ads		20151016130316 01f5e3ef ada.tags%s
+D a-textio.ads		20140717063745 386df5d4 ada.text_io%s
+D a-unccon.ads		20170106103348 31484697 ada.unchecked_conversion%s
+D interfac.ads		20160502101001 5ab55268 interfaces%s
+D i-cstrea.ads		20140801100435 e53d8b8e interfaces.c_streams%s
+D ma_lexico_dfa.ads	20080421140621 a47f2bc3 ma_lexico_dfa%s
+D ma_lexico_io.ads	20080421140621 7b9ab214 ma_lexico_io%s
+D ma_lexico_io.adb	20080421140622 b516d661 ma_lexico_io%b
+D system.ads		20170510173650 4635ec04 system%s
+D s-crtl.ads		20141120112812 0ebbdb71 system.crtl%s
+D s-exctab.ads		20140225151139 54135002 system.exception_table%s
+D s-ficobl.ads		20140718105747 078245e4 system.file_control_block%s
+D s-parame.ads		20140801093848 7e2a0d7f system.parameters%s
+D s-soflin.ads		20151020124036 14e1eb6c system.soft_links%s
+D s-stache.ads		20140225151139 a37c21ec system.stack_checking%s
+D s-stalib.ads		20151112104907 09bd3940 system.standard_library%s
+D s-stoele.ads		20140225151139 2dc34a04 system.storage_elements%s
+D s-traent.ads		20140730135025 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20160502101423 34867c83 system.unsigned_types%s
+D s-wchcon.ads		20140718092328 1b7d22d2 system.wch_con%s
+X 1 ada.ads
+16K9*Ada 20e8 11|2r6 2r23 12|232r7 234r7 260r6 267r6
+X 6 a-textio.ads
+49K13*Text_IO 471e16 11|2w10 2r27 12|232r11 234r11 260r10 267r10
+52P9*File_Type 11|5r19 6r20
+53n23*In_File{53E9} 12|247r27
+53n32*Out_File{53E9} 12|253r34
+86U14*Create 12|253s9
+92U14*Open 12|247s5
+98U14*Close 12|260s18 267s18
+107V13*Is_Open{boolean} 12|11s9 231s9 259s8 266s8
+168U14*Skip_Line 12|15s14
+169U14*Skip_Line 12|35s14
+171V13*End_Of_Line{boolean} 12|13s14
+172V13*End_Of_Line{boolean} 12|33s14
+205U14*Get 12|23s12
+206U14*Get 12|43s12
+207U14*Put 12|232s19
+208U14*Put 12|234s19
+297X4*End_Error 12|55r14
+X 10 ma_lexico_dfa.ads
+1K9*ma_lexico_DFA 28e18 11|1w6 1r25
+3i1*yytext_ptr{integer} 12|69r25 81r36 127m5 171m5 190m5 199r27 209m9 214r23
+8i1*YY_READ_BUF_SIZE{integer} 12|97r24 98r24
+9i1*YY_BUF_SIZE{integer} 12|95r20 144r13 155r19
+10A6*unbounded_character_array(character)<integer> 11|22r29 12|5r29
+12a1*yy_ch_buf{11A9} 12|84m9 84r28 102m15 102r15 102r41 117m5 118m5 139m5
+. 150m13 150r32 162r37 163m5 167m5 172r21 173m5 186m5 188r10 203m9 205m9
+. 206m9 210r25 222r10 224r21
+13i8*yy_bp{integer} 12|179m18 179r18
+16e1*yy_hold_char{character} 12|139r29 172m5 186r25 210m9 224m5
+17i1*yy_c_buf_p{integer} 12|74r10 81r23 138r18 174m5 184r24 188r20 190r19
+. 191m5 191r19 199m13 208m9 209r23 210r35 214m9 222r20 223m5 223r19 224r31
+23b1*yy_init{boolean} 12|246m5
+X 11 ma_lexico_io.ads
+4K9*ma_lexico_IO 35l5 35e17 12|1b14 272l5 272t17
+5p1*user_input_file{6|52P9} 12|11r17 13r26 15r24 23r16 247m10 247r10 259r16
+. 260m24 260r24
+6p1*user_output_file{6|52P9} 12|231r17 232r23 253m16 253r16 266r16 267m24
+. 267r24
+7X1*NULL_IN_INPUT 12|75r15
+8X1*AFLEX_INTERNAL_ERROR
+9X1*UNEXPECTED_LAST_MATCH 12|217r15
+10X1*PUSHBACK_OVERFLOW 12|158r15
+11X1*AFLEX_SCANNER_JAMMED
+12E6*eob_action_type 14e47 23r36 12|67r36 71r15
+12n27*EOB_ACT_RESTART_SCAN{12E6} 12|113r16 213r14
+13n27*EOB_ACT_END_OF_FILE{12E6} 12|106r20 197r14
+14n27*EOB_ACT_LAST_MATCH{12E6} 12|108r20 216r14
+15e1*YY_END_OF_BUFFER_CHAR{character} 12|117r30 118r34 188r34 205r34 206r38
+16i1*yy_n_chars{integer} 12|74r23 93m5 102m58 104r10 116m5 116r19 117r15
+. 118r15 143r23 155m5 204m9 205r19 206r19
+19b1*yy_eof_has_been_seen{boolean} 12|57m5 89r10 111m5 207m9
+22U11*YY_INPUT 22<20 22<56 22>77 12|5b11 58l5 58t13 102s5
+22a20 buf{10|10A6} 12|5b20 8r22 14m14 24m12 34m14 44m12
+22i56 result{integer} 12|5b56 53m5 55m27
+22i77 max_size{integer} 12|5b77 12r20 32r20
+23V10*yy_get_next_buffer{12E6} 12|67b10 130l5 130t23 193s10
+24U11*yyunput 24>20 24=35 12|132b11 175l5 175t12 179s6
+24e20 c{character} 12|132b20 167r29
+24i35 yy_bp{integer} 12|132b35 154m5 154r14 162r22 171r19
+25U11*unput 25>17 12|177b11 180l5 180t10
+25e17 c{character} 12|177b17 179r15
+26V10*input{character} 12|182b10 212s18 227l5 227t10
+27U11*output 27>18 12|229b11 236l5 236t11
+27e18 c{character} 12|229b18 232r41 234r23
+28V10*yywrap{boolean} 12|198s14 239b10 242l5 242t11
+29U11*Open_Input 29>22 12|244b11 248l5 248t15
+29a22 fname{string} 12|244b22 247r36
+30U11*Close_Input 12|257b11 262l5 262t16
+31U11*Create_Output 31>25 12|250b11 255l5 255t18
+31a25 fname{string} 12|250b25 252r9 253r44
+32U11*Close_Output 12|264b11 269l5 269t17
+X 12 ma_lexico_io.adb
+6e5 c{character} 23m33 24r24 43m16 44r24
+7i5 i{integer} 12r15 29m10 29r15 32r15 49m10 49r15 53r15 55r37
+8i5 loc{integer} 14r18 24r16 28m10 28r17 34r18 44r16 48m10 48r17
+68i5 dest{integer} 84r19 85m5 85r13
+69i5 source{integer} 84r38 86m5 86r15
+70i5 number_to_move{integer} 81m5 83r17 95r34 102r25 105r10 116r32
+71e5 ret_val{11|12E6} 106m9 108m9 113m5 129r12
+72i5 num_to_read{integer} 95m5 97r10 98m9 102r70
+83i9 i{integer}
+133i5 number_to_move{integer} 143m5 145r15
+134i5 dest{integer} 144m5 148m9 148r17 150r23 153r30 154r22
+135i5 source{integer} 145m5 147r13 149m9 149r19 150r42 153r37 154r29
+136i5 tmp_yy_cp{integer} 138m5 139r15 141r10 153m5 153r18 157r10 162r10 162r47
+. 163r15 166m5 166r18 167r15 172r31 173r15 174r19
+183e5 c{character} 222m5 226r12
+184i5 yy_cp{integer} 186r15
+
