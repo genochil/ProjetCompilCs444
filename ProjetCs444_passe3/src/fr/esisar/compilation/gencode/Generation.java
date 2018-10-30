@@ -146,14 +146,42 @@ class Generation {
 
 	}
 
-	private void coder_Si(Arbre a, Etiq not_equal) {
-		
-		
-		
-		coder_EXP(a,R0); //on met dans R0, le résultat de la condition du Si, on renvoie 1 si elle est vraie, 0 sinon
-		Inst.creation2(Operation.CMP,Operande.creationOpEntier(1),Operande.opDirect(R0));//on test si la condition est vrai avec CMP
-		Inst.creation1(Operation.BNE, Operande.creationOpEtiq(not_equal));//Si c'est NE alors on branch à l'étiquette not_equal ( on fait un saut)
-		coder_LISTE_INST(a.getFils2()); //on code le "corps" du si
+	private void coder_Si(Arbre a) {
+		/*
+		 * Le code ci dessous permet de coder un Si en assembleur qui est representé par : 
+		 * 
+		 * 		CMP R0
+		 * 		BNE false
+		 * 		--code du corps du si--
+		 * 		BRA fin
+		 * faux :
+		 * 		 --code du else--
+		 * fin :
+		 * 		--suite du code--
+		 * 
+		 */
+		Etiq not_equal = Etiq.nouvelle("False");
+		Etiq fin = Etiq.nouvelle("FinSi");
+		coder_EXP(a, R0); // on met dans R0, le résultat de la condition du Si, on renvoie 1 si elle est
+							// vraie, 0 sinon
+		Inst.creation2(Operation.CMP, Operande.creationOpEntier(1), Operande.opDirect(R0));// on test si la condition
+																							// est vrai avec CMP
+		Inst.creation1(Operation.BNE, Operande.creationOpEtiq(not_equal));// Si c'est NE alors on branch à l'étiquette
+																			// not_equal ( on fait un saut)
+		coder_LISTE_INST(a.getFils2()); // on code le "corps" du si
+
+		Prog.ajouter(Inst.creation1(Operation.BRA, Operande.creationOpEtiq(fin)));// Si on a executé le corps du Si
+																					// alors on doit jump a la fin et ne
+																					// pas executer le potentiel else,
+																					// on écrit donc un branch qui jump
+																					// a l'étiquette "fin", qui
+																					// representela fin du Si
+
+		Prog.ajouter(not_equal);// Une fois le code du corps ecrit, on ecrit notre etiquette sur laquelle on
+								// jump si la condition est fausse, donc si la condition est fausse, on saute
+								// bien le code du Si
+		coder_LISTE_INST(a.getFils3());// On coder le corps du Else (qu'il soit vide ou non)
+		Prog.ajouter(fin);// On ecrit la fin de notre si via l'étiquette crée plus haut
 	}
 
 	private void coder_TantQue(Arbre a) {
