@@ -1,73 +1,7 @@
-
 program
-	A : real;
-	B : real;
-	W : real;
-	L : 1 .. 13;
-	J : 2 .. 5;
-	K : integer;
-	E : array [+1 .. 18] OF integer;
-	M : array [1 .. +18] OF real;
-	N : array [18 ..25] of array [1.. 18] of integer; 
-	O : array [-42 .. -3] of real;
-	P : array [7..8] of real;
+	y : integer;	
 begin
-	--Test des affectable et des operateur
-	M[6] := O[-10];
-	D := not(E);
-	
-	B := 3.14e+10;
-
-	E := D and E;
-	
-	D := (K = I);
-	E := (I < A);
-	D := (B /= C);
-	E := (K <= C);
-	
-	A := +B;
-	K := -J;
-		
-	A := B + C;
-	B := (I - A);
-	C := A * J;
-	I := I + J;
-	
-	K := I div J;
-	K := I mod J;
-	
-	A := I / J;
-	A := I / B;
-	A := B / J;
-	A := B / C;
-	
-	L[I] := K;
-	L[5] := K;
-	M := L;
-	K := L[14];
-	A := L[18];
-	L := N[18];
-	B := N[20][8];
-	K := N[J][8];
-	
-	
-	-- Test des instructions
-	
-	while ((B <= I) and not F) or (L[5] > K) do
-		NULL;
-	end;
-	
-	if (A < B) and (L[5] = K) then
-		null;
-	end;
-	
-	read(J) ;
-	read(C) ; 
-	read(L[5]) ; 
-	write("Valeur ", I, " non trouvee", A) ;
-	
-	for J := I to 20 do 
-      		K := J ; 
-  	end ; 
-	
+	y:=3;
+	write("toto=",y);
+	new_line;
 end.
