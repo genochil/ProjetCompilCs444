@@ -92,11 +92,13 @@ class Generation {
 							Inst.creation1(Operation.WSTR, Operande.creationOpChaine(parcours.getFils2().getChaine())));
 					break;
 				case Interval:
-					coder_EXP(parcours.getFils2(),R1);//D'après Diapo 19 passe 3 -- LOAD de l'ident ou Entier
+					coder_EXP(parcours.getFils2(),R1);// D'après Diapo 19 passe 3 ,
+				// On met dans R1 la valeur de l'identifiant correspondant au Noeud passé en
+				// paramètre, ici parcours.getFils2()
 					Prog.ajouter(Inst.creation0(Operation.WINT));
 					break;
 				case Real:
-					coder_EXP(parcours.getFils2(),R1);//D'après Diapo 19 passe 3 -- LOAD de l'ident ou Réel
+					coder_EXP(parcours.getFils2(),R1);//D'après Diapo 19 passe 3, pareil que Interval mais avec Reel
 					Prog.ajouter(Inst.creation0(Operation.WFLOAT));
 					break;
 				default:
