@@ -1,0 +1,802 @@
+Instrumentation du code ...
+
+Cobertura 2.1.1 - GNU GPL License (NO WARRANTY) - See COPYRIGHT file
+[INFO] Cobertura: Saved information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+
+Execution des tests ...
+Fichier : ../test/verif/badaffect2.cas
+Noeud.Programme                                              -- ligne : 1
+. Noeud.ListeDecl                                            -- ligne : 2
+. . Noeud.Vide                                               -- ligne : 2
+. . Noeud.Decl                                               -- ligne : 2
+. . . Noeud.ListeIdent                                       -- ligne : 2
+. . . . Noeud.Vide                                           -- ligne : 2
+. . . . Noeud.Ident "b"                                      -- ligne : 2
+. . . Noeud.Ident "boolean"                                  -- ligne : 2
+. Noeud.ListeInst                                            -- ligne : 5
+. . Noeud.Vide                                               -- ligne : 5
+. . Noeud.Affect                                             -- ligne : 4
+. . . Noeud.Ident "b"                                        -- ligne : 4
+. . . Noeud.MoinsUnaire                                      -- ligne : 4
+. . . . Noeud.Ident "b"                                      -- ligne : 4
+program
+   b : boolean; 
+begin
+   b := -b;
+end.
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/badaffect3.cas
+Erreur de syntaxe ... ligne 3
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/badaffect4.cas
+Erreur de syntaxe ... ligne 2
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/badaffect8.cas
+Erreur de syntaxe ... ligne 2
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/badaffect.cas
+Erreur de syntaxe ... ligne 6
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/baddecla2.cas
+Noeud.Programme                                              -- ligne : 1
+. Noeud.ListeDecl                                            -- ligne : 4
+. . Noeud.ListeDecl                                          -- ligne : 3
+. . . Noeud.ListeDecl                                        -- ligne : 2
+. . . . Noeud.Vide                                           -- ligne : 2
+. . . . Noeud.Decl                                           -- ligne : 2
+. . . . . Noeud.ListeIdent                                   -- ligne : 2
+. . . . . . Noeud.Vide                                       -- ligne : 2
+. . . . . . Noeud.Ident "v1"                                 -- ligne : 2
+. . . . . Noeud.Tableau                                      -- ligne : 2
+. . . . . . Noeud.Intervalle                                 -- ligne : 2
+. . . . . . . Noeud.Entier 1                                 -- ligne : 2
+. . . . . . . Noeud.Entier 10                                -- ligne : 2
+. . . . . . Noeud.Ident "integer"                            -- ligne : 2
+. . . Noeud.Decl                                             -- ligne : 3
+. . . . Noeud.ListeIdent                                     -- ligne : 3
+. . . . . Noeud.Vide                                         -- ligne : 3
+. . . . . Noeud.Ident "m"                                    -- ligne : 3
+. . . . Noeud.Tableau                                        -- ligne : 3
+. . . . . Noeud.Intervalle                                   -- ligne : 3
+. . . . . . Noeud.Entier 1                                   -- ligne : 3
+. . . . . . Noeud.Entier 5                                   -- ligne : 3
+. . . . . Noeud.Tableau                                      -- ligne : 3
+. . . . . . Noeud.Intervalle                                 -- ligne : 3
+. . . . . . . Noeud.Entier 1                                 -- ligne : 3
+. . . . . . . Noeud.Entier 10                                -- ligne : 3
+. . . . . . Noeud.Ident "integer"                            -- ligne : 3
+. . Noeud.Decl                                               -- ligne : 4
+. . . Noeud.ListeIdent                                       -- ligne : 4
+. . . . Noeud.Vide                                           -- ligne : 4
+. . . . Noeud.Ident "v2"                                     -- ligne : 4
+. . . Noeud.Tableau                                          -- ligne : 4
+. . . . Noeud.Intervalle                                     -- ligne : 4
+. . . . . Noeud.Entier 1                                     -- ligne : 4
+. . . . . Noeud.Entier 10                                    -- ligne : 4
+. . . . Noeud.Ident "integer"                                -- ligne : 4
+. Noeud.ListeInst                                            -- ligne : 9
+. . Noeud.ListeInst                                          -- ligne : 8
+. . . Noeud.ListeInst                                        -- ligne : 7
+. . . . Noeud.Vide                                           -- ligne : 7
+. . . . Noeud.Affect                                         -- ligne : 6
+. . . . . Noeud.Ident "v1"                                   -- ligne : 6
+. . . . . Noeud.Ident "v2"                                   -- ligne : 6
+. . . Noeud.Affect                                           -- ligne : 7
+. . . . Noeud.Index                                          -- ligne : 7
+. . . . . Noeud.Ident "m"                                    -- ligne : 7
+. . . . . Noeud.Entier 1                                     -- ligne : 7
+. . . . Noeud.Ident "v1"                                     -- ligne : 7
+. . Noeud.Affect                                             -- ligne : 8
+. . . Noeud.Ident "m"                                        -- ligne : 8
+. . . Noeud.Ident "v1"                                       -- ligne : 8
+program
+   v1 : array [1 .. 10] of integer; 
+   m : array [1 .. 5] of array [1 .. 10] of integer; 
+   v2 : array [1 .. 10] of integer; 
+begin
+   v1 := v2;
+   m[1] := v1;
+   m := v1;
+end.
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/baddecla.cas
+Erreur de syntaxe ... ligne 3
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/commentaire.cas
+Erreur Lexicale : 'à' non reconnu ... ligne 1
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/conditionfor1.cas
+Erreur de syntaxe ... ligne 6
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/conditionfor3.cas
+Erreur de syntaxe ... ligne 5
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/conditionfor.cas
+Erreur de syntaxe ... ligne 11
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/conditionif1.cas
+Erreur de syntaxe ... ligne 6
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/conditionif2.cas
+Erreur de syntaxe ... ligne 6
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/conditionif.cas
+Erreur de syntaxe ... ligne 5
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/conditionwhile1.cas
+Erreur de syntaxe ... ligne 11
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/conditionwhile2.cas
+Erreur de syntaxe ... ligne 11
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/conditionwhile.cas
+Erreur de syntaxe ... ligne 10
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/declaration_mauvaise_endroit.cas
+Erreur de syntaxe ... ligne 4
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/dichotomie.cas
+Noeud.Programme                                              -- ligne : 2
+. Noeud.ListeDecl                                            -- ligne : 7
+. . Noeud.ListeDecl                                          -- ligne : 6
+. . . Noeud.ListeDecl                                        -- ligne : 5
+. . . . Noeud.ListeDecl                                      -- ligne : 4
+. . . . . Noeud.ListeDecl                                    -- ligne : 3
+. . . . . . Noeud.Vide                                       -- ligne : 3
+. . . . . . Noeud.Decl                                       -- ligne : 3
+. . . . . . . Noeud.ListeIdent                               -- ligne : 3
+. . . . . . . . Noeud.Vide                                   -- ligne : 3
+. . . . . . . . Noeud.Ident "t"                              -- ligne : 3
+. . . . . . . Noeud.Tableau                                  -- ligne : 3
+. . . . . . . . Noeud.Intervalle                             -- ligne : 3
+. . . . . . . . . Noeud.Entier 1                             -- ligne : 3
+. . . . . . . . . Noeud.Entier 20                            -- ligne : 3
+. . . . . . . . Noeud.Ident "integer"                        -- ligne : 3
+. . . . . Noeud.Decl                                         -- ligne : 4
+. . . . . . Noeud.ListeIdent                                 -- ligne : 4
+. . . . . . . Noeud.Vide                                     -- ligne : 4
+. . . . . . . Noeud.Ident "i"                                -- ligne : 4
+. . . . . . Noeud.Intervalle                                 -- ligne : 4
+. . . . . . . Noeud.Entier 1                                 -- ligne : 4
+. . . . . . . Noeud.Entier 20                                -- ligne : 4
+. . . . Noeud.Decl                                           -- ligne : 5
+. . . . . Noeud.ListeIdent                                   -- ligne : 5
+. . . . . . Noeud.ListeIdent                                 -- ligne : 5
+. . . . . . . Noeud.ListeIdent                               -- ligne : 5
+. . . . . . . . Noeud.Vide                                   -- ligne : 5
+. . . . . . . . Noeud.Ident "min"                            -- ligne : 5
+. . . . . . . Noeud.Ident "max"                              -- ligne : 5
+. . . . . . Noeud.Ident "milieu"                             -- ligne : 5
+. . . . . Noeud.Intervalle                                   -- ligne : 5
+. . . . . . Noeud.Entier 1                                   -- ligne : 5
+. . . . . . Noeud.Entier 20                                  -- ligne : 5
+. . . Noeud.Decl                                             -- ligne : 6
+. . . . Noeud.ListeIdent                                     -- ligne : 6
+. . . . . Noeud.Vide                                         -- ligne : 6
+. . . . . Noeud.Ident "val"                                  -- ligne : 6
+. . . . Noeud.Ident "integer"                                -- ligne : 6
+. . Noeud.Decl                                               -- ligne : 7
+. . . Noeud.ListeIdent                                       -- ligne : 7
+. . . . Noeud.Vide                                           -- ligne : 7
+. . . . Noeud.Ident "trouve"                                 -- ligne : 7
+. . . Noeud.Ident "boolean"                                  -- ligne : 7
+. Noeud.ListeInst                                            -- ligne : 39
+. . Noeud.ListeInst                                          -- ligne : 38
+. . . Noeud.ListeInst                                        -- ligne : 33
+. . . . Noeud.ListeInst                                      -- ligne : 20
+. . . . . Noeud.ListeInst                                    -- ligne : 19
+. . . . . . Noeud.ListeInst                                  -- ligne : 18
+. . . . . . . Noeud.ListeInst                                -- ligne : 17
+. . . . . . . . Noeud.ListeInst                              -- ligne : 15
+. . . . . . . . . Noeud.ListeInst                            -- ligne : 14
+. . . . . . . . . . Noeud.Vide                               -- ligne : 14
+. . . . . . . . . . Noeud.Pour                               -- ligne : 12
+. . . . . . . . . . . Noeud.Increment                        -- ligne : 10
+. . . . . . . . . . . . Noeud.Ident "i"                      -- ligne : 10
+. . . . . . . . . . . . Noeud.Entier 1                       -- ligne : 10
+. . . . . . . . . . . . Noeud.Entier 20                      -- ligne : 10
+. . . . . . . . . . . Noeud.ListeInst                        -- ligne : 12
+. . . . . . . . . . . . Noeud.Vide                           -- ligne : 12
+. . . . . . . . . . . . Noeud.Affect                         -- ligne : 11
+. . . . . . . . . . . . . Noeud.Index                        -- ligne : 11
+. . . . . . . . . . . . . . Noeud.Ident "t"                  -- ligne : 11
+. . . . . . . . . . . . . . Noeud.Ident "i"                  -- ligne : 11
+. . . . . . . . . . . . . Noeud.Mult                         -- ligne : 11
+. . . . . . . . . . . . . . Noeud.Entier 2                   -- ligne : 11
+. . . . . . . . . . . . . . Noeud.Ident "i"                  -- ligne : 11
+. . . . . . . . . Noeud.Ecriture                             -- ligne : 14
+. . . . . . . . . . Noeud.ListeExp                           -- ligne : 14
+. . . . . . . . . . . Noeud.Vide                             -- ligne : 14
+. . . . . . . . . . . Noeud.Chaine ""Valeur a chercher dans le tableau :""  -- ligne : 14
+. . . . . . . . Noeud.Lecture                                -- ligne : 15
+. . . . . . . . . Noeud.Ident "val"                          -- ligne : 15
+. . . . . . . Noeud.Affect                                   -- ligne : 17
+. . . . . . . . Noeud.Ident "min"                            -- ligne : 17
+. . . . . . . . Noeud.Entier 1                               -- ligne : 17
+. . . . . . Noeud.Affect                                     -- ligne : 18
+. . . . . . . Noeud.Ident "max"                              -- ligne : 18
+. . . . . . . Noeud.Entier 20                                -- ligne : 18
+. . . . . Noeud.Affect                                       -- ligne : 19
+. . . . . . Noeud.Ident "trouve"                             -- ligne : 19
+. . . . . . Noeud.Ident "false"                              -- ligne : 19
+. . . . Noeud.TantQue                                        -- ligne : 31
+. . . . . Noeud.Et                                           -- ligne : 20
+. . . . . . Noeud.InfEgal                                    -- ligne : 20
+. . . . . . . Noeud.Ident "min"                              -- ligne : 20
+. . . . . . . Noeud.Ident "max"                              -- ligne : 20
+. . . . . . Noeud.Non                                        -- ligne : 20
+. . . . . . . Noeud.Ident "trouve"                           -- ligne : 20
+. . . . . Noeud.ListeInst                                    -- ligne : 31
+. . . . . . Noeud.ListeInst                                  -- ligne : 22
+. . . . . . . Noeud.Vide                                     -- ligne : 22
+. . . . . . . Noeud.Affect                                   -- ligne : 21
+. . . . . . . . Noeud.Ident "milieu"                         -- ligne : 21
+. . . . . . . . Noeud.Quotient                               -- ligne : 21
+. . . . . . . . . Noeud.Plus                                 -- ligne : 21
+. . . . . . . . . . Noeud.Ident "min"                        -- ligne : 21
+. . . . . . . . . . Noeud.Ident "max"                        -- ligne : 21
+. . . . . . . . . Noeud.Entier 2                             -- ligne : 21
+. . . . . . Noeud.Si                                         -- ligne : 30
+. . . . . . . Noeud.Egal                                     -- ligne : 22
+. . . . . . . . Noeud.Index                                  -- ligne : 22
+. . . . . . . . . Noeud.Ident "t"                            -- ligne : 22
+. . . . . . . . . Noeud.Ident "milieu"                       -- ligne : 22
+. . . . . . . . Noeud.Ident "val"                            -- ligne : 22
+. . . . . . . Noeud.ListeInst                                -- ligne : 24
+. . . . . . . . Noeud.Vide                                   -- ligne : 24
+. . . . . . . . Noeud.Affect                                 -- ligne : 23
+. . . . . . . . . Noeud.Ident "trouve"                       -- ligne : 23
+. . . . . . . . . Noeud.Ident "true"                         -- ligne : 23
+. . . . . . . Noeud.ListeInst                                -- ligne : 30
+. . . . . . . . Noeud.Vide                                   -- ligne : 30
+. . . . . . . . Noeud.Si                                     -- ligne : 29
+. . . . . . . . . Noeud.Inf                                  -- ligne : 25
+. . . . . . . . . . Noeud.Index                              -- ligne : 25
+. . . . . . . . . . . Noeud.Ident "t"                        -- ligne : 25
+. . . . . . . . . . . Noeud.Ident "milieu"                   -- ligne : 25
+. . . . . . . . . . Noeud.Ident "val"                        -- ligne : 25
+. . . . . . . . . Noeud.ListeInst                            -- ligne : 27
+. . . . . . . . . . Noeud.Vide                               -- ligne : 27
+. . . . . . . . . . Noeud.Affect                             -- ligne : 26
+. . . . . . . . . . . Noeud.Ident "min"                      -- ligne : 26
+. . . . . . . . . . . Noeud.Plus                             -- ligne : 26
+. . . . . . . . . . . . Noeud.Ident "milieu"                 -- ligne : 26
+. . . . . . . . . . . . Noeud.Entier 1                       -- ligne : 26
+. . . . . . . . . Noeud.ListeInst                            -- ligne : 29
+. . . . . . . . . . Noeud.Vide                               -- ligne : 29
+. . . . . . . . . . Noeud.Affect                             -- ligne : 28
+. . . . . . . . . . . Noeud.Ident "max"                      -- ligne : 28
+. . . . . . . . . . . Noeud.Moins                            -- ligne : 28
+. . . . . . . . . . . . Noeud.Ident "milieu"                 -- ligne : 28
+. . . . . . . . . . . . Noeud.Entier 1                       -- ligne : 28
+. . . Noeud.Si                                               -- ligne : 37
+. . . . Noeud.Ident "trouve"                                 -- ligne : 33
+. . . . Noeud.ListeInst                                      -- ligne : 35
+. . . . . Noeud.Vide                                         -- ligne : 35
+. . . . . Noeud.Ecriture                                     -- ligne : 34
+. . . . . . Noeud.ListeExp                                   -- ligne : 34
+. . . . . . . Noeud.ListeExp                                 -- ligne : 34
+. . . . . . . . Noeud.ListeExp                               -- ligne : 34
+. . . . . . . . . Noeud.ListeExp                             -- ligne : 34
+. . . . . . . . . . Noeud.Vide                               -- ligne : 34
+. . . . . . . . . . Noeud.Chaine ""Trouve : T[""             -- ligne : 34
+. . . . . . . . . Noeud.Ident "milieu"                       -- ligne : 34
+. . . . . . . . Noeud.Chaine ""] = ""                        -- ligne : 34
+. . . . . . . Noeud.Index                                    -- ligne : 34
+. . . . . . . . Noeud.Ident "t"                              -- ligne : 34
+. . . . . . . . Noeud.Ident "milieu"                         -- ligne : 34
+. . . . Noeud.ListeInst                                      -- ligne : 37
+. . . . . Noeud.Vide                                         -- ligne : 37
+. . . . . Noeud.Ecriture                                     -- ligne : 36
+. . . . . . Noeud.ListeExp                                   -- ligne : 36
+. . . . . . . Noeud.ListeExp                                 -- ligne : 36
+. . . . . . . . Noeud.ListeExp                               -- ligne : 36
+. . . . . . . . . Noeud.Vide                                 -- ligne : 36
+. . . . . . . . . Noeud.Chaine ""Valeur ""                   -- ligne : 36
+. . . . . . . . Noeud.Ident "val"                            -- ligne : 36
+. . . . . . . Noeud.Chaine "" non trouvee""                  -- ligne : 36
+. . Noeud.Ligne                                              -- ligne : 38
+program
+   t : array [1 .. 20] of integer; 
+   i : 1 .. 20; 
+   min, max, milieu : 1 .. 20; 
+   val : integer; 
+   trouve : boolean; 
+begin
+   for i := 1 to 20 do 
+      t[i] := 2 * i;
+   end;
+   write("""Valeur a chercher dans le tableau :""");
+   read(val);
+   min := 1;
+   max := 20;
+   trouve := false;
+   while (min <= max) and not trouve do
+      milieu := (min + max) div 2;
+      if t[milieu] = val then 
+         trouve := true;
+      else
+         if t[milieu] < val then 
+            min := milieu + 1;
+         else
+            max := milieu - 1;
+         end;
+      end;
+   end;
+   if trouve then 
+      write("""Trouve : T[""", milieu, """] = """, t[milieu]);
+   else
+      write("""Valeur """, val, """ non trouvee""");
+   end;
+   new_line;
+end.
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/doubleaffect.cas
+Noeud.Programme                                              -- ligne : 2
+. Noeud.ListeDecl                                            -- ligne : 4
+. . Noeud.ListeDecl                                          -- ligne : 3
+. . . Noeud.Vide                                             -- ligne : 3
+. . . Noeud.Decl                                             -- ligne : 3
+. . . . Noeud.ListeIdent                                     -- ligne : 3
+. . . . . Noeud.Vide                                         -- ligne : 3
+. . . . . Noeud.Ident "a"                                    -- ligne : 3
+. . . . Noeud.Ident "integer"                                -- ligne : 3
+. . Noeud.Decl                                               -- ligne : 4
+. . . Noeud.ListeIdent                                       -- ligne : 4
+. . . . Noeud.Vide                                           -- ligne : 4
+. . . . Noeud.Ident "a"                                      -- ligne : 4
+. . . Noeud.Ident "real"                                     -- ligne : 4
+. Noeud.ListeInst                                            -- ligne : 8
+. . Noeud.Vide                                               -- ligne : 8
+. . Noeud.Nop                                                -- ligne : 7
+program
+   a : integer; 
+   a : real; 
+begin
+   null;
+end.
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/doubledecla.cas
+Noeud.Programme                                              -- ligne : 1
+. Noeud.ListeDecl                                            -- ligne : 4
+. . Noeud.ListeDecl                                          -- ligne : 3
+. . . Noeud.ListeDecl                                        -- ligne : 2
+. . . . Noeud.Vide                                           -- ligne : 2
+. . . . Noeud.Decl                                           -- ligne : 2
+. . . . . Noeud.ListeIdent                                   -- ligne : 2
+. . . . . . Noeud.Vide                                       -- ligne : 2
+. . . . . . Noeud.Ident "v1"                                 -- ligne : 2
+. . . . . Noeud.Tableau                                      -- ligne : 2
+. . . . . . Noeud.Intervalle                                 -- ligne : 2
+. . . . . . . Noeud.Entier 1                                 -- ligne : 2
+. . . . . . . Noeud.Entier 10                                -- ligne : 2
+. . . . . . Noeud.Ident "integer"                            -- ligne : 2
+. . . Noeud.Decl                                             -- ligne : 3
+. . . . Noeud.ListeIdent                                     -- ligne : 3
+. . . . . Noeud.Vide                                         -- ligne : 3
+. . . . . Noeud.Ident "m"                                    -- ligne : 3
+. . . . Noeud.Tableau                                        -- ligne : 3
+. . . . . Noeud.Intervalle                                   -- ligne : 3
+. . . . . . Noeud.Entier 1                                   -- ligne : 3
+. . . . . . Noeud.Entier 5                                   -- ligne : 3
+. . . . . Noeud.Tableau                                      -- ligne : 3
+. . . . . . Noeud.Intervalle                                 -- ligne : 3
+. . . . . . . Noeud.Entier 1                                 -- ligne : 3
+. . . . . . . Noeud.Entier 10                                -- ligne : 3
+. . . . . . Noeud.Ident "integer"                            -- ligne : 3
+. . Noeud.Decl                                               -- ligne : 4
+. . . Noeud.ListeIdent                                       -- ligne : 4
+. . . . Noeud.Vide                                           -- ligne : 4
+. . . . Noeud.Ident "v1"                                     -- ligne : 4
+. . . Noeud.Tableau                                          -- ligne : 4
+. . . . Noeud.Intervalle                                     -- ligne : 4
+. . . . . Noeud.Entier 1                                     -- ligne : 4
+. . . . . Noeud.Entier 10                                    -- ligne : 4
+. . . . Noeud.Ident "integer"                                -- ligne : 4
+. Noeud.ListeInst                                            -- ligne : 9
+. . Noeud.Vide                                               -- ligne : 9
+. . Noeud.Affect                                             -- ligne : 7
+. . . Noeud.Index                                            -- ligne : 7
+. . . . Noeud.Ident "m"                                      -- ligne : 7
+. . . . Noeud.Entier 1                                       -- ligne : 7
+. . . Noeud.Ident "v1"                                       -- ligne : 7
+program
+   v1 : array [1 .. 10] of integer; 
+   m : array [1 .. 5] of array [1 .. 10] of integer; 
+   v1 : array [1 .. 10] of integer; 
+begin
+   m[1] := v1;
+end.
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/erreurcontextuelle2.cas
+Erreur de syntaxe ... ligne 3
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/erreurcontextuelle.cas
+Erreur de syntaxe ... ligne 3
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/gooddecla.cas
+Noeud.Programme                                              -- ligne : 1
+. Noeud.ListeDecl                                            -- ligne : 4
+. . Noeud.ListeDecl                                          -- ligne : 3
+. . . Noeud.ListeDecl                                        -- ligne : 2
+. . . . Noeud.Vide                                           -- ligne : 2
+. . . . Noeud.Decl                                           -- ligne : 2
+. . . . . Noeud.ListeIdent                                   -- ligne : 2
+. . . . . . Noeud.Vide                                       -- ligne : 2
+. . . . . . Noeud.Ident "v1"                                 -- ligne : 2
+. . . . . Noeud.Tableau                                      -- ligne : 2
+. . . . . . Noeud.Intervalle                                 -- ligne : 2
+. . . . . . . Noeud.Entier 1                                 -- ligne : 2
+. . . . . . . Noeud.Entier 10                                -- ligne : 2
+. . . . . . Noeud.Ident "integer"                            -- ligne : 2
+. . . Noeud.Decl                                             -- ligne : 3
+. . . . Noeud.ListeIdent                                     -- ligne : 3
+. . . . . Noeud.Vide                                         -- ligne : 3
+. . . . . Noeud.Ident "m"                                    -- ligne : 3
+. . . . Noeud.Tableau                                        -- ligne : 3
+. . . . . Noeud.Intervalle                                   -- ligne : 3
+. . . . . . Noeud.Entier 1                                   -- ligne : 3
+. . . . . . Noeud.Entier 5                                   -- ligne : 3
+. . . . . Noeud.Tableau                                      -- ligne : 3
+. . . . . . Noeud.Intervalle                                 -- ligne : 3
+. . . . . . . Noeud.Entier 1                                 -- ligne : 3
+. . . . . . . Noeud.Entier 10                                -- ligne : 3
+. . . . . . Noeud.Ident "integer"                            -- ligne : 3
+. . Noeud.Decl                                               -- ligne : 4
+. . . Noeud.ListeIdent                                       -- ligne : 4
+. . . . Noeud.Vide                                           -- ligne : 4
+. . . . Noeud.Ident "v2"                                     -- ligne : 4
+. . . Noeud.Tableau                                          -- ligne : 4
+. . . . Noeud.Intervalle                                     -- ligne : 4
+. . . . . Noeud.Entier 1                                     -- ligne : 4
+. . . . . Noeud.Entier 10                                    -- ligne : 4
+. . . . Noeud.Ident "integer"                                -- ligne : 4
+. Noeud.ListeInst                                            -- ligne : 9
+. . Noeud.ListeInst                                          -- ligne : 7
+. . . Noeud.Vide                                             -- ligne : 7
+. . . Noeud.Affect                                           -- ligne : 6
+. . . . Noeud.Ident "v1"                                     -- ligne : 6
+. . . . Noeud.Ident "v2"                                     -- ligne : 6
+. . Noeud.Affect                                             -- ligne : 7
+. . . Noeud.Index                                            -- ligne : 7
+. . . . Noeud.Ident "m"                                      -- ligne : 7
+. . . . Noeud.Entier 1                                       -- ligne : 7
+. . . Noeud.Ident "v1"                                       -- ligne : 7
+program
+   v1 : array [1 .. 10] of integer; 
+   m : array [1 .. 5] of array [1 .. 10] of integer; 
+   v2 : array [1 .. 10] of integer; 
+begin
+   v1 := v2;
+   m[1] := v1;
+end.
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/mauvaiseaffectinteger.cas
+Noeud.Programme                                              -- ligne : 2
+. Noeud.ListeDecl                                            -- ligne : 4
+. . Noeud.ListeDecl                                          -- ligne : 3
+. . . Noeud.Vide                                             -- ligne : 3
+. . . Noeud.Decl                                             -- ligne : 3
+. . . . Noeud.ListeIdent                                     -- ligne : 3
+. . . . . Noeud.Vide                                         -- ligne : 3
+. . . . . Noeud.Ident "a"                                    -- ligne : 3
+. . . . Noeud.Ident "integer"                                -- ligne : 3
+. . Noeud.Decl                                               -- ligne : 4
+. . . Noeud.ListeIdent                                       -- ligne : 4
+. . . . Noeud.Vide                                           -- ligne : 4
+. . . . Noeud.Ident "a"                                      -- ligne : 4
+. . . Noeud.Ident "real"                                     -- ligne : 4
+. Noeud.ListeInst                                            -- ligne : 8
+. . Noeud.Vide                                               -- ligne : 8
+. . Noeud.Nop                                                -- ligne : 7
+program
+   a : integer; 
+   a : real; 
+begin
+   null;
+end.
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/mauvaistype.cas
+Erreur de syntaxe ... ligne 4
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/pasdeclare.cas
+Noeud.Programme                                              -- ligne : 2
+. Noeud.Vide                                                 -- ligne : 4
+. Noeud.ListeInst                                            -- ligne : 6
+. . Noeud.Vide                                               -- ligne : 6
+. . Noeud.Affect                                             -- ligne : 5
+. . . Noeud.Ident "a"                                        -- ligne : 5
+. . . Noeud.Entier 32                                        -- ligne : 5
+program
+begin
+   a := 32;
+end.
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/simple.cas
+Noeud.Programme                                              -- ligne : 1
+. Noeud.ListeDecl                                            -- ligne : 3
+. . Noeud.ListeDecl                                          -- ligne : 2
+. . . Noeud.Vide                                             -- ligne : 2
+. . . Noeud.Decl                                             -- ligne : 2
+. . . . Noeud.ListeIdent                                     -- ligne : 2
+. . . . . Noeud.Vide                                         -- ligne : 2
+. . . . . Noeud.Ident "i"                                    -- ligne : 2
+. . . . Noeud.Ident "integer"                                -- ligne : 2
+. . Noeud.Decl                                               -- ligne : 3
+. . . Noeud.ListeIdent                                       -- ligne : 3
+. . . . Noeud.Vide                                           -- ligne : 3
+. . . . Noeud.Ident "r"                                      -- ligne : 3
+. . . Noeud.Ident "real"                                     -- ligne : 3
+. Noeud.ListeInst                                            -- ligne : 7
+. . Noeud.ListeInst                                          -- ligne : 6
+. . . Noeud.Vide                                             -- ligne : 6
+. . . Noeud.Affect                                           -- ligne : 5
+. . . . Noeud.Ident "i"                                      -- ligne : 5
+. . . . Noeud.Entier 3                                       -- ligne : 5
+. . Noeud.Affect                                             -- ligne : 6
+. . . Noeud.Ident "r"                                        -- ligne : 6
+. . . Noeud.Plus                                             -- ligne : 6
+. . . . Noeud.Ident "i"                                      -- ligne : 6
+. . . . Noeud.Entier 1                                       -- ligne : 6
+program
+   i : integer; 
+   r : real; 
+begin
+   i := 3;
+   r := i + 1;
+end.
+Noeud.Programme                                              -- ligne : 1
+. Noeud.ListeDecl                                            -- ligne : 3
+. . Noeud.ListeDecl                                          -- ligne : 2
+. . . Noeud.Vide                                             -- ligne : 2
+. . . Noeud.Decl                                             -- ligne : 2
+. . . . Noeud.ListeIdent                                     -- ligne : 2
+. . . . . Noeud.Vide                                         -- ligne : 2
+. . . . . Noeud.Ident "i"                                    -- ligne : 2
+. . . . . -- defn :
+. . . . . --    (NatureDefn.Var, Type.Integer)
+. . . . . -- type :
+. . . . . --    Type.Integer
+. . . . Noeud.Ident "integer"                                -- ligne : 2
+. . . . -- defn :
+. . . . --    (NatureDefn.Type, Type.Integer)
+. . . . -- type :
+. . . . --    Type.Integer
+. . Noeud.Decl                                               -- ligne : 3
+. . . Noeud.ListeIdent                                       -- ligne : 3
+. . . . Noeud.Vide                                           -- ligne : 3
+. . . . Noeud.Ident "r"                                      -- ligne : 3
+. . . . -- defn :
+. . . . --    (NatureDefn.Var, NatureType.Real)
+. . . . -- type :
+. . . . --    NatureType.Real
+. . . Noeud.Ident "real"                                     -- ligne : 3
+. . . -- defn :
+. . . --    (NatureDefn.Type, NatureType.Real)
+. . . -- type :
+. . . --    NatureType.Real
+. Noeud.ListeInst                                            -- ligne : 7
+. . Noeud.ListeInst                                          -- ligne : 6
+. . . Noeud.Vide                                             -- ligne : 6
+. . . Noeud.Affect                                           -- ligne : 5
+. . . -- type :
+. . . --    Type.Integer
+. . . . Noeud.Ident "i"                                      -- ligne : 5
+. . . . -- defn :
+. . . . --    (NatureDefn.Var, Type.Integer)
+. . . . -- type :
+. . . . --    Type.Integer
+. . . . Noeud.Entier 3                                       -- ligne : 5
+. . . . -- type :
+. . . . --    Type.Integer
+. . Noeud.Affect                                             -- ligne : 6
+. . -- type :
+. . --    NatureType.Real
+. . . Noeud.Ident "r"                                        -- ligne : 6
+. . . -- defn :
+. . . --    (NatureDefn.Var, NatureType.Real)
+. . . -- type :
+. . . --    NatureType.Real
+. . . Noeud.Conversion                                       -- ligne : 6
+. . . -- type :
+. . . --    NatureType.Real
+. . . . Noeud.Plus                                           -- ligne : 6
+. . . . -- type :
+. . . . --    Type.Integer
+. . . . . Noeud.Ident "i"                                    -- ligne : 6
+. . . . . -- defn :
+. . . . . --    (NatureDefn.Var, Type.Integer)
+. . . . . -- type :
+. . . . . --    Type.Integer
+. . . . . Noeud.Entier 1                                     -- ligne : 6
+. . . . . -- type :
+. . . . . --    Type.Integer
+program
+   i
+   -- defn :
+   --    (NatureDefn.Var, Type.Integer)
+   -- type :
+   --    Type.Integer
+     : integer
+       -- defn :
+       --    (NatureDefn.Type, Type.Integer)
+       -- type :
+       --    Type.Integer
+              ; 
+   r
+   -- defn :
+   --    (NatureDefn.Var, NatureType.Real)
+   -- type :
+   --    NatureType.Real
+     : real
+       -- defn :
+       --    (NatureDefn.Type, NatureType.Real)
+       -- type :
+       --    NatureType.Real
+           ; 
+begin
+   i
+   -- defn :
+   --    (NatureDefn.Var, Type.Integer)
+   -- type :
+   --    Type.Integer
+     := 
+     -- type :
+     --    Type.Integer
+        3
+        -- type :
+        --    Type.Integer
+         ;
+   r
+   -- defn :
+   --    (NatureDefn.Var, NatureType.Real)
+   -- type :
+   --    NatureType.Real
+     := 
+     -- type :
+     --    NatureType.Real
+        -- Noeud.Conversion 
+         -- type :
+         --    NatureType.Real
+                            i
+                            -- defn :
+                            --    (NatureDefn.Var, Type.Integer)
+                            -- type :
+                            --    Type.Integer
+                              + 
+                              -- type :
+                              --    Type.Integer
+                                1
+                                -- type :
+                                --    Type.Integer
+                                 ;
+end.
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/tableau1.cas
+Noeud.Programme                                              -- ligne : 1
+. Noeud.ListeDecl                                            -- ligne : 2
+. . Noeud.Vide                                               -- ligne : 2
+. . Noeud.Decl                                               -- ligne : 2
+. . . Noeud.ListeIdent                                       -- ligne : 2
+. . . . Noeud.Vide                                           -- ligne : 2
+. . . . Noeud.Ident "t"                                      -- ligne : 2
+. . . Noeud.Tableau                                          -- ligne : 2
+. . . . Noeud.Intervalle                                     -- ligne : 2
+. . . . . Noeud.Entier 1                                     -- ligne : 2
+. . . . . Noeud.Entier 5                                     -- ligne : 2
+. . . . Noeud.Ident "real"                                   -- ligne : 2
+. Noeud.ListeInst                                            -- ligne : 8
+. . Noeud.ListeInst                                          -- ligne : 6
+. . . Noeud.ListeInst                                        -- ligne : 5
+. . . . Noeud.Vide                                           -- ligne : 5
+. . . . Noeud.Affect                                         -- ligne : 4
+. . . . . Noeud.Index                                        -- ligne : 4
+. . . . . . Noeud.Ident "t"                                  -- ligne : 4
+. . . . . . Noeud.Entier 1                                   -- ligne : 4
+. . . . . Noeud.Entier 0                                     -- ligne : 4
+. . . Noeud.Affect                                           -- ligne : 5
+. . . . Noeud.Index                                          -- ligne : 5
+. . . . . Noeud.Ident "t"                                    -- ligne : 5
+. . . . . Noeud.Entier 2                                     -- ligne : 5
+. . . . Noeud.Entier 0                                       -- ligne : 5
+. . Noeud.Affect                                             -- ligne : 6
+. . . Noeud.Index                                            -- ligne : 6
+. . . . Noeud.Ident "t"                                      -- ligne : 6
+. . . . Noeud.Entier 3                                       -- ligne : 6
+. . . Noeud.Entier 0                                         -- ligne : 6
+program
+   t : array [1 .. 5] of real; 
+begin
+   t[1] := 0;
+   t[2] := 0;
+   t[3] := 0;
+end.
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/tableau.cas
+Noeud.Programme                                              -- ligne : 1
+. Noeud.ListeDecl                                            -- ligne : 2
+. . Noeud.Vide                                               -- ligne : 2
+. . Noeud.Decl                                               -- ligne : 2
+. . . Noeud.ListeIdent                                       -- ligne : 2
+. . . . Noeud.Vide                                           -- ligne : 2
+. . . . Noeud.Ident "t"                                      -- ligne : 2
+. . . Noeud.Tableau                                          -- ligne : 2
+. . . . Noeud.Intervalle                                     -- ligne : 2
+. . . . . Noeud.Entier 1                                     -- ligne : 2
+. . . . . Noeud.Entier 5                                     -- ligne : 2
+. . . . Noeud.Ident "real"                                   -- ligne : 2
+. Noeud.ListeInst                                            -- ligne : 8
+. . Noeud.ListeInst                                          -- ligne : 7
+. . . Noeud.ListeInst                                        -- ligne : 6
+. . . . Noeud.ListeInst                                      -- ligne : 5
+. . . . . Noeud.Vide                                         -- ligne : 5
+. . . . . Noeud.Affect                                       -- ligne : 4
+. . . . . . Noeud.Index                                      -- ligne : 4
+. . . . . . . Noeud.Ident "t"                                -- ligne : 4
+. . . . . . . Noeud.Entier 1                                 -- ligne : 4
+. . . . . . Noeud.Entier 0                                   -- ligne : 4
+. . . . Noeud.Affect                                         -- ligne : 5
+. . . . . Noeud.Index                                        -- ligne : 5
+. . . . . . Noeud.Ident "t"                                  -- ligne : 5
+. . . . . . Noeud.Entier 2                                   -- ligne : 5
+. . . . . Noeud.Entier 0                                     -- ligne : 5
+. . . Noeud.Affect                                           -- ligne : 6
+. . . . Noeud.Index                                          -- ligne : 6
+. . . . . Noeud.Ident "t"                                    -- ligne : 6
+. . . . . Noeud.Entier 3                                     -- ligne : 6
+. . . . Noeud.Entier 0                                       -- ligne : 6
+. . Noeud.Affect                                             -- ligne : 7
+. . . Noeud.Index                                            -- ligne : 7
+. . . . Noeud.Ident "t"                                      -- ligne : 7
+. . . . Noeud.Entier 6                                       -- ligne : 7
+. . . Noeud.Entier 0                                         -- ligne : 7
+program
+   t : array [1 .. 5] of real; 
+begin
+   t[1] := 0;
+   t[2] := 0;
+   t[3] := 0;
+   t[6] := 0;
+end.
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+Fichier : ../test/verif/test.cas
+Erreur de syntaxe ... ligne 8
+[INFO] Cobertura: Loaded information on 14 classes.
+[INFO] Cobertura: Saved information on 14 classes.
+
+Génération du rapport ...
+
+Cobertura 2.1.1 - GNU GPL License (NO WARRANTY) - See COPYRIGHT file
+[INFO] Cobertura: Loaded information on 14 classes.
+Report time: 414ms

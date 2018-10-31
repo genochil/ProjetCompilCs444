@@ -1,0 +1,104 @@
+V "GNAT Lib v7"
+M P W=b
+A -g
+A -gnato
+P ZX
+
+RN
+RV NO_EXCEPTION_HANDLERS
+RV NO_EXCEPTIONS
+RV NO_FLOATING_POINT
+RV NO_IO
+RV NO_DEFAULT_INITIALIZATION
+RV SPARK_05
+
+U test_pseudo_code%b	test_pseudo_code.adb	870f75ca NE OO SU
+W ada%s			ada.ads			ada.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W pseudo_code%s		pseudo_code.adb		pseudo_code.ali
+W types_base%s		types_base.adb		types_base.ali
+
+D ada.ads		20170106103348 76789da1 ada%s
+D a-except.ads		20151016123252 291912d5 ada.exceptions%s
+D a-ioexce.ads		20140225151544 e4a01f64 ada.io_exceptions%s
+D a-stream.ads		20141120112812 119b8fb3 ada.streams%s
+D a-tags.ads		20151016130316 01f5e3ef ada.tags%s
+D a-textio.ads		20140717063745 386df5d4 ada.text_io%s
+D a-unccon.ads		20170106103348 31484697 ada.unchecked_conversion%s
+D interfac.ads		20160502101001 5ab55268 interfaces%s
+D i-cstrea.ads		20140801100435 e53d8b8e interfaces.c_streams%s
+D pseudo_code.ads	20080421140621 2c476e81 pseudo_code%s
+D system.ads		20170510173650 4635ec04 system%s
+D s-crtl.ads		20141120112812 0ebbdb71 system.crtl%s
+D s-exctab.ads		20140225151139 54135002 system.exception_table%s
+D s-ficobl.ads		20140718105747 078245e4 system.file_control_block%s
+D s-parame.ads		20140801093848 7e2a0d7f system.parameters%s
+D s-soflin.ads		20151020124036 14e1eb6c system.soft_links%s
+D s-stache.ads		20140225151139 a37c21ec system.stack_checking%s
+D s-stalib.ads		20151112104907 09bd3940 system.standard_library%s
+D s-stoele.ads		20140225151139 2dc34a04 system.storage_elements%s
+D s-traent.ads		20140730135025 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20160502101423 34867c83 system.unsigned_types%s
+D s-wchcon.ads		20140718092328 1b7d22d2 system.wch_con%s
+D test_pseudo_code.adb	20080421140622 d7557f51 test_pseudo_code%b
+D types_base.ads	20080421140621 447091ce types_base%s
+X 1 ada.ads
+16K9*Ada 20e8 23|12r31 13r31
+X 6 a-textio.ads
+49K13*Text_IO 471e16 23|12w35 13r35
+263U14*Put_Line 23|74s7 83s7 92s7
+X 10 pseudo_code.ads
+49K9*Pseudo_Code 335e16 23|12w18 13r18
+55n22*GB{55E9} 23|48r35
+55n26*LB{55E9} 23|51r32
+55n30*R0{55E9} 23|28r49 91r51
+55n34*R1{55E9} 23|28r67 51r36 55r52 58r52
+56n55*R15{55E9} 23|52r51
+64P9*Etiq(63R9) 23|18r8
+73P9*Operande(72R9) 23|16r8
+80n31*Code_HALT{77E9} 23|62r25
+82n18*Code_BRA{77E9} 23|39r25
+82n48*Code_BGT{77E9} 23|44r25
+86n32*Code_PEA{77E9} 23|49r25 91r28
+87n19*Code_WSTR{77E9} 23|66r25
+89n8*Code_LOAD{77E9} 23|28r25 55r25 58r25
+90n8*Code_ADD{77E9} 23|52r25
+94P9*Inst(93R9) 23|17r8
+99P9*Ligne(98R9) 23|19r8
+103V13*L_Etiq{64P9} 23|24s9 29s9 73s24 82s12
+108V13*L_Etiq_Num{64P9} 23|43s9
+127V13*Le_Registre{73P9} 23|28s36 28s54 52s38 55s39 58s39 91s38
+129V13*Creation_Op_Indirect{73P9} 23|48s9
+132V13*Creation_Op_Indexe{73P9} 23|51s9
+136V13*Creation_Op_Entier{73P9} 23|54s9
+138V13*Creation_Op_Reel{73P9} 23|57s9
+140V13*Creation_Op_Chaine{73P9} 23|67s12
+142V13*Creation_Op_Etiq{73P9} 23|39s35 44s35
+191V13*Creation_Inst0{94P9} 23|62s9
+193V13*Creation_Inst1{94P9} 23|39s9 44s9 49s9 66s9 91s12
+196V13*Creation_Inst2{94P9} 23|28s9 52s9 55s9 58s9
+216V13*Creation{99P9} 23|25s9 30s9 33s9 36s9 40s9 45s9 50s9 53s9 56s9 59s9
+. 63s9 68s9
+217p23 I{94P9} 23|40r19 45r19
+218a23 Com{string} 23|36r19
+219p23 Suiv{99P9} 23|33r19 36r46 40r27 45r27
+233U14*Changer_Etiq 23|73s7
+254U14*Afficher_Programme 23|69s4
+261X34*Erreur_Inst 23|94r12
+264X4*Erreur_Double_Def 23|76r12
+268X4*Erreur_Etiq_Illegale 23|85r12
+X 23 test_pseudo_code.adb
+15U11*Test_Pseudo_Code 15b11 97l5 97t21
+16p4 O{10|73P9} 48m4 49r35 51m4 52r35 54m4 55r36 57m4 58r36
+17p4 I{10|94P9} 23m4 25r22 28m4 30r22 39m4 40r24 44m4 45r24 49m4 50r25 52m4
+. 53r25 55m4 56r25 58m4 59r25 62m4 63r25 66m4 68r25 91m7
+18p4 E{10|64P9} 24m4 25r19 29m4 30r19 39r53 43m4 44r53 82m7
+19p4 L{10|99P9} 25m4 30m4 30r34 33m4 33r27 36m4 36r54 40m4 40r35 45m4 45r35
+. 50m4 50r32 53m4 53r32 56m4 56r32 59m4 59r32 63m4 63r32 68m4 68r32 69r24
+. 73r21
+X 24 types_base.ads
+17K9*Types_Base 23|12w6 13r6 24|60e15
+37A9*St_Chaine<string>
+38P9*Chaine(37A9)
+42V13*Creation{38P9} 23|67s32
+

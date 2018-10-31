@@ -1,0 +1,88 @@
+V "GNAT Lib v7"
+A -g
+A -gnato
+P SS ZX
+
+RN
+RV NO_EXCEPTION_HANDLERS
+RV NO_EXCEPTIONS
+RV NO_IO
+RV NO_IMPLICIT_CONDITIONALS
+RV NO_SECONDARY_STACK
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_ELABORATION_CODE
+RV SPARK_05
+
+U options%b		options.adb		a3b0e77f NE OO PK IU
+W ada%s			ada.ads			ada.ali
+W ada.command_line%s	a-comlin.adb		a-comlin.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W system%s		system.ads		system.ali
+W system.concat_3%s	s-conca3.adb		s-conca3.ali
+W system.exception_table%s  s-exctab.adb	s-exctab.ali
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+W system.standard_library%s  s-stalib.adb	s-stalib.ali
+W text_io%s		text_io.ads		text_io.ali
+
+U options%s		options.ads		d5b38fdb EE OO PK IU
+W ada.tags%s		a-tags.adb		a-tags.ali
+W system%s		system.ads		system.ali
+W system.exception_table%s  s-exctab.adb	s-exctab.ali
+W system.standard_library%s  s-stalib.adb	s-stalib.ali
+
+D ada.ads		20170106103348 76789da1 ada%s
+D a-comlin.ads		20140225151544 ea62afbc ada.command_line%s
+D a-except.ads		20151016123252 291912d5 ada.exceptions%s
+D a-ioexce.ads		20140225151544 e4a01f64 ada.io_exceptions%s
+D a-stream.ads		20141120112812 119b8fb3 ada.streams%s
+D a-tags.ads		20151016130316 01f5e3ef ada.tags%s
+D a-textio.ads		20140717063745 386df5d4 ada.text_io%s
+D a-unccon.ads		20170106103348 31484697 ada.unchecked_conversion%s
+D interfac.ads		20160502101001 5ab55268 interfaces%s
+D i-cstrea.ads		20140801100435 e53d8b8e interfaces.c_streams%s
+D options.ads		20080421140622 d5b38fdb options%s
+D options.adb		20080421140622 d9b7e1d1 options%b
+D system.ads		20170510173650 4635ec04 system%s
+D s-conca3.ads		20140225151544 0b705ca5 system.concat_3%s
+D s-crtl.ads		20141120112812 0ebbdb71 system.crtl%s
+D s-exctab.ads		20140225151139 54135002 system.exception_table%s
+D s-ficobl.ads		20140718105747 078245e4 system.file_control_block%s
+D s-parame.ads		20140801093848 7e2a0d7f system.parameters%s
+D s-secsta.ads		20170112134946 9751b57e system.secondary_stack%s
+D s-soflin.ads		20151020124036 14e1eb6c system.soft_links%s
+D s-stache.ads		20140225151139 a37c21ec system.stack_checking%s
+D s-stalib.ads		20151112104907 09bd3940 system.standard_library%s
+D s-stoele.ads		20140225151139 2dc34a04 system.storage_elements%s
+D s-traent.ads		20140730135025 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20160502101423 34867c83 system.unsigned_types%s
+D s-wchcon.ads		20140718092328 1b7d22d2 system.wch_con%s
+D text_io.ads		20070406091342 45d626c9 text_io%s
+X 1 ada.ads
+16K9*Ada 20e8 12|10r6 11r6
+X 2 a-comlin.ads
+38K13*Command_Line 139e21 12|10w10 11r10
+41V13*Argument_Count{natural} 12|24s19
+48V13*Argument{string} 12|25s13 26s13 30s10 33s12
+57V13*Command_Name{string} 12|43s30
+X 7 a-textio.ads
+263U14*Put_Line 12|43s7
+X 11 options.ads
+10K9*OPTIONS 27l5 27e12 12|13b14 62l5 62t12
+12U13*verif_opt 12|20b13 45l7 45t16
+15V12*debug{boolean} 12|47b12 50l7 50t12
+18V12*aff_temps{boolean} 12|52b12 55l7 55t16
+21V12*beautify{boolean} 12|57b12 60l7 60t15
+24X3*mauvaise_option 12|44r13
+X 12 options.adb
+15b3 tps{boolean} 35m21 54r12
+16b3 deb{boolean} 34m21 49r12
+17b3 ret{boolean} 36m21 59r12
+21i5 i1{integer} 25m7 27r13 30r23
+21i9 i2{integer} 26m7 27r10 33r26
+22X5 mauv_opt 28r15 31r15 38r17 42r10
+24i9 i{integer} 25r22 26r22 30r20 33r22
+X 27 text_io.ads
+24K9*Text_IO=24:29 12|10w24 11r24
+

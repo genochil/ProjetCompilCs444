@@ -1,0 +1,16 @@
+; Test de LOAD
+   LOAD #1, R0
+   LOAD #2, R1
+   STORE R1, 0(GB, R0)
+   LOAD 1(GB), R1
+   CMP #2, R1
+   BEQ ok
+   WSTR "erreur"
+   WNL
+   BRA fin
+ok:
+   WSTR "ok"
+   WNL
+fin:
+   HALT
+

@@ -1,0 +1,16 @@
+; Test de LEA
+   LOAD #10, R0
+   LEA 1(GB), R1
+   STORE R0, 0(R1) 
+   LOAD 1(GB), R2
+   CMP #10, R2
+   BEQ ok
+   WSTR "erreur"
+   WNL
+   BRA fin
+ok:
+   WSTR "ok"
+   WNL
+fin:
+   HALT
+

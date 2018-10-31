@@ -1,0 +1,38 @@
+V "GNAT Lib v7"
+A -g
+A -gnato
+P SS ZX
+
+RN
+RV NO_ALLOCATORS
+RV NO_FLOATING_POINT
+RV NO_LOCAL_ALLOCATORS
+RV NO_SECONDARY_STACK
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV SPARK_05
+
+U types_base%b		types_base.adb		1c33b50d NE OO PK
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+
+U types_base%s		types_base.ads		447091ce EE NE OO PK
+
+D system.ads		20170510173650 4635ec04 system%s
+D s-secsta.ads		20170112134946 9751b57e system.secondary_stack%s
+D s-stoele.ads		20140225151139 2dc34a04 system.storage_elements%s
+D types_base.ads	20080421140621 447091ce types_base%s
+D types_base.adb	20080421140621 584324c3 types_base%b
+X 4 types_base.ads
+17K9*Types_Base 58E9 60l5 60e15 5|12b14 32l5 32t15
+26I9*Entier<integer> 28r22 28r32
+28i4*Valmax{26I9}
+32F9*Reel<long_float>
+37A9*St_Chaine<string> 38r30 47r38 53r34 58c9 5|17r18 17r30 21r38 27r34
+38P9*Chaine(37A9) 42r42 5|15r42
+42V13*Creation{38P9} 42>23 5|15b13 18l8 18t16
+42a23 S{string} 5|15b23 17r41
+47V13*Acces_String{string} 47^27 5|21b13 24l8 24t20
+47p27 C(37A9) 5|21b27 23r22
+53V13*Longueur{natural} 53^23 5|27b13 30l8 30t16
+53p23 C(37A9) 5|27b23 29r14
+

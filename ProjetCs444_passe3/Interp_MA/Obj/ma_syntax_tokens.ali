@@ -1,0 +1,140 @@
+V "GNAT Lib v7"
+A -g
+A -gnato
+P ZX
+
+RN
+RV NO_FLOATING_POINT
+RV NO_IMPLICIT_CONDITIONALS
+RV NO_DEFAULT_INITIALIZATION
+RV NO_ELABORATION_CODE
+RV SPARK_05
+
+U ma_syntax_tokens%s	ma_syntax_tokens.ads	eb6581d5 EE OO PK
+W pseudo_code%s		pseudo_code.adb		pseudo_code.ali
+W system%s		system.ads		system.ali
+W system.exception_table%s  s-exctab.adb	s-exctab.ali
+W system.standard_library%s  s-stalib.adb	s-stalib.ali
+W types_base%s		types_base.adb		types_base.ali
+
+D ada.ads		20170106103348 76789da1 ada%s
+D a-unccon.ads		20170106103348 31484697 ada.unchecked_conversion%s
+D ma_syntax_tokens.ads	20080421140622 83527e9a ma_syntax_tokens%s
+D pseudo_code.ads	20080421140621 2c476e81 pseudo_code%s
+D system.ads		20170510173650 4635ec04 system%s
+D s-exctab.ads		20140225151139 54135002 system.exception_table%s
+D s-stalib.ads		20151112104907 09bd3940 system.standard_library%s
+D types_base.ads	20080421140621 447091ce types_base%s
+X 3 ma_syntax_tokens.ads
+3K9*Ma_Syntax_Tokens 74l5 74e21
+6I11*Num_reg_banalise{natural} 41r20
+10E8*type_valeur 12e70 15r32
+11n6*nt_list_ligne{10E8} 17r12
+11n21*nt_adressage{10E8} 20r12
+11n35*nt_instr{10E8} 22r12
+11n45*nt_codop{10E8} 25r12
+11n55*nt_reg{10E8} 28r12
+12n6*lex_etiq{10E8} 30r12
+12n16*lex_entier{10E8} 33r12
+12n28*lex_reel{10E8} 36r12
+12n38*lex_regb{10E8} 39r12
+12n48*lex_chaine{10E8} 42r12
+12n60*lex_autre{10E8} 15r47 45r12
+15R8*yystype 15d17 48e13 50r21
+15e17*discriminant{10E8} 16r10
+18p9*val_list_ligne{4|99P9}
+19p9*val_dern_ligne{4|99P9}
+21p9*val_adressage{4|73P9}
+23i9*num_ligne_instr{positive}
+24p9*val_instr{4|94P9}
+26i9*num_ligne_codop{positive}
+27e9*val_code{4|77E9}
+29e9*val_reg{4|55E9}
+31i9*num_ligne_etiq{positive}
+32p9*val_etiq{8|38P9}
+34i9*num_ligne_entier{positive}
+35i9*val_ent{8|26I9}
+37i9*num_ligne_reel{positive}
+38f9*val_reel{8|32F9}
+40i9*num_ligne_regb{positive}
+41i9*num_regb{6I11}
+43i9*num_ligne_chaine{positive}
+44p9*val_chaine{8|38P9}
+46i9*num_ligne_autre{positive}
+50r5*YYLVal{15R8}
+50r13*YYVal{15R8}
+51E10*Token 70e25
+52n10*End_Of_Input{51E10}
+52n24*Error{51E10}
+52n31*Nl_Lex{51E10}
+52n39*Etiq_Lex{51E10}
+53n10*Regb_Lex{51E10}
+53n20*Depl_Lex{51E10}
+53n30*Constentpos_Lex{51E10}
+54n10*Constentneg_Lex{51E10}
+54n27*Constreel_Lex{51E10}
+54n42*Constchaine_Lex{51E10}
+55n10*Load_Lex{51E10}
+55n20*Store_Lex{51E10}
+55n31*Lea_Lex{51E10}
+56n10*Pea_Lex{51E10}
+56n19*Push_Lex{51E10}
+56n29*Pop_Lex{51E10}
+57n10*Addsp_Lex{51E10}
+57n21*Subsp_Lex{51E10}
+57n32*Add_Lex{51E10}
+58n10*Sub_Lex{51E10}
+58n19*Opp_Lex{51E10}
+58n28*Mul_Lex{51E10}
+59n10*Div_Lex{51E10}
+59n19*Cmp_Lex{51E10}
+59n28*Mod_Lex{51E10}
+60n10*Float_Lex{51E10}
+60n21*Seq_Lex{51E10}
+60n30*Sne_Lex{51E10}
+61n10*Sgt_Lex{51E10}
+61n19*Slt_Lex{51E10}
+61n28*Sge_Lex{51E10}
+62n10*Sle_Lex{51E10}
+62n19*Sov_Lex{51E10}
+62n28*Int_Lex{51E10}
+63n10*Bra_Lex{51E10}
+63n19*Beq_Lex{51E10}
+63n28*Bne_Lex{51E10}
+64n10*Bgt_Lex{51E10}
+64n19*Blt_Lex{51E10}
+64n28*Bge_Lex{51E10}
+65n10*Ble_Lex{51E10}
+65n19*Bov_Lex{51E10}
+65n28*Bsr_Lex{51E10}
+66n10*Rts_Lex{51E10}
+66n19*Rint_Lex{51E10}
+66n29*Rfloat_Lex{51E10}
+67n10*Wint_Lex{51E10}
+67n20*Wfloat_Lex{51E10}
+67n32*Wstr_Lex{51E10}
+68n10*Wnl_Lex{51E10}
+68n19*Tsto_Lex{51E10}
+68n29*Halt_Lex{51E10}
+69n10*Lb_Lex{51E10}
+69n18*Gb_Lex{51E10}
+69n26*':'{51E10}
+70n10*','{51E10}
+70n15*'('{51E10}
+70n20*')'{51E10}
+72X5*Syntax_Error
+X 4 pseudo_code.ads
+49K9*Pseudo_Code 3|1w19 2r19 4|335e16
+55E9*Registre 3|29r19 4|56e59
+59E12*Banalise{55E9} 3|7r17 7r30 7r47 7r60
+73P9*Operande(72R9) 3|21r25
+77E9*Code_Operation 3|27r20 4|91e39
+94P9*Inst(93R9) 3|24r21
+99P9*Ligne(98R9) 3|18r26 19r26
+X 8 types_base.ads
+17K9*Types_Base 3|1w7 2r7 8|60e15
+26I9*Entier<integer> 3|35r19
+32F9*Reel<long_float> 3|38r20
+37A9*St_Chaine<string>
+38P9*Chaine(37A9) 3|32r20 44r22
+

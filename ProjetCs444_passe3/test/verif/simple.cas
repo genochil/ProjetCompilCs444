@@ -1,0 +1,7 @@
+program
+	y : integer;	
+begin
+	y:=3;
+	write("toto=",y);
+	new_line;
+end.

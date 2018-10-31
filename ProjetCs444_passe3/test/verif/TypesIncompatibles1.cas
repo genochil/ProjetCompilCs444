@@ -1,0 +1,6 @@
+program
+	i : integer;
+	erreur : boolean;
+begin
+	erreur := not(i);
+end.

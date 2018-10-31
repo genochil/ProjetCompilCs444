@@ -1,0 +1,164 @@
+V "GNAT Lib v7"
+A -g
+A -gnato
+P SS ZX
+
+RN
+RV NO_ALLOCATORS
+RV NO_ENUMERATION_MAPS
+RV NO_IO
+RV NO_LOCAL_ALLOCATORS
+RV NO_SECONDARY_STACK
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_DEFAULT_INITIALIZATION
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_IMPLICIT_LOOPS
+RV NO_ELABORATION_CODE
+RV SPARK_05
+
+U pseudo_code.table%b	pseudo_code-table.adb	5182b687 OO PK
+W ada%s			ada.ads			ada.ali
+W ada.characters%s	a-charac.ads		a-charac.ali
+W ada.characters.handling%s  a-chahan.adb	a-chahan.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W interfaces%s		interfac.ads		interfac.ali
+W pseudo_code%s		pseudo_code.adb		pseudo_code.ali
+W system%s		system.ads		system.ali
+W system.compare_array_unsigned_8%s  s-carun8.adb  s-carun8.ali
+W system.concat_2%s	s-conca2.adb		s-conca2.ali
+W system.img_enum_new%s	s-imenne.adb		s-imenne.ali
+W system.pool_global%s	s-pooglo.adb		s-pooglo.ali
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+W types_base%s		types_base.adb		types_base.ali  EA
+
+U pseudo_code.table%s	pseudo_code-table.ads	6cd79f5c BD EE OO PK
+W ada.tags%s		a-tags.adb		a-tags.ali
+W pseudo_code%s		pseudo_code.adb		pseudo_code.ali
+W system.finalization_masters%s  s-finmas.adb	s-finmas.ali
+W system.pool_global%s	s-pooglo.adb		s-pooglo.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+W system.standard_library%s  s-stalib.adb	s-stalib.ali
+W types_base%s		types_base.adb		types_base.ali
+
+D ada.ads		20170106103348 76789da1 ada%s
+D a-charac.ads		20070912115821 2d3ec45b ada.characters%s
+D a-chahan.ads		20140611123156 1601a50f ada.characters.handling%s
+D a-except.ads		20151016123252 291912d5 ada.exceptions%s
+D a-finali.ads		20151020095656 bf4f806b ada.finalization%s
+D a-ioexce.ads		20140225151544 e4a01f64 ada.io_exceptions%s
+D a-stream.ads		20141120112812 119b8fb3 ada.streams%s
+D a-tags.ads		20151016130316 01f5e3ef ada.tags%s
+D a-textio.ads		20140717063745 386df5d4 ada.text_io%s
+D a-unccon.ads		20170106103348 31484697 ada.unchecked_conversion%s
+D interfac.ads		20160502101001 5ab55268 interfaces%s
+D i-cstrea.ads		20140801100435 e53d8b8e interfaces.c_streams%s
+D pseudo_code.ads	20080421140621 2c476e81 pseudo_code%s
+D pseudo_code-table.ads	20080421140622 04e06013 pseudo_code.table%s
+D pseudo_code-table.adb	20080421140621 3f7e1781 pseudo_code.table%b
+D system.ads		20170510173650 4635ec04 system%s
+D s-carun8.ads		20140225151544 a903718d system.compare_array_unsigned_8%s
+D s-conca2.ads		20140225151544 02a0d7d0 system.concat_2%s
+D s-crtl.ads		20141120112812 0ebbdb71 system.crtl%s
+D s-exctab.ads		20140225151139 54135002 system.exception_table%s
+D s-ficobl.ads		20140718105747 078245e4 system.file_control_block%s
+D s-finmas.ads		20151016130316 7811a767 system.finalization_masters%s
+D s-finroo.ads		20120426095924 4ff27390 system.finalization_root%s
+D s-imenne.ads		20140225151139 614c06c0 system.img_enum_new%s
+D s-memory.ads		20160622104833 597d6634 system.memory%s
+D s-parame.ads		20140801093848 7e2a0d7f system.parameters%s
+D s-pooglo.ads		20151118103153 ede33ef8 system.pool_global%s
+D s-secsta.ads		20170112134946 9751b57e system.secondary_stack%s
+D s-soflin.ads		20151020124036 14e1eb6c system.soft_links%s
+D s-stache.ads		20140225151139 a37c21ec system.stack_checking%s
+D s-stalib.ads		20151112104907 09bd3940 system.standard_library%s
+D s-stalib.adb		20140225151139 f2fe2716 system.standard_library%b
+D s-stoele.ads		20140225151139 2dc34a04 system.storage_elements%s
+D s-stopoo.ads		20131010103753 b16154c2 system.storage_pools%s
+D s-traent.ads		20140730135025 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20160502101423 34867c83 system.unsigned_types%s
+D s-wchcon.ads		20140718092328 1b7d22d2 system.wch_con%s
+D types_base.ads	20080421140621 447091ce types_base%s
+X 1 ada.ads
+16K9*Ada 20e8 15|12r6 12r19 13r6 13r19
+X 2 a-charac.ads
+16K13*Characters 18e19 15|12r23 13r23
+X 3 a-chahan.ads
+36K24*Handling 159e28 15|12w34 13r34
+70V13*To_Lower{string} 15|51s21
+X 9 a-textio.ads
+49K13*Text_IO 471e16 15|12w10 13r10
+263U14*Put_Line 15|41s10
+X 13 pseudo_code.ads
+49K9*Pseudo_Code 335e16 14|14r17 46r5 15|18r14 149r5
+55E9*Registre 56e59 15|136r13 137r28
+63R9*St_Etiq 277e17 15|117r28
+64P9*Etiq(63R9) 14|33r61 36r64 15|26r14 99r61 104r64
+77E9*Code_Operation 91e39 14|39r25 15|127r42 140r13 142r33
+275p10*Nom{38|38P9} 15|118r27
+X 14 pseudo_code-table.ads
+14K29*Table 13|49k9 14|43E9 46l17 46e22 15|18b26 149l17 149t22
+18P9*St_Element_Table 19r37 30r38 33r36 36r39 44c9 15|69r20 94r38 99r36 104r39
+19P9*Element_Table(18P9) 24r32 15|27r19 28r18 33r19 48r32 49r29 114r11
+21U14*Chercher 21>24 22>24 23<24 24<24 15|45b14 92l8 92t16 116s7
+21a24 S{string} 15|45b24 51r31 54r46
+22b24 A_Creer{boolean} 15|46b24 67r13
+23b24 Present{boolean} 15|47b24 86m10
+24p24 E{19P9} 15|48b24 78m13 80m13 84m10
+30V13*Acces_Chaine{38|38P9} 30^27 15|94b13 97l8 97t20
+30p27 E(18P9) 15|94b27 96r14
+33V13*Acces_Etiq{13|64P9} 33^25 15|99b13 102l8 102t18 118s12
+33p25 E(18P9) 15|99b25 101r14
+36U14*Changer_Etiq 36^28 36>57 15|104b14 107l8 107t20 117s7
+36p28 E(18P9) 15|104b28 106r7
+36p57 I{13|64P9} 15|104b57 106r18
+39a4*Table_Codop(38|38P9) 15|131m7
+43R9 St_Cache_El_Table 44r40 15|23c9 29e17 70r24
+X 15 pseudo_code-table.adb
+21i4 Trace{natural} 40r26
+25p10*C{38|38P9} 57r66 59r40 73r46 96r20
+26p10*I{13|64P9} 101r20 106m13
+27p10*Gauche{14|19P9} 60r30 74m25
+28p10*Droit{14|19P9} 62r30 76m25
+31R9 Table_Etiq 34e17 36r8
+33p10*Racine{14|19P9} 56r17 72m18
+36r4 T{31R9} 56r15 72m16
+38U14 Tracer 38b14 38>22 38>50 43l8 43t14 54s7 88s13 90s13
+38i22 Niveau_Trace{positive} 40r10
+38a50 S{string} 41r45
+49p7 Pere{14|19P9} 55m7 58m10 71r16 73r37 74r16 76r16
+49p13 Cour{14|19P9} 56m7 57r14 57r57 58r18 59r31 60m13 60r21 62m13 62r21
+. 65r10 84r15
+49p19 Nouveau{14|19P9} 68m13 72r28 74r35 76r34 78r18
+50b7 Existe{boolean} 66m10 83m10 86r21 87r13
+51a7 M{string} 57r38 59r13 70r54 73r19
+112U14 Ranger_Nom 112b14 112>26 112<41 119l8 119t18 124s7 130s7
+112a26 S{string} 116r17 117r54
+112p41 C{38|38P9} 118m7
+113b7 Existe{boolean} 116m26
+114p7 E{14|19P9} 116m34 116r34 117r21 118r24
+121U14 Ranger_Nom_Registre 121b14 121>35 125l8 125t27 137s7
+121a35 S{string} 124r19
+122p7 C{38|38P9} 124m22 124r22
+127U14 Ranger_Nom_Codop 127b14 127>32 127>58 132l8 132t24 145s10
+127e32 Code{13|77E9} 131r20
+127a58 S{string} 130r19
+128p7 C{38|38P9} 130m22 130r22 131r29
+136e8 R{13|55E9} 137r44
+140e8 I{13|77E9} 142r55 145r28
+142a10 S{string} 145r31 145r34 145r47
+X 16 system.ads
+67M9*Address
+X 25 s-memory.ads
+53V13*Alloc{16|67M9} 103i<c,__gnat_malloc>22
+68U14*Free 104i<c,__gnat_free>22
+76V13*Realloc{16|67M9} 105i<c,__gnat_realloc>22
+X 32 s-stalib.adb
+93U14 Break_Start 94i<c,__gnat_break_start>22
+X 38 types_base.ads
+17K9*Types_Base 14|12w6 13r6 15|15w6 16r23 38|60e15
+37A9*St_Chaine<string>
+38P9*Chaine(37A9) 14|30r63 39r44 15|25r14 94r63 112r49 122r11 128r11
+42V13*Creation{38P9} 15|70s44 117s44
+47V13*Acces_String{string} 15|57s43 59s17 73s23
+

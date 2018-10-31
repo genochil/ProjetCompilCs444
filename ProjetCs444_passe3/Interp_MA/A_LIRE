@@ -1,0 +1,10 @@
+Ce repertoire contient les sources de la machine abstraite
+
+Pour compiler : 
+   Effectuer 'make' dans le repertoire Src.
+   Cela a pour resultat de placer :
+      - les fichiers .o et .ali dans le repertoire Obj
+      - les executables (en particulier 'ima') dans le repertoire Exec
+
+Les source Aflex et Ayacc de la machine abstraite sont dans Src_Aflex_Ayacc.
+

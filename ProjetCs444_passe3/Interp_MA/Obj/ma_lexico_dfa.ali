@@ -1,0 +1,47 @@
+V "GNAT Lib v7"
+A -g
+A -gnato
+P SS ZX
+
+RN
+RV NO_SECONDARY_STACK
+RV NO_OBSOLESCENT_FEATURES
+RV SPARK_05
+
+U ma_lexico_dfa%b	ma_lexico_dfa.adb	afdd9afa NE OO PK IU
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+
+U ma_lexico_dfa%s	ma_lexico_dfa.ads	a47f2bc3 EE NE OO PK IU
+
+D ma_lexico_dfa.ads	20080421140621 a47f2bc3 ma_lexico_dfa%s
+D ma_lexico_dfa.adb	20080421140621 0ba2b139 ma_lexico_dfa%b
+D system.ads		20170510173650 4635ec04 system%s
+D s-secsta.ads		20170112134946 9751b57e system.secondary_stack%s
+D s-stoele.ads		20140225151139 2dc34a04 system.storage_elements%s
+X 1 ma_lexico_dfa.ads
+1K9*ma_lexico_DFA 28l5 28e18 2|1b14 42l5 42t18
+2b1*aflex_debug{boolean}
+3i1*yytext_ptr{integer} 2|9r10 36m5
+8i1*YY_READ_BUF_SIZE{integer} 9r35
+9i1*YY_BUF_SIZE{integer} 11r53
+10A6*unbounded_character_array(character)<integer> 11r24
+11A9*ch_buf_type{10A6}<integer> 12r13
+12a1*yy_ch_buf{11A9} 2|10r13 11r25 37r21 38m5
+13i1*yy_cp{integer} 2|28r12 37r31 38r15 39r19
+13i8*yy_bp{integer} 2|28r20 36r19
+16e1*yy_hold_char{character} 2|37m5
+17i1*yy_c_buf_p{integer} 2|39m5
+19V10*YYText{string} 2|2b10 23t4
+20V10*YYLength{integer} 2|26b10 29l5 29t13
+21U11*YY_DO_BEFORE_ACTION 2|34b11 40l5 40t24
+23b1*yy_init{boolean}
+24i1*yy_start{integer}
+25I9*yy_state_type{integer} 26r27
+26i1*yy_last_accepting_state{25I9}
+27i1*yy_last_accepting_cpos{integer}
+X 2 ma_lexico_dfa.adb
+3i5 i{integer} 9m5 10r23 11r35 12m9 12r14
+4i5 str_loc{integer} 11r12 13m5 13r16 17r9 20r24
+5a5 buffer{string} 11m5 20r14
+6a5 EMPTY_STRING{string} 18r16
+

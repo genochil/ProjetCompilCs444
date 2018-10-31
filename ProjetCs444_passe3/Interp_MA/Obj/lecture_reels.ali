@@ -1,0 +1,93 @@
+V "GNAT Lib v7"
+A -g
+A -gnato
+P ZX
+
+RN
+RV NO_DIRECT_BOOLEAN_OPERATORS
+RV NO_EXCEPTION_HANDLERS
+RV NO_EXCEPTIONS
+RV NO_FLOATING_POINT
+RV NO_IO
+RV NO_STANDARD_STORAGE_POOLS
+RV SPARK_05
+
+U lecture_reels%b	lecture_reels.adb	c86e2b51 NE OO PK IU
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W interfaces%s		interfac.ads		interfac.ali
+W reel_es%s		reel_es.ads		reel_es.ali
+W system.img_real%s	s-imgrea.adb		s-imgrea.ali
+W system.val_real%s	s-valrea.adb		s-valrea.ali
+W text_io%s		text_io.ads		text_io.ali
+
+U lecture_reels%s	lecture_reels.ads	fc31a9f6 EE NE OO PK IU
+W types_base%s		types_base.adb		types_base.ali
+
+D ada.ads		20170106103348 76789da1 ada%s
+D a-except.ads		20151016123252 291912d5 ada.exceptions%s
+D a-ioexce.ads		20140225151544 e4a01f64 ada.io_exceptions%s
+D a-stream.ads		20141120112812 119b8fb3 ada.streams%s
+D a-tags.ads		20151016130316 01f5e3ef ada.tags%s
+D a-textio.ads		20140717063745 386df5d4 ada.text_io%s
+D a-tiflio.ads		20140717063513 56fbda09 ada.text_io.float_io%s
+D a-unccon.ads		20170106103348 31484697 ada.unchecked_conversion%s
+D interfac.ads		20160502101001 5ab55268 interfaces%s
+D i-cstrea.ads		20140801100435 e53d8b8e interfaces.c_streams%s
+D lecture_reels.ads	20080421140621 b8413838 lecture_reels%s
+D lecture_reels.adb	20080421140622 f207b751 lecture_reels%b
+D reel_es.ads		20080421140621 c7fe82f1 reel_es%s
+D system.ads		20170510173650 4635ec04 system%s
+D s-crtl.ads		20141120112812 0ebbdb71 system.crtl%s
+D s-exctab.ads		20140225151139 54135002 system.exception_table%s
+D s-ficobl.ads		20140718105747 078245e4 system.file_control_block%s
+D s-imgrea.ads		20090409150019 c7a851e2 system.img_real%s
+D s-parame.ads		20140801093848 7e2a0d7f system.parameters%s
+D s-soflin.ads		20151020124036 14e1eb6c system.soft_links%s
+D s-stache.ads		20140225151139 a37c21ec system.stack_checking%s
+D s-stalib.ads		20151112104907 09bd3940 system.standard_library%s
+D s-stoele.ads		20140225151139 2dc34a04 system.storage_elements%s
+D s-traent.ads		20140730135025 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20160502101423 34867c83 system.unsigned_types%s
+D s-valrea.ads		20150106102044 fe297711 system.val_real%s
+D s-wchcon.ads		20140718092328 1b7d22d2 system.wch_con%s
+D text_io.ads		20070406091342 45d626c9 text_io%s
+D types_base.ads	20080421140621 447091ce types_base%s
+X 6 a-textio.ads
+169U14*Skip_Line 12|37s9
+172V13*End_Of_Line{boolean} 12|35s10 48s10 68s17
+206U14*Get 12|39s9 51s9 69s9
+298X4*Data_Error 12|92r21 101r21 115r23 124r23 127r21 143r14 146r13
+X 7 a-tiflio.ads
+74U14*Get 12|140s9[13|17]
+X 11 lecture_reels.ads
+12K9*LECTURE_REELS 36l5 36e18 12|16b14 150l5 150t18
+14U13*lire_reel 14<23 12|20b13 148l7 148t16
+14f23 x{29|32F9} 12|20b23 140m37 141m9 141r38
+X 12 lecture_reels.adb
+18a3 S{string} 85m15 89m15 98m15 107m15 111m17 121m17 140r13
+22E10 Etat 22e45 26r16
+22n19 debut{22E10} 26r24 81r14 122r29
+22n26 apsigne{22E10} 86r27 94r14 113r29
+22n35 apchiffre{22E10} 90r27 99r27 103r14 138r19
+23E13 Chiffre{character} 87r18 96r18 105r18
+24b5 dansmantisse{boolean} 118r18 119m17
+25b5 avantpoint{boolean} 109r18 112m17 138r37
+26e5 etatcour{22E10} 80r12 86m15 90m15 99m15 113m17 122m17 138r8
+27e5 carcour{character} 36m9 39m13 49m9 51m13 59r13 68r33 69m13 79r11 82r16
+. 85r36 89r36 95r16 98r36 104r16 107r36 111r38 121r38
+28i5 indice_dernier{natural} 84m15 84r33 85r17 88m15 88r33 89r17 97m15 97r33
+. 98r17 106m15 106r33 107r17 110m17 110r35 111r19 120m17 120r35 121r19 140r20
+29i5 pos{positive} 140m40
+33U15 carsuiv1 33b15 41l9 41t17 60s9
+45U15 carsuiv2 45b15 53l9 53t17 130s7
+57U15 passer_espaces1 57b15 62l9 62t24 76s5
+66U15 passer_espaces2 66b15 71l9 71t24
+X 13 reel_es.ads
+17K9*Reel_ES[7|46] 12|13w15 14r15
+X 28 text_io.ads
+24K9*Text_IO=24:29 12|13w6 14r6
+X 29 types_base.ads
+17K9*Types_Base 11|9w6 10r6 29|60e15
+32F9*Reel<long_float> 11|14r31 12|20r31 141r14 141r26
+
