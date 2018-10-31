@@ -153,6 +153,9 @@ public class Verif {
 	}
 
 	private void verifier_Pour(Arbre a) throws ErreurVerif {
+		System.out.println("a : "+a.getFils1().getFils1().getNoeud());
+		System.out.println("a : "+a.getFils1().getFils2().getNoeud());
+		System.out.println("a : "+a.getFils1().getFils3().getNoeud());
 		verifier_PAS(a.getFils1());
 		verifier_LISTE_INST(a.getFils2());
 	}
