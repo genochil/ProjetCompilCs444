@@ -238,79 +238,105 @@ class Generation {
 	 */
 
 	public void coder_EXP(Arbre a, Registre rc) { // Champey & Clémentin
-		switch (a.getNoeud())
+		Operation operation;
+		
+		Noeud n = a.getNoeud();
+		// Si a est une feuille de l'arbre
+		if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
 		{
-		case Vide:
+			coder_EXP_feuille(a, rc, Operation.LOAD);
 			return;
-		case Chaine:
-			Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpChaine(a.getChaine()), Operande.opDirect(rc)));
-			return;
-		case Entier:
-			Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpEntier(a.getEntier()), Operande.opDirect(rc)));
-			return;
-		case Reel:
-			Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpReel(a.getReel()), Operande.opDirect(rc)));
-			return;
-		case Ident:
-			switch(a.getChaine().toLowerCase())
-			{
-			case "max_int":
-				Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpEntier(java.lang.Integer.MAX_VALUE), Operande.opDirect(rc)));
-				return;
-			case "true":
-				Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpEntier(1), Operande.opDirect(rc)));
-				return;
-			case "false":
-				Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpEntier(0), Operande.opDirect(rc)));
-				return;
-			default:
-				/*
-				 * A COMPLETER 
-				 */
-			}
-			return;
-		case Plus:
-		case Moins:
-		case Mult:
-		case DivReel:
-		case Reste:
-		case Quotient:
-		case Et:
-		case Ou:
-		case Egal:
-		case NonEgal:
-		case Sup:
-		case SupEgal:
-		case Inf:
-		case InfEgal:
-			
-			switch(a.getFils2().getNoeud())
-			{
-			case Chaine:
-			case Entier:
-			case Ident:
-			case Reel:
-			case Vide:
-				// a est une opération et l'opérande 2 et une feuille de l'arbre
-				
-				return;
-			default:
-				// a est une opération et les deux opérandes sont des expressions
-				
-				return;
-				
-			}
-			
-		case PlusUnaire:
-		case MoinsUnaire:
-		case Non:
-		case Conversion:
-			
-		default:
-			
-			return;
-			
 		}
+		
+		n = a.getFils2().getNoeud();
+		// Si a est une opération et que le fils gauche est une feuille de l'arbre
+		if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
+		{
+			coder_EXP(a.getFils1(), rc);
+			switch(a.getNoeud())
+			{
+			// Opérations arithmétiques
+			case Plus:
+				coder_EXP_feuille(a, rc, Operation.ADD);
+				break;
+			case Moins:
+				coder_EXP_feuille(a, rc, Operation.SUB);
+				break;
+			case Mult:
+				coder_EXP_feuille(a, rc, Operation.MUL);
+				break;
+			case DivReel:
+				coder_EXP_feuille(a, rc, Operation.DIV);
+				break;
+			case Reste:
+				coder_EXP_feuille(a, rc, Operation.MOD);
+				break;
+			case Quotient:
+				coder_EXP_feuille(a, rc, Operation.DIV);
+				break;
+			
+			// Opérations arithmétiques à un fils
+			case PlusUnaire:
+			case MoinsUnaire:
+			case Conversion:
+				
+			// Opérations logiquesà deux fils
+			case Et:
+			case Ou:
+			case Egal:
+			case NonEgal:
+			case Sup:
+			case SupEgal:
+			case Inf:
+			case InfEgal:
+				
+			// Opération logiques à un fils
+			case Non:
+			
+			default:
+				break;
+			}
+		}
+
 	}
 
+	public void coder_EXP_feuille(Arbre a, Registre rc, Operation operation)
+	{
+		switch (a.getNoeud())
+		{
+			case Vide:
+				return;
+			case Chaine:
+				Prog.ajouter(Inst.creation2(operation, Operande.creationOpChaine(a.getChaine()), Operande.opDirect(rc)));
+				return;
+			case Entier:
+				Prog.ajouter(Inst.creation2(operation, Operande.creationOpEntier(a.getEntier()), Operande.opDirect(rc)));
+				return;
+			case Reel:
+				Prog.ajouter(Inst.creation2(operation, Operande.creationOpReel(a.getReel()), Operande.opDirect(rc)));
+				return;
+			case Ident:
+				switch(a.getChaine().toLowerCase())
+				{
+					case "max_int":
+						Prog.ajouter(Inst.creation2(operation, Operande.creationOpEntier(java.lang.Integer.MAX_VALUE), Operande.opDirect(rc)));
+						return;
+					case "true":
+						Prog.ajouter(Inst.creation2(operation, Operande.creationOpEntier(1), Operande.opDirect(rc)));
+						return;
+					case "false":
+						Prog.ajouter(Inst.creation2(operation, Operande.creationOpEntier(0), Operande.opDirect(rc)));
+						return;
+					default:
+						/*
+						 * A COMPLETER 
+						 */
+						return;
+				}
+			default:
+				// cas ne pouvant pas être atteint
+				return;
+				
+		}
+	}
 }
