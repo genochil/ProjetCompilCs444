@@ -238,7 +238,79 @@ class Generation {
 	 */
 
 	public void coder_EXP(Arbre a, Registre rc) { // Champey & Clémentin
-
+		switch (a.getNoeud())
+		{
+		case Vide:
+			return;
+		case Chaine:
+			Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpChaine(a.getChaine()), Operande.opDirect(rc)));
+			return;
+		case Entier:
+			Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpEntier(a.getEntier()), Operande.opDirect(rc)));
+			return;
+		case Reel:
+			Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpReel(a.getReel()), Operande.opDirect(rc)));
+			return;
+		case Ident:
+			switch(a.getChaine().toLowerCase())
+			{
+			case "max_int":
+				Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpEntier(java.lang.Integer.MAX_VALUE), Operande.opDirect(rc)));
+				return;
+			case "true":
+				Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpEntier(1), Operande.opDirect(rc)));
+				return;
+			case "false":
+				Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpEntier(0), Operande.opDirect(rc)));
+				return;
+			default:
+				/*
+				 * A COMPLETER 
+				 */
+			}
+			return;
+		case Plus:
+		case Moins:
+		case Mult:
+		case DivReel:
+		case Reste:
+		case Quotient:
+		case Et:
+		case Ou:
+		case Egal:
+		case NonEgal:
+		case Sup:
+		case SupEgal:
+		case Inf:
+		case InfEgal:
+			
+			switch(a.getFils2().getNoeud())
+			{
+			case Chaine:
+			case Entier:
+			case Ident:
+			case Reel:
+			case Vide:
+				// a est une opération et l'opérande 2 et une feuille de l'arbre
+				
+				return;
+			default:
+				// a est une opération et les deux opérandes sont des expressions
+				
+				return;
+				
+			}
+			
+		case PlusUnaire:
+		case MoinsUnaire:
+		case Non:
+		case Conversion:
+			
+		default:
+			
+			return;
+			
+		}
 	}
 
 }
