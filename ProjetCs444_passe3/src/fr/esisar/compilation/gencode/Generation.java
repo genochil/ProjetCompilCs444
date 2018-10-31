@@ -238,7 +238,6 @@ class Generation {
 	 */
 
 	public void coder_EXP(Arbre a, Registre rc) { // Champey & Clémentin
-		Operation operation;
 		
 		Noeud n = a.getNoeud();
 		// Si a est une feuille de l'arbre
@@ -249,30 +248,30 @@ class Generation {
 		}
 		
 		n = a.getFils2().getNoeud();
-		// Si a est une opération et que le fils gauche est une feuille de l'arbre
+		// Si a est une opération et que le fils droit est une feuille de l'arbre
 		if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
 		{
 			coder_EXP(a.getFils1(), rc);
 			switch(a.getNoeud())
 			{
-			// Opérations arithmétiques
+			// Opérations arithmétiques à deux fils
 			case Plus:
-				coder_EXP_feuille(a, rc, Operation.ADD);
+				coder_EXP_feuille(a.getFils2(), rc, Operation.ADD);
 				break;
 			case Moins:
-				coder_EXP_feuille(a, rc, Operation.SUB);
+				coder_EXP_feuille(a.getFils2(), rc, Operation.SUB);
 				break;
 			case Mult:
-				coder_EXP_feuille(a, rc, Operation.MUL);
+				coder_EXP_feuille(a.getFils2(), rc, Operation.MUL);
 				break;
 			case DivReel:
-				coder_EXP_feuille(a, rc, Operation.DIV);
+				coder_EXP_feuille(a.getFils2(), rc, Operation.DIV);
 				break;
 			case Reste:
-				coder_EXP_feuille(a, rc, Operation.MOD);
+				coder_EXP_feuille(a.getFils2(), rc, Operation.MOD);
 				break;
 			case Quotient:
-				coder_EXP_feuille(a, rc, Operation.DIV);
+				coder_EXP_feuille(a.getFils2(), rc, Operation.DIV);
 				break;
 			
 			// Opérations arithmétiques à un fils
@@ -280,7 +279,7 @@ class Generation {
 			case MoinsUnaire:
 			case Conversion:
 				
-			// Opérations logiquesà deux fils
+			// Opérations logiques à deux fils
 			case Et:
 			case Ou:
 			case Egal:
@@ -290,7 +289,7 @@ class Generation {
 			case Inf:
 			case InfEgal:
 				
-			// Opération logiques à un fils
+			// Opérations logiques à un fils
 			case Non:
 			
 			default:
