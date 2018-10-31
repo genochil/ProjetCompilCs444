@@ -183,10 +183,29 @@ class Generation {
 		coder_LISTE_INST(a.getFils3());// On coder le corps du Else (qu'il soit vide ou non)
 		Prog.ajouter(fin);// On ecrit la fin de notre si via l'étiquette crée plus haut
 	}
-
+	/*Coder_Inst(Noeud_Tantque(C, I)) =
+		declare
+		E_Cond : Etiq := Nouvelle_Etiq;
+		E_Début : Etiq := Nouvelle_Etiq;
+		begin
+		Générer(BRA, E_Cond);
+		Générer_Etiq(E_Début);
+		Coder_Inst(I);
+		Générer_Etiq(E_Cond);
+		Coder_Cond(C, True, E_Début)
+		end
+		;*/
 	private void coder_TantQue(Arbre a) {
 		// TODO Auto-generated method stub
-
+		Etiq E_cond = Etiq.nouvelle("E_cond");
+		Etiq E_debut = Etiq.nouvelle("E_debut");
+		Prog.ajouter(Inst.creation1(Operation.BRA, Operande.creationOpEtiq(E_cond)));
+		Prog.ajouter(E_debut);
+		coder_INST(a.getFils2());
+		Prog.ajouter(E_cond);
+		coder_CMP_BNE(a.getFils1(),1,E_debut);
+		
+		
 	}
 
 	private void coder_Pour(Arbre a) {
@@ -197,6 +216,19 @@ class Generation {
 	private void coder_Affect(Arbre a) {
 		// TODO Auto-generated method stub
 
+	}
+	/*Fonction permettant de coder une condition 
+	 * Avec a l'arbre utilisé
+	 * Val la valeur attendue de la comparaison : 1 - True, 0 - False
+	 * etiq : l'etiquette sur laquelle le branchement est effectué
+	 * */
+	private void coder_CMP_BNE(Arbre a,int val, Etiq etiq)
+	{
+		coder_EXP(a,R0);
+		Inst.creation2(Operation.CMP, Operande.creationOpEntier(val), Operande.opDirect(R0));// on test si la condition
+		// est vrai ou fausse avec CMP
+		Inst.creation1(Operation.BNE, Operande.creationOpEtiq(etiq));// Si c'est NE alors on branch à l'étiquette
+		// not_equal ( on fait un saut)
 	}
 
 	/*
