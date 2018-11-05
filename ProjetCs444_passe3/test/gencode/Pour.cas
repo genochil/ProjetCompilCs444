@@ -1,0 +1,9 @@
+program
+	i : real;
+	j : 1..20;
+begin
+	for j:= j to 20 do 
+      		i:=2; 
+  	end ; 
+	
+end.

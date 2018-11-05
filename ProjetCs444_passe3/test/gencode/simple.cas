@@ -1,6 +1,10 @@
 program
+	i : integer;
+	j : integer;
 begin
-	write("toto");
-   new_line;
+j:=1;
+	while true do 
+      	i:=1;
+  	end; 
+	
 end.
-

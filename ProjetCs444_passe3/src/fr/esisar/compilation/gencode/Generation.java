@@ -25,7 +25,10 @@ class Generation {
 
 		Generation gen = new Generation();
 		gen.coder_LISTE_DECL(a.getFils1());
-		Prog.ajouter(Inst.creation1(Operation.ADDSP, Operande.creationOpEntier(1)));
+		int t;
+		if( (t=Variable.getTaille())!=0) {
+			Prog.ajouter(Inst.creation1(Operation.ADDSP, Operande.creationOpEntier(t)));
+		}
 		gen.coder_LISTE_INST(a.getFils2());
 
 		// Fin du programme
@@ -86,7 +89,7 @@ class Generation {
 
 	}
 
-	public void coder_INST(Arbre a) {// Couvi
+	public void coder_INST(Arbre a) {// Loic
 		switch (a.getNoeud()) {
 		case Ecriture:
 			Prog.ajouterComment("Ecriture, ligne :" + a.getNumLigne());
@@ -296,7 +299,7 @@ class Generation {
 		Operande op=coder_PLACE(a.getFils1());// Emplacement de la variable dans R0
 		coder_EXP(a.getFils2(), R1);// valeur de l'affect dans R1
 		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R0),
-				Operande.creationOpIndirect(op.getDeplacement(), Registre.GB)));
+				Operande.creationOpIndirect(Variable.get_var(a.getFils1().getChaine()), Registre.GB)));
 		
 		//verif array et interval
 
@@ -318,10 +321,10 @@ class Generation {
 	 * :l'etiquette sur laquelle le branchement est effectué
 	 */
 	private void coder_CMP_BNE(Arbre a, int val, Etiq etiq) {
-		coder_EXP(a, R0);
-		Inst.creation2(Operation.CMP, Operande.creationOpEntier(val), Operande.opDirect(R0));// on test si la condition
+		coder_EXP(a, R0);//dans R0, on met 1 si le boolean est vrai, 0 sinon
+		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(val), Operande.opDirect(R0)));// on test si la condition
 		// est vrai ou fausse avec CMP
-		Inst.creation1(Operation.BNE, Operande.creationOpEtiq(etiq));// Si c'est NE alors on branch à l'étiquette
+		Prog.ajouter(Inst.creation1(Operation.BNE, Operande.creationOpEtiq(etiq)));// Si c'est NE alors on branch à l'étiquette
 		// etiq ( on fait un saut)
 	}
 
