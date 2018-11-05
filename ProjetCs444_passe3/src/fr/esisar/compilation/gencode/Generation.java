@@ -25,7 +25,7 @@ class Generation {
 
 		Generation gen = new Generation();
 		gen.coder_LISTE_DECL(a.getFils1());
-		Prog.ajouter(Inst.creation1(Operation.ADDSP, Operande.creationOpEntier(1)));	
+		Prog.ajouter(Inst.creation1(Operation.ADDSP, Operande.creationOpEntier(1)));
 		gen.coder_LISTE_INST(a.getFils2());
 
 		// Fin du programme
@@ -74,7 +74,8 @@ class Generation {
 			return;
 		case ListeIdent:
 			coder_LISTE_IDF(a.getFils1());
-			Variable.add_var(a.getFils2());//Ajoute la variable dans notre HashMap, on add le duo : Nom_var, Emplacement
+			Variable.add_var(a.getFils2());// Ajoute la variable dans notre HashMap, on add le duo : Nom_var,
+											// Emplacement
 			return;
 		default:
 		}
@@ -155,15 +156,18 @@ class Generation {
 			}
 		}
 	}
-	/*Pas sur du tout !! */
+
+	/* Pas sur du tout !! */
 	private void coder_Lecture(Arbre a) {
 		// TODO Auto-generated method stub
 		/*
-		Quand on fait un read, on stocke la valeur dans un tableau ou un ident déclaré initialement
-		*/
-		Operande index =coder_PLACE(a.getFils1()); // Ecrire dans index la position en memoire(pile) de ident/tableau contenu dans
-										// a.getFils1, cad ce qui à été déclaré avant le read
-		
+		 * Quand on fait un read, on stocke la valeur dans un tableau ou un ident
+		 * déclaré initialement
+		 */
+		Operande index = coder_PLACE(a.getFils1()); // Ecrire dans index la position en memoire(pile) de ident/tableau
+													// contenu dans
+		// a.getFils1, cad ce qui à été déclaré avant le read
+
 		switch (a.getFils1().getDecor().getType().getNature()) {
 		case Interval:
 			Prog.ajouter(Inst.creation0(Operation.RINT));
@@ -172,13 +176,14 @@ class Generation {
 		case Real:
 			Prog.ajouter(Inst.creation0(Operation.RFLOAT));
 			break;
-			
+
 		default:
 			break;
 		}
-		Prog.ajouter(
-				Inst.creation2(Operation.STORE, Operande.opDirect(R1), Operande.creationOpIndexe(0, Registre.GB, index.getRegistre())));
-		// On store la valeur contenue dans R1 qui est la valeur renvoyé par RINT dans la pile à
+		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R1),
+				Operande.creationOpIndexe(0, Registre.GB, index.getRegistre())));
+		// On store la valeur contenue dans R1 qui est la valeur renvoyé par RINT dans
+		// la pile à
 		// l'emplacement déterminé par R0
 
 	}
@@ -247,19 +252,28 @@ class Generation {
 		boolean Increment = (a.getFils1().getNoeud().equals(Noeud.Increment));
 		Etiq boucle_for = Etiq.nouvelle("for");
 		Etiq fin_boucle_for = Etiq.nouvelle("fin_for");
-		int val_compteur = 0;
-		int val_fin_compteur = 0;
-		// Recupere valeur fin compteur : a.getFils1.getFils3
-		coder_EXP(a.getFils1().getFils3(), R0);
-
-		/* Ecrire dans val_fin_compteur la valeur dans R0 */
-
+		int val_compteur = Variable.get_var(a.getFils1().getFils1().getChaine());// emplacement en pile de l'ident de la
+																					// boucle
+		int val_fin_compteur = 0;//allouer emplacement dans la pile ?
 		// Recupere valeur debut compteur : a.getFils1.getFils2
 		coder_EXP(a.getFils1().getFils2(), R0); // on met la valeur du debut de compteur dans R0
+		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R0),
+				Operande.creationOpIndirect(val_compteur, Registre.GB)));// met la valeur de val_compteur dans la pile a
+																			// celle du fils2
+		// Recupere valeur fin compteur : a.getFils1.getFils3
+		coder_EXP(a.getFils1().getFils3(), R0);
+		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R0),
+				Operande.creationOpIndirect(val_fin_compteur, Registre.GB)));
+		// recupere valeur val_fin_compteur
+
+		// load val_compteur dans le registre R0
+		Prog.ajouter(
+				Inst.creation2(Operation.LOAD, Operande.creationOpIndirect(val_compteur, Registre.GB), Operande.opDirect(R0)));
 
 		Prog.ajouter(boucle_for);
 
-		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(val_fin_compteur), Operande.opDirect(R0)));
+		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpIndirect(val_fin_compteur, Registre.GB),
+				Operande.opDirect(R0)));
 		if (Increment) {
 			Prog.ajouter(Inst.creation1(Operation.BGE, Operande.creationOpEtiq(fin_boucle_for)));
 		} else {
@@ -279,9 +293,13 @@ class Generation {
 
 	private void coder_Affect(Arbre a) {
 		// TODO Auto-generated method stub
-		coder_PLACE(a.getFils1());//Emplacement de la variable dans R0
-		coder_EXP(a.getFils2(),R1);//valeur de l'affect dans R1
+		Operande op=coder_PLACE(a.getFils1());// Emplacement de la variable dans R0
+		coder_EXP(a.getFils2(), R1);// valeur de l'affect dans R1
+		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R0),
+				Operande.creationOpIndirect(op.getDeplacement(), Registre.GB)));
 		
+		//verif array et interval
+
 	}
 
 	/**
