@@ -10,10 +10,6 @@ import fr.esisar.compilation.verif.ErreurContext;
 
 class Generation {
 
-	// Déclaration registres révservé
-	private Registre R0 = Registre.R0;
-	private Registre R1 = Registre.R1;
-	private Registre R2 = Registre.R2;
 
 	/**
 	 * Méthode principale de génération de code. Génère du code pour l'arbre décoré
@@ -24,6 +20,7 @@ class Generation {
 		Prog.ajouterGrosComment("Programme généré par JCasc");
 
 		Generation gen = new Generation();
+		Memory.init();
 		gen.coder_LISTE_DECL(a.getFils1());
 		int t;
 		if( (t=Variable.getTaille())!=0) {
@@ -145,13 +142,13 @@ class Generation {
 						Inst.creation1(Operation.WSTR, Operande.creationOpChaine(parcours.getFils2().getChaine())));
 				break;
 			case Interval:
-				coder_EXP(parcours.getFils2(), R1);// D'après Diapo 19 passe 3 ,
+				coder_EXP(parcours.getFils2(), Registre.R1);// D'après Diapo 19 passe 3 ,
 				// On met dans R1 la valeur de l'identifiant correspondant au Noeud passé en
 				// paramètre, ici parcours.getFils2()
 				Prog.ajouter(Inst.creation0(Operation.WINT));
 				break;
 			case Real:
-				coder_EXP(parcours.getFils2(), R1);// D'après Diapo 19 passe 3, même chose qu'avec Interval
+				coder_EXP(parcours.getFils2(), Registre.R1);// D'après Diapo 19 passe 3, même chose qu'avec Interval
 				Prog.ajouter(Inst.creation0(Operation.WFLOAT));
 				break;
 			default:
@@ -174,7 +171,9 @@ class Generation {
 		switch (a.getFils1().getDecor().getType().getNature()) {
 		case Interval:
 			Prog.ajouter(Inst.creation0(Operation.RINT));
-			debord_Interval(a.getFils1(), R0); // verifie qu'il n'y a pas de debordement d'intervalle
+			Registre Rd=Memory.allocate();
+			debord_Interval(a.getFils1(), Rd);
+			Memory.liberate(Rd);// verifie qu'il n'y a pas de debordement d'intervalle
 			break;
 		case Real:
 			Prog.ajouter(Inst.creation0(Operation.RFLOAT));
@@ -183,7 +182,7 @@ class Generation {
 		default:
 			break;
 		}
-		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R1),
+		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(Registre.R1),
 				Operande.creationOpIndexe(0, Registre.GB, index.getRegistre())));
 		// On store la valeur contenue dans R1 qui est la valeur renvoyé par RINT dans
 		// la pile à
@@ -257,26 +256,25 @@ class Generation {
 		Etiq fin_boucle_for = Etiq.nouvelle("fin_for");
 		int val_compteur = Variable.get_var(a.getFils1().getFils1().getChaine());// emplacement en pile de l'ident de la
 																					// boucle
-		int val_fin_compteur = 0;//allouer emplacement dans la pile ?
+		int val_fin_compteur =0;
 		// Recupere valeur debut compteur : a.getFils1.getFils2
-		coder_EXP(a.getFils1().getFils2(), R0); // on met la valeur du debut de compteur dans R0
-		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R0),
+		Registre R_comp=Memory.allocate();
+		coder_EXP(a.getFils1().getFils2(), R_comp); // on met la valeur du debut de compteur dans R0
+		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R_comp),
 				Operande.creationOpIndirect(val_compteur, Registre.GB)));// met la valeur de val_compteur dans la pile a
 																			// celle du fils2
 		// Recupere valeur fin compteur : a.getFils1.getFils3
-		coder_EXP(a.getFils1().getFils3(), R0);
-		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R0),
-				Operande.creationOpIndirect(val_fin_compteur, Registre.GB)));
-		// recupere valeur val_fin_compteur
-
+		Registre R_fin_comp=Memory.allocate();
+		coder_EXP(a.getFils1().getFils3(), R_fin_comp);
+		// recupere valeur val_fin_compteur		
 		// load val_compteur dans le registre R0
 		Prog.ajouter(
-				Inst.creation2(Operation.LOAD, Operande.creationOpIndirect(val_compteur, Registre.GB), Operande.opDirect(R0)));
+				Inst.creation2(Operation.LOAD, Operande.creationOpIndirect(val_compteur, Registre.GB), Operande.opDirect(R_comp)));
 
 		Prog.ajouter(boucle_for);
 
-		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpIndirect(val_fin_compteur, Registre.GB),
-				Operande.opDirect(R0)));
+		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(R_comp),
+				Operande.opDirect(R_fin_comp)));
 		if (Increment) {
 			Prog.ajouter(Inst.creation1(Operation.BGE, Operande.creationOpEtiq(fin_boucle_for)));
 		} else {
@@ -287,19 +285,25 @@ class Generation {
 
 		// On incremente ou décremente la valeur du registre
 		if (Increment) {
-			Prog.ajouter(Inst.creation2(Operation.ADD, Operande.creationOpEntier(1), Operande.opDirect(R0)));
+			Prog.ajouter(Inst.creation2(Operation.ADD, Operande.creationOpEntier(1), Operande.opDirect(R_comp)));
 		} else {
-			Prog.ajouter(Inst.creation2(Operation.SUB, Operande.creationOpEntier(1), Operande.opDirect(R0)));
+			Prog.ajouter(Inst.creation2(Operation.SUB, Operande.creationOpEntier(1), Operande.opDirect(R_comp)));
 		}
 		Prog.ajouter(Inst.creation1(Operation.BRA, Operande.creationOpEtiq(boucle_for)));
+		
+		Memory.liberate(R_fin_comp);
+		Memory.liberate(R_comp);
 	}
 
 	private void coder_Affect(Arbre a) {
 		// TODO Auto-generated method stub
-		Operande op=coder_PLACE(a.getFils1());// Emplacement de la variable dans R0
-		coder_EXP(a.getFils2(), R1);// valeur de l'affect dans R1
-		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R0),
+		coder_PLACE(a.getFils1());
+		Registre Rd=Memory.allocate();
+		coder_EXP(a.getFils2(), Rd);// valeur de l'affect dans R1
+		
+		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(Rd),
 				Operande.creationOpIndirect(Variable.get_var(a.getFils1().getChaine()), Registre.GB)));
+		Memory.liberate(Rd);
 		
 		//verif array et interval
 
@@ -321,11 +325,14 @@ class Generation {
 	 * :l'etiquette sur laquelle le branchement est effectué
 	 */
 	private void coder_CMP_BNE(Arbre a, int val, Etiq etiq) {
-		coder_EXP(a, R0);//dans R0, on met 1 si le boolean est vrai, 0 sinon
-		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(val), Operande.opDirect(R0)));// on test si la condition
+		Registre Rd=Memory.allocate();
+		coder_EXP(a, Rd);//dans R0, on met 1 si le boolean est vrai, 0 sinon
+		Prog.ajouterComment("Registre utilisé : "+Rd.name());
+		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(val), Operande.opDirect(Rd)));// on test si la condition
 		// est vrai ou fausse avec CMP
 		Prog.ajouter(Inst.creation1(Operation.BNE, Operande.creationOpEtiq(etiq)));// Si c'est NE alors on branch à l'étiquette
 		// etiq ( on fait un saut)
+		Memory.liberate(Rd);
 	}
 
 }

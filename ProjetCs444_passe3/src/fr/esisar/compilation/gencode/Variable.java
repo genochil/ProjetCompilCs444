@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.esisar.compilation.global.src.Arbre;
+import fr.esisar.compilation.global.src3.Inst;
+import fr.esisar.compilation.global.src3.Operande;
+import fr.esisar.compilation.global.src3.Operation;
+import fr.esisar.compilation.global.src3.Prog;
 
 public class Variable {
 
@@ -27,6 +31,13 @@ public class Variable {
 		default:
 			break;
 		}
+	}
+	
+	public static int add_new_var()
+	{
+		taille++;
+		Prog.ajouter(Inst.creation1(Operation.ADDSP, Operande.creationOpEntier(1)));
+		return taille;
 	}
 
 	// renvoie la position de la variable : GB + X
