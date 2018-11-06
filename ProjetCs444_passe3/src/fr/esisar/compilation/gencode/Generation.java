@@ -293,6 +293,7 @@ class Generation {
 		
 		Memory.liberate(R_fin_comp);
 		Memory.liberate(R_comp);
+		
 	}
 
 	private void coder_Affect(Arbre a) {

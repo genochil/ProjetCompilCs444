@@ -46,7 +46,17 @@ public class Memory {
 		Reg.replace(r, 0, 1);
 		Prog.ajouterComment("Registre libéré : " + r);
 	}
-
+	public static int Nb_Reg_Free()
+	{
+		int nb=0;
+		for (Map.Entry<Registre, Integer> entry : Reg.entrySet()) {
+			if (entry.getValue() == 1) {
+				nb++;
+			}
+		}
+		return nb;
+		
+	}
 	public static int allocate_Temp() {
 		return (Variable.add_new_var());
 
