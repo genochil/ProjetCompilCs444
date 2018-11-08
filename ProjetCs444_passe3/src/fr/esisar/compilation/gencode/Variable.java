@@ -37,6 +37,8 @@ public class Variable {
 	{
 		taille++;
 		Prog.ajouter(Inst.creation1(Operation.ADDSP, Operande.creationOpEntier(1)));
+		Prog.ajouter(Inst.creation1(Operation.TSTO, Operande.creationOpEntier(taille)));
+		//Prog.ajouter(Inst.creation1(Operation.BOV, Operande.creationOpEtiq())));
 		return taille;
 	}
 
