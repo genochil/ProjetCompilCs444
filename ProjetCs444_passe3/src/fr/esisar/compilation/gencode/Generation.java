@@ -21,15 +21,20 @@ class Generation {
 
 		Generation gen = new Generation();
 		Memory.init();
+		Etiq etiq=Etiq.nouvelle("Debordement");
 		gen.coder_LISTE_DECL(a.getFils1());
-		int t;
-		if( (t=Variable.getTaille())!=0) {
-			Prog.ajouter(Inst.creation1(Operation.ADDSP, Operande.creationOpEntier(t)));
+		int temp=Variable.getTaille();
+		Prog.ajouter(Inst.creation1(Operation.TSTO, Operande.creationOpEntier(temp)));
+		Prog.ajouter(Inst.creation1(Operation.BOV, Operande.creationOpEtiq(etiq)));
+		if(temp!=0) {
+			Prog.ajouter(Inst.creation1(Operation.ADDSP, Operande.creationOpEntier(temp)));
 		}
 		gen.coder_LISTE_INST(a.getFils2());
 
 		// Fin du programme
 		// L'instruction "HALT"
+		
+		Prog.ajouter(etiq);
 		Inst inst = Inst.creation0(Operation.HALT);
 		// On ajoute l'instruction à la fin du programme
 		Prog.ajouter(inst);
@@ -81,8 +86,8 @@ class Generation {
 		}
 	}
 
-	public Operande coder_PLACE(Arbre a) {
-		return Operande.creationOpEntier(15);// Couvi, a faire en premier
+	public Operande coder_PLACE(Arbre a) { // Couvi, a faire en premier
+		return Operande.creationOpEntier(15);
 
 	}
 
@@ -257,6 +262,7 @@ class Generation {
 		int val_compteur = Variable.get_var(a.getFils1().getFils1().getChaine());// emplacement en pile de l'ident de la
 																					// boucle
 		int val_fin_compteur =0;
+		int temp=Variable.add_new_var();
 		// Recupere valeur debut compteur : a.getFils1.getFils2
 		Registre R_comp=Memory.allocate();
 		coder_EXP(a.getFils1().getFils2(), R_comp); // on met la valeur du debut de compteur dans R0
@@ -301,12 +307,24 @@ class Generation {
 		coder_PLACE(a.getFils1());
 		Registre Rd=Memory.allocate();
 		coder_EXP(a.getFils2(), Rd);// valeur de l'affect dans R1
+		NatureType affect_nat=a.getFils2().getDecor().getType().getNature();
+		
+		if(affect_nat.equals(NatureType.Array))
+		{
+			
+		}
+		else if(affect_nat.equals(NatureType.Interval))
+		{
+			Registre Rc=Memory.allocate();
+			debord_Interval(a.getFils2(),Rc);
+			Memory.liberate(Rc);
+		}
 		
 		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(Rd),
 				Operande.creationOpIndirect(Variable.get_var(a.getFils1().getChaine()), Registre.GB)));
 		Memory.liberate(Rd);
 		
-		//verif array et interval
+		
 
 	}
 

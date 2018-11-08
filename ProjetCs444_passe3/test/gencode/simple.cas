@@ -1,5 +1,6 @@
 program
 	i : real;
+	 T : array[1..5] of integer ; -- Ok
 	j : 1..20;
 begin
 	for j:= j to 20 do 
