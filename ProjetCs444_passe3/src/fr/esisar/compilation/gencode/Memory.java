@@ -11,9 +11,9 @@ public class Memory {
 	private static HashMap<Registre, Integer> Reg = new HashMap<Registre, Integer>();
 
 	public static void init() {
-		Reg.put(Registre.R0, 0);
+		Reg.put(Registre.R0, 0);//reserve focntion perso
 		Reg.put(Registre.R1, 0);// reservé pour lire et ecrire
-		Reg.put(Registre.R2, 0);
+		Reg.put(Registre.R2, 0);//Reserve focntion perso
 		Reg.put(Registre.R3, 1);
 		Reg.put(Registre.R4, 1);
 		Reg.put(Registre.R5, 1);
