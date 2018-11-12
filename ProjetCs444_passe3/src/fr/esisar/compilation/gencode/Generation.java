@@ -87,8 +87,13 @@ class Generation {
 		}
 	}
 
-	public Operande coder_PLACE(Arbre a,Registre rd) { // Couvi, a faire en premier
-		return Operande.creationOpEntier(15);
+	public void coder_PLACE(Arbre a,Registre rd) { // Couvi, a faire en premier
+		switch (a.getNoeud()) {
+	    case Ident: //cas identificateur
+	      Prog.ajouter(Inst.creation2(Operation.LOAD, 
+	                                  Operande.creationOpEntier(Variable.get_var(a.getChaine())), 
+	                                  Operande.opDirect(rd)));
+		}
 
 	}
 
@@ -199,12 +204,14 @@ class Generation {
 	 * Fonction de verification des bornes de l'interval
 	 */
 	private void debord_Interval(Arbre a, Registre rd) {
+		Prog.ajouterComment("Debut Verif Debordement Interval, ligne :" + a.getNumLigne());
 		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(a.getDecor().getType().getBorneSup()),
 				Operande.opDirect(rd)));
 		Prog.ajouter(Inst.creation1(Operation.BGT, Operande.creationOpEtiq(Etiq.lEtiq("debordement"))));
 		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(a.getDecor().getType().getBorneInf()),
 				Operande.opDirect(rd)));
 		Prog.ajouter(Inst.creation1(Operation.BLT, Operande.creationOpEtiq(Etiq.lEtiq("debordement"))));
+		Prog.ajouterComment("Fin Verif Debordement Interval, ligne :" + a.getNumLigne());
 	}
 
 	// fait
@@ -311,7 +318,7 @@ class Generation {
 	private void coder_Affect(Arbre a) {
 		// TODO Auto-generated method stub
 		Registre Rc=Memory.allocate();
-		coder_PLACE(a.getFils1(),Rd);
+		coder_PLACE(a.getFils1(),Rc);
 		Registre Rd = Memory.allocate();
 		coder_EXP(a.getFils2(), Rd);// valeur de l'affect dans R1
 		NatureType affect_nat = a.getFils2().getDecor().getType().getNature();
@@ -324,7 +331,7 @@ class Generation {
 		}
 
 		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(Rd),
-				Operande.creationOpIndirect(Variable.get_var(a.getFils1().getChaine()), Registre.GB)));
+				Operande.creationOpIndexe(0, Registre.GB, Rc)));
 		Memory.liberate(Rd);
 		Memory.liberate(Rc);
 	}
@@ -341,7 +348,9 @@ class Generation {
 		// Si a est une feuille de l'arbre
 		if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
 		{
+			Prog.ajouterComment("Debut LOAD EXP, ligne :" + a.getNumLigne());
 			coder_EXP_feuille(a, rc, Operation.LOAD);
+			Prog.ajouterComment("Fin LOAD EXP, ligne :" + a.getNumLigne());
 			return;
 		}
 		
@@ -397,7 +406,6 @@ class Generation {
 
 	}
 
-<<<<<<< HEAD
 	/**
 	 * coder_CMP_BNE : Fonction permettant de coder une condition Avec a l'arbre
 	 * utilisé Val la valeur attendue de la comparaison : 1 - True, 0 - False etiq
@@ -443,7 +451,7 @@ class Generation {
 			return 1;
 		}
 		
-=======
+	}
 	public void coder_EXP_feuille(Arbre a, Registre rc, Operation operation)
 	{
 		switch (a.getNoeud())
@@ -460,6 +468,7 @@ class Generation {
 				Prog.ajouter(Inst.creation2(operation, Operande.creationOpReel(a.getReel()), Operande.opDirect(rc)));
 				return;
 			case Ident:
+				Prog.ajouterComment("chaine :"+a.getChaine().toLowerCase());
 				switch(a.getChaine().toLowerCase())
 				{
 					case "max_int":
@@ -482,6 +491,6 @@ class Generation {
 				return;
 				
 		}
->>>>>>> champey
+
 	}
 }
