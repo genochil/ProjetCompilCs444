@@ -336,9 +336,68 @@ class Generation {
 	 */
 
 	public void coder_EXP(Arbre a, Registre rc) { // Champey & Clémentin
+		
+		Noeud n = a.getNoeud();
+		// Si a est une feuille de l'arbre
+		if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
+		{
+			coder_EXP_feuille(a, rc, Operation.LOAD);
+			return;
+		}
+		
+		n = a.getFils2().getNoeud();
+		// Si a est une opération et que le fils droit est une feuille de l'arbre
+		if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
+		{
+			coder_EXP(a.getFils1(), rc);
+			switch(a.getNoeud())
+			{
+			// Opérations arithmétiques à deux fils
+			case Plus:
+				coder_EXP_feuille(a.getFils2(), rc, Operation.ADD);
+				break;
+			case Moins:
+				coder_EXP_feuille(a.getFils2(), rc, Operation.SUB);
+				break;
+			case Mult:
+				coder_EXP_feuille(a.getFils2(), rc, Operation.MUL);
+				break;
+			case DivReel:
+				coder_EXP_feuille(a.getFils2(), rc, Operation.DIV);
+				break;
+			case Reste:
+				coder_EXP_feuille(a.getFils2(), rc, Operation.MOD);
+				break;
+			case Quotient:
+				coder_EXP_feuille(a.getFils2(), rc, Operation.DIV);
+				break;
+			
+			// Opérations arithmétiques à un fils
+			case PlusUnaire:
+			case MoinsUnaire:
+			case Conversion:
+				
+			// Opérations logiques à deux fils
+			case Et:
+			case Ou:
+			case Egal:
+			case NonEgal:
+			case Sup:
+			case SupEgal:
+			case Inf:
+			case InfEgal:
+				
+			// Opérations logiques à un fils
+			case Non:
+			
+			default:
+				break;
+			}
+		}
 
 	}
 
+<<<<<<< HEAD
 	/**
 	 * coder_CMP_BNE : Fonction permettant de coder une condition Avec a l'arbre
 	 * utilisé Val la valeur attendue de la comparaison : 1 - True, 0 - False etiq
@@ -384,5 +443,45 @@ class Generation {
 			return 1;
 		}
 		
+=======
+	public void coder_EXP_feuille(Arbre a, Registre rc, Operation operation)
+	{
+		switch (a.getNoeud())
+		{
+			case Vide:
+				return;
+			case Chaine:
+				Prog.ajouter(Inst.creation2(operation, Operande.creationOpChaine(a.getChaine()), Operande.opDirect(rc)));
+				return;
+			case Entier:
+				Prog.ajouter(Inst.creation2(operation, Operande.creationOpEntier(a.getEntier()), Operande.opDirect(rc)));
+				return;
+			case Reel:
+				Prog.ajouter(Inst.creation2(operation, Operande.creationOpReel(a.getReel()), Operande.opDirect(rc)));
+				return;
+			case Ident:
+				switch(a.getChaine().toLowerCase())
+				{
+					case "max_int":
+						Prog.ajouter(Inst.creation2(operation, Operande.creationOpEntier(java.lang.Integer.MAX_VALUE), Operande.opDirect(rc)));
+						return;
+					case "true":
+						Prog.ajouter(Inst.creation2(operation, Operande.creationOpEntier(1), Operande.opDirect(rc)));
+						return;
+					case "false":
+						Prog.ajouter(Inst.creation2(operation, Operande.creationOpEntier(0), Operande.opDirect(rc)));
+						return;
+					default:
+						/*
+						 * A COMPLETER 
+						 */
+						return;
+				}
+			default:
+				// cas ne pouvant pas être atteint
+				return;
+				
+		}
+>>>>>>> champey
 	}
 }
