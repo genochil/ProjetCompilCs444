@@ -1,5 +1,7 @@
 package fr.esisar.compilation.gencode;
 
+import java.lang.management.MemoryType;
+
 import fr.esisar.compilation.global.src.*;
 import fr.esisar.compilation.global.src3.*;
 import fr.esisar.compilation.verif.ErreurContext;
@@ -85,7 +87,7 @@ class Generation {
 		}
 	}
 
-	public Operande coder_PLACE(Arbre a) { // Couvi, a faire en premier
+	public Operande coder_PLACE(Arbre a,Registre rd) { // Couvi, a faire en premier
 		return Operande.creationOpEntier(15);
 
 	}
@@ -168,7 +170,8 @@ class Generation {
 		 * Quand on fait un read, on stocke la valeur dans un tableau ou un ident
 		 * déclaré initialement
 		 */
-		Operande index = coder_PLACE(a.getFils1()); // Ecrire dans index la position en memoire(pile) de ident/tableau
+		Registre Rd=Memory.allocate();
+		coder_PLACE(a.getFils1(),Rd); // Ecrire dans index la position en memoire(pile) de ident/tableau
 													// contenu dans
 		// a.getFils1, cad ce qui à été déclaré avant le read
 
@@ -185,7 +188,7 @@ class Generation {
 			break;
 		}
 		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(Registre.R1),
-				Operande.creationOpIndexe(0, Registre.GB, index.getRegistre())));
+				Operande.creationOpIndexe(0, Registre.GB,Rd)));
 		// On store la valeur contenue dans R1 qui est la valeur renvoyé par RINT dans
 		// la pile à
 		// l'emplacement déterminé par R0
@@ -303,12 +306,12 @@ class Generation {
 
 		Memory.liberate(R_fin_comp);
 		Memory.liberate(R_comp);
-
 	}
 
 	private void coder_Affect(Arbre a) {
 		// TODO Auto-generated method stub
-		coder_PLACE(a.getFils1());
+		Registre Rc=Memory.allocate();
+		coder_PLACE(a.getFils1(),Rd);
 		Registre Rd = Memory.allocate();
 		coder_EXP(a.getFils2(), Rd);// valeur de l'affect dans R1
 		NatureType affect_nat = a.getFils2().getDecor().getType().getNature();
@@ -323,7 +326,7 @@ class Generation {
 		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(Rd),
 				Operande.creationOpIndirect(Variable.get_var(a.getFils1().getChaine()), Registre.GB)));
 		Memory.liberate(Rd);
-
+		Memory.liberate(Rc);
 	}
 
 	/**
