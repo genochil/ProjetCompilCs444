@@ -43,7 +43,7 @@ public class Variable {
 	{
 		Prog.ajouterComment("Debut allocation Pile ");
 		taille++;
-		Etiq etiq = Etiq.lEtiq("debordement");
+		Etiq etiq = Etiq.lEtiq("debordement.1");
 		Prog.ajouter(Inst.creation1(Operation.TSTO, Operande.creationOpEntier(taille)));
 		Prog.ajouter(Inst.creation1(Operation.BOV, Operande.creationOpEtiq(etiq)));
 		Prog.ajouter(Inst.creation1(Operation.ADDSP, Operande.creationOpEntier(1)));

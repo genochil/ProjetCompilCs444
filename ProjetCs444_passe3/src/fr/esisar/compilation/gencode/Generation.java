@@ -207,10 +207,10 @@ class Generation {
 		Prog.ajouterComment("Debut Verif Debordement Interval, ligne :" + a.getNumLigne());
 		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(a.getDecor().getType().getBorneSup()),
 				Operande.opDirect(rd)));
-		Prog.ajouter(Inst.creation1(Operation.BGT, Operande.creationOpEtiq(Etiq.lEtiq("debordement"))));
+		Prog.ajouter(Inst.creation1(Operation.BGT, Operande.creationOpEtiq(Etiq.lEtiq("debordement.1"))));
 		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(a.getDecor().getType().getBorneInf()),
 				Operande.opDirect(rd)));
-		Prog.ajouter(Inst.creation1(Operation.BLT, Operande.creationOpEtiq(Etiq.lEtiq("debordement"))));
+		Prog.ajouter(Inst.creation1(Operation.BLT, Operande.creationOpEtiq(Etiq.lEtiq("debordement.1"))));
 		Prog.ajouterComment("Fin Verif Debordement Interval, ligne :" + a.getNumLigne());
 	}
 
@@ -481,9 +481,7 @@ class Generation {
 						Prog.ajouter(Inst.creation2(operation, Operande.creationOpEntier(0), Operande.opDirect(rc)));
 						return;
 					default:
-						/*
-						 * A COMPLETER 
-						 */
+						
 						return;
 				}
 			default:
