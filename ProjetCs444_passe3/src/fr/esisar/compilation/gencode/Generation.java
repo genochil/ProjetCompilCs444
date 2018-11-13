@@ -1,5 +1,7 @@
 package fr.esisar.compilation.gencode;
 
+import com.sun.org.apache.xpath.internal.operations.Variable;
+
 import fr.esisar.compilation.global.src.*;
 import fr.esisar.compilation.global.src3.*;
 import fr.esisar.compilation.verif.ErreurContext;
@@ -359,9 +361,7 @@ class Generation {
 						Prog.ajouter(Inst.creation2(operation, Operande.creationOpEntier(0), Operande.opDirect(rc)));
 						return;
 					default:
-						/*
-						 * A COMPLETER 
-						 */
+						Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpIndirect(Variable.get_var(a.getChaine().toLowerCase()), Registre.GB), Operande.opDirect(rc)));	
 						return;
 				}
 			default:
