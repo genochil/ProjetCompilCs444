@@ -3,6 +3,6 @@ program
 	y: integer;
 begin
 	y:= 2 + 1;
-	i := max_int;
+	i := max_int - 2;
 	write("i=",i);
 end.

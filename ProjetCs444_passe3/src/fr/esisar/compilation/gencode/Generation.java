@@ -481,7 +481,7 @@ class Generation {
 						Prog.ajouter(Inst.creation2(operation, Operande.creationOpEntier(0), Operande.opDirect(rc)));
 						return;
 					default:
-						
+						Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpIndirect(Variable.get_var(a.getChaine().toLowerCase()), Registre.GB), Operande.opDirect(rc)));
 						return;
 				}
 			default:
