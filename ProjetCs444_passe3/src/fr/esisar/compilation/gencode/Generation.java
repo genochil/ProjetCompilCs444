@@ -276,7 +276,12 @@ class Generation {
 			
 			// Opérations arithmétiques à un fils
 			case PlusUnaire:
+				coder_EXP(a.getFils1(), rc);
+				break;
 			case MoinsUnaire:
+				coder_EXP(a.getFils1(), rc);
+				Prog.ajouter(Inst.creation2(Operation.OPP, Operande.opDirect(rc), Operande.opDirect(rc)));
+				break;
 			case Conversion:
 				
 			// Opérations logiques à deux fils
