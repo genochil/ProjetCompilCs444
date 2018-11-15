@@ -87,15 +87,31 @@ class Generation {
 		}
 	}
 
-	public void coder_PLACE(Arbre a,Registre rd) { // Couvi, a faire en premier
-		switch (a.getNoeud()) {
-	    case Ident: //cas identificateur
-	      Prog.ajouter(Inst.creation2(Operation.LOAD, 
-	                                  Operande.creationOpEntier(Variable.get_var(a.getChaine())), 
-	                                  Operande.opDirect(rd)));
-		}
-
-	}
+	public Operande coder_PLACE(Arbre a,Registre rd) { // Couvi, a faire en premier
+        if(a.getNoeud()== Noeud.Ident )
+        {
+            Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpEntier(Variable.get_var(a.getChaine().toLowerCase())),Operande.opDirect(rd)));
+        }
+        else
+        {
+            Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpEntier(Variable.get_var(a.getChaine().toLowerCase())),Operande.opDirect(rd)));
+            Registre rb;
+            if((rb=Memory.allocate())!= Registre.GB ) 
+            {
+                coder_EXP(a.getFils2(),rb);
+                debord_Interval(a,rb);
+                Prog.ajouter(Inst.creation2(Operation.SUB, Operande.creationOpEntier(a.getDecor().getType().getIndice().getBorneInf()), Operande.opDirect(rb)));
+                Prog.ajouter(Inst.creation2(Operation.ADD,  Operande.opDirect(rb),  Operande.opDirect(rd)));
+                Memory.liberate(rb);;
+            }
+            else
+            {
+                System.out.println("Erreur coder place : tout registre utilisé");
+            }
+            
+        }
+    return Operande.opDirect(rd);    
+    }
 
 	public void coder_INST(Arbre a) {// Loic
 		switch (a.getNoeud()) {
