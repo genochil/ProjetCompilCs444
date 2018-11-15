@@ -237,13 +237,16 @@ class Generation {
 	 * Rc est alloué. procedure Coder_Exp (A : Arbre; Rc : Registre)
 	 */
 
+	
 	public void coder_EXP(Arbre a, Registre rc) { // Champey & Clémentin
 		
 		Noeud n = a.getNoeud();
 		// Si a est une feuille de l'arbre
 		if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
 		{
+			Prog.ajouterComment("LOAD, ligne :" + a.getNumLigne());
 			coder_EXP_feuille(a, rc, Operation.LOAD);
+			Prog.ajouterComment("fin LOAD, ligne :" + a.getNumLigne());
 			return;
 		}
 		
@@ -256,37 +259,61 @@ class Generation {
 			{
 			// Opérations arithmétiques à deux fils
 			case Plus:
+				Prog.ajouterComment("PLUS, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.ADD);
+				Prog.ajouterComment("fin PLUS, ligne :" + a.getNumLigne());
 				break;
 			case Moins:
+				Prog.ajouterComment("MOINS, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.SUB);
+				Prog.ajouterComment("fin MOINS, ligne :" + a.getNumLigne());
 				break;
 			case Mult:
+				Prog.ajouterComment("MULT, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.MUL);
+				Prog.ajouterComment("fin MULT, ligne :" + a.getNumLigne());
 				break;
 			case DivReel:
+				Prog.ajouterComment("DIVREEL, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.DIV);
+				Prog.ajouterComment("fin DIVREEL, ligne :" + a.getNumLigne());
 				break;
 			case Reste:
+				Prog.ajouterComment("RESTE, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.MOD);
+				Prog.ajouterComment("fin RESTE, ligne :" + a.getNumLigne());
 				break;
 			case Quotient:
+				Prog.ajouterComment("QUOTIENT, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.DIV);
+				Prog.ajouterComment("fin QUOTIENT, ligne :" + a.getNumLigne());
 				break;
 			
 			// Opérations arithmétiques à un fils
 			case PlusUnaire:
+				Prog.ajouterComment("PLUSUNAIRE, ligne :" + a.getNumLigne());
 				coder_EXP(a.getFils1(), rc);
+				Prog.ajouterComment("fin PLUSUNAIRE, ligne :" + a.getNumLigne());
 				break;
 			case MoinsUnaire:
+				Prog.ajouterComment("MOINSUNAIRE, ligne :" + a.getNumLigne());
 				coder_EXP(a.getFils1(), rc);
 				Prog.ajouter(Inst.creation2(Operation.OPP, Operande.opDirect(rc), Operande.opDirect(rc)));
+				Prog.ajouterComment("fin MOINSUNAIRE, ligne :" + a.getNumLigne());
 				break;
 			case Conversion:
 				
 			// Opérations logiques à deux fils
 			case Et:
+				Prog.ajouterComment("ET, ligne :" + a.getNumLigne());
+				coder_ET(a, rc);
+				Prog.ajouterComment("fin ET, ligne :" + a.getNumLigne());
+				return;
 			case Ou:
+				Prog.ajouterComment("OU, ligne :" + a.getNumLigne());
+				coder_OU(a, rc);
+				Prog.ajouterComment("fin OU, ligne :" + a.getNumLigne());
+				return;
 			case Egal:
 			case NonEgal:
 			case Sup:
@@ -342,5 +369,51 @@ class Generation {
 				return;
 				
 		}
+	}
+	
+	public void coder_ET(Arbre a, Registre rc)
+	{
+		Etiq e1 = Etiq.nouvelle("finET");
+		Etiq e2 = Etiq.nouvelle("returnFalse");
+		// RC contient la valeur du fils1
+		
+		/* CMP RC, #0      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(0), Operande.opDirect(rc)));
+		/* BEQ returnFalse */Prog.ajouter(Inst.creation1(Operation.BEQ, Operande.creationOpEtiq(e2)));
+		
+		coder_EXP(a.getFils2(), rc); // On met la valeur du fils2 dans RC
+		
+		/* CMP RC, #0      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(0), Operande.opDirect(rc)));
+		/* SNE RC          */Prog.ajouter(Inst.creation1(Operation.SNE, Operande.opDirect(rc)));
+		/* BRA finET       */Prog.ajouter(Inst.creation1(Operation.BRA, Operande.creationOpEtiq(e1)));
+		
+		/* returnFalse:    */Prog.ajouter(e2);
+		/* LOAD #0, RC     */Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpEntier(0), Operande.opDirect(rc)));
+		
+		/* finET:          */Prog.ajouter(e1);
+		
+		return;
+	}
+	
+	public void coder_OU(Arbre a, Registre rc)
+	{
+		Etiq e1 = Etiq.nouvelle("finOU");
+		Etiq e2 = Etiq.nouvelle("returnTrue");
+		// RC contient la valeur du fils1
+		
+		/* CMP RC, #0      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(0), Operande.opDirect(rc)));
+		/* BNE returnTrue */Prog.ajouter(Inst.creation1(Operation.BNE, Operande.creationOpEtiq(e2)));
+		
+		coder_EXP(a.getFils2(), rc); // On met la valeur du fils2 dans RC
+		
+		/* CMP RC, #0      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(0), Operande.opDirect(rc)));
+		/* BNE returnTrue  */Prog.ajouter(Inst.creation1(Operation.BNE, Operande.creationOpEtiq(e2)));
+		/* LOAD #0, RC     */Prog.ajouter(Inst.creation1(Operation.LOAD, Operande.creationOpEtiq(e1)));
+		/* BRA finOU       */Prog.ajouter(Inst.creation1(Operation.BRA, Operande.creationOpEtiq(e1)));
+		/* returnTrue:     */Prog.ajouter(e2);
+		/* LOAD #1, RC     */Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpEntier(1), Operande.opDirect(rc)));
+		
+		/*finOU:           */Prog.ajouter(e1);
+		
+		return;
 	}
 }
