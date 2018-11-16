@@ -357,7 +357,55 @@ class Generation {
 	 * l’expression soit --évaluée dans le registre Rc. --Précondition: le registre
 	 * Rc est alloué. procedure Coder_Exp (A : Arbre; Rc : Registre)
 	 */
+	
+	/**
+	 * coder_CMP_BNE : Fonction permettant de coder une condition Avec a l'arbre
+	 * utilisé Val la valeur attendue de la comparaison : 1 - True, 0 - False etiq
+	 * :l'etiquette sur laquelle le branchement est effectué
+	 */
+	private void coder_CMP_BNE(Arbre a, int val, Etiq etiq) {
+		Registre Rd = Memory.allocate();
+		coder_EXP(a, Rd);// dans R0, on met 1 si le boolean est vrai, 0 sinon
+		Prog.ajouterComment("Registre utilisé : " + Rd.name());
+		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(val), Operande.opDirect(Rd)));// on test si
+																											// la
+																											// condition
+		// est vrai ou fausse avec CMP
+		Prog.ajouter(Inst.creation1(Operation.BNE, Operande.creationOpEtiq(etiq)));// Si c'est NE alors on branch à
+																					// l'étiquette
+		// etiq ( on fait un saut)
+		Memory.liberate(Rd);
+	}
 
+	/*Retourne le type final d'un tableau dans le cas de tableaux dans un tableau*/
+	private Type Array_FinalType(Type array) {
+		if (array.getNature().equals(NatureType.Array)) {
+			return Array_FinalType(array.getElement());
+		}
+		else
+		{
+			return array;
+		}
+	}
+	/*Permet de calculer recursivement la taille totale d'un tableau
+	 * On retourne :
+	 * 1 si le type indexé n'est pas un tableau
+	 * La taille du sous-tableau en memoire sinon
+	 * */
+	private int Array_len(Type array)
+	{
+		if (array.getNature().equals(NatureType.Array)) {
+			int len=array.getIndice().getBorneSup()-array.getIndice().getBorneInf()+1;
+			return  Array_len(array.getElement())*len;
+		}
+		else
+		{
+			return 1;
+		}
+		
+	}
+	
+	
 	public void coder_EXP(Arbre a, Registre rc) { // Champey & Clémentin
 		
 		Noeud n = a.getNoeud();
@@ -422,52 +470,7 @@ class Generation {
 
 	}
 
-	/**
-	 * coder_CMP_BNE : Fonction permettant de coder une condition Avec a l'arbre
-	 * utilisé Val la valeur attendue de la comparaison : 1 - True, 0 - False etiq
-	 * :l'etiquette sur laquelle le branchement est effectué
-	 */
-	private void coder_CMP_BNE(Arbre a, int val, Etiq etiq) {
-		Registre Rd = Memory.allocate();
-		coder_EXP(a, Rd);// dans R0, on met 1 si le boolean est vrai, 0 sinon
-		Prog.ajouterComment("Registre utilisé : " + Rd.name());
-		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(val), Operande.opDirect(Rd)));// on test si
-																											// la
-																											// condition
-		// est vrai ou fausse avec CMP
-		Prog.ajouter(Inst.creation1(Operation.BNE, Operande.creationOpEtiq(etiq)));// Si c'est NE alors on branch à
-																					// l'étiquette
-		// etiq ( on fait un saut)
-		Memory.liberate(Rd);
-	}
-
-	/*Retourne le type final d'un tableau dans le cas de tableaux dans un tableau*/
-	private Type Array_FinalType(Type array) {
-		if (array.getNature().equals(NatureType.Array)) {
-			return Array_FinalType(array.getElement());
-		}
-		else
-		{
-			return array;
-		}
-	}
-	/*Permet de calculer recursivement la taille totale d'un tableau
-	 * On retourne :
-	 * 1 si le type indexé n'est pas un tableau
-	 * La taille du sous-tableau en memoire sinon
-	 * */
-	private int Array_len(Type array)
-	{
-		if (array.getNature().equals(NatureType.Array)) {
-			int len=array.getIndice().getBorneSup()-array.getIndice().getBorneInf()+1;
-			return  Array_len(array.getElement())*len;
-		}
-		else
-		{
-			return 1;
-		}
-		
-	}
+	
 	public void coder_EXP_feuille(Arbre a, Registre rc, Operation operation)
 	{
 		switch (a.getNoeud())
