@@ -9,11 +9,6 @@ import fr.esisar.compilation.verif.ErreurContext;
 
 class Generation {
 
-	// Déclaration registres révservé
-	private Registre R0 = Registre.R0;
-	private Registre R1 = Registre.R1;
-	private Registre R2 = Registre.R2;
-
 	/**
 	 * Méthode principale de génération de code. Génère du code pour l'arbre décoré
 	 * a.
@@ -80,6 +75,7 @@ class Generation {
 	}
 
 	public Operande coder_PLACE(Arbre a,Registre rd) { // Couvi, a faire en premier
+		Prog.ajouterComment("Debut Place");
         if(a.getNoeud()== Noeud.Ident )
         {
             Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpEntier(Variable.get_var(a.getChaine().toLowerCase())),Operande.opDirect(rd)));
@@ -102,6 +98,7 @@ class Generation {
             }
             
         }
+        Prog.ajouterComment("Fin Place");
     return Operande.opDirect(rd);    
     }
 
