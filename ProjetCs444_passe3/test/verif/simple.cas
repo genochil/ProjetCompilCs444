@@ -1,7 +1,9 @@
 program
-	y : integer;	
+	i : real;
+	j : 1..3;
 begin
-	y:=3;
-	write("toto=",y);
-	new_line;
+	for j:= 1 to 20 do 
+      		null ; 
+  	end ; 
+	
 end.

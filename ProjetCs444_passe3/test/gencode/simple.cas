@@ -1,4 +1,5 @@
 program
+<<<<<<< HEAD
 	i : boolean;
 	j : 1..3;
 begin
@@ -7,4 +8,12 @@ begin
       		write("toto") ; 
   	end ; 
 	
+=======
+	i : integer ; 
+	y: integer;
+begin
+	y:= 2 + 1;
+	i := max_int - 2;
+	write("i=",i);
+>>>>>>> master
 end.
