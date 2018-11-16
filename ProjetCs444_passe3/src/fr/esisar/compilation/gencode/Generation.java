@@ -363,6 +363,7 @@ class Generation {
 	 */
 	private void coder_CMP_BNE(Arbre a, int val, Etiq etiq) {
 		Registre Rd = Memory.allocate();
+		Prog.ajouterComment("a : "+a.getChaine());;
 		coder_EXP(a, Rd);// dans R0, on met 1 si le boolean est vrai, 0 sinon
 		Prog.ajouterComment("Registre utilisé : " + Rd.name());
 		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(val), Operande.opDirect(Rd)));// on test si
