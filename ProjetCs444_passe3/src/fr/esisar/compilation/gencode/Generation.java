@@ -1,7 +1,4 @@
 package fr.esisar.compilation.gencode;
-
-import com.sun.org.apache.xpath.internal.operations.Variable;
-
 import fr.esisar.compilation.global.src.*;
 import fr.esisar.compilation.global.src3.*;
 import fr.esisar.compilation.verif.ErreurContext;

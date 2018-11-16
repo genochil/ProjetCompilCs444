@@ -1,6 +1,10 @@
 program
+	i : boolean;
+	j : 1..3;
 begin
-	write("toto");
-   new_line;
+	i := true;
+	if (true) then 
+      		write("toto") ; 
+  	end ; 
+	
 end.
-
