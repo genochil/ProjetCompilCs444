@@ -18,11 +18,21 @@ class Generation {
 		Prog.ajouterGrosComment("Programme généré par JCasc");
 
 		Generation gen = new Generation();
+		Memory.init();
+		Etiq etiq = Etiq.nouvelle("debordement");
 		gen.coder_LISTE_DECL(a.getFils1());
+		int temp = Variable.getTaille();
+		Prog.ajouter(Inst.creation1(Operation.TSTO, Operande.creationOpEntier(temp)));
+		Prog.ajouter(Inst.creation1(Operation.BOV, Operande.creationOpEtiq(etiq)));
+		if (temp != 0) {
+			Prog.ajouter(Inst.creation1(Operation.ADDSP, Operande.creationOpEntier(temp)));
+		}
 		gen.coder_LISTE_INST(a.getFils2());
 
 		// Fin du programme
 		// L'instruction "HALT"
+
+		Prog.ajouter(etiq);
 		Inst inst = Inst.creation0(Operation.HALT);
 		// On ajoute l'instruction à la fin du programme
 		Prog.ajouter(inst);
@@ -30,7 +40,6 @@ class Generation {
 		// On retourne le programme assembleur généré
 		return Prog.instance();
 	}
-
 	public void coder_LISTE_DECL(Arbre a) {
 		switch (a.getNoeud()) {
 		case Vide:
