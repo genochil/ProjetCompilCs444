@@ -467,12 +467,11 @@ class Generation {
 			// Opérations arithmétiques à un fils
 			case PlusUnaire:
 				Prog.ajouterComment("PLUSUNAIRE, ligne :" + a.getNumLigne());
-				coder_EXP(a.getFils1(), rc);
+				Prog.ajouter(Inst.creation1(Operation.LOAD, Operande.opDirect(rc)));
 				Prog.ajouterComment("fin PLUSUNAIRE, ligne :" + a.getNumLigne());
 				return;
 			case MoinsUnaire:
 				Prog.ajouterComment("MOINSUNAIRE, ligne :" + a.getNumLigne());
-				coder_EXP(a.getFils1(), rc);
 				Prog.ajouter(Inst.creation2(Operation.OPP, Operande.opDirect(rc), Operande.opDirect(rc)));
 				Prog.ajouterComment("fin MOINSUNAIRE, ligne :" + a.getNumLigne());
 				return;
@@ -534,7 +533,10 @@ class Generation {
 				
 			// Opérations logiques à un fils
 			case Non:
-			
+				Prog.ajouterComment("NON, ligne : " + a.getNumLigne());
+				Prog.ajouter(Inst.creation1(Operation.SNE, Operande.opDirect(rc)));
+				Prog.ajouterComment("fin NON, ligne :" + a.getNumLigne());
+				return;
 			default:
 				return;
 			}
