@@ -476,10 +476,12 @@ class Generation {
 				Prog.ajouterComment("fin MOINSUNAIRE, ligne :" + a.getNumLigne());
 				return;
 			case Conversion:
-				if(a.getFils1().getDecor().getType().getNature() != NatureType.Array)
-				{
-					Prog.ajouter(Inst.creation2(Operation.FLOAT, Operande.opDirect(rc), Operande.opDirect(rc)));
-				}
+				Prog.ajouterComment("CONVERSION, ligne :" + a.getNumLigne());
+			    	if(a.getFils1().getDecor().getType().getNature() != NatureType.Array)
+			    	{
+			      		Prog.ajouter(Inst.creation2(Operation.FLOAT, Operande.opDirect(rc), Operande.opDirect(rc)));
+			    	}
+			    	Prog.ajouterComment("fin CONVERSION, ligne :" + a.getNumLigne());
 				return;
 				
 			// Opérations logiques à deux fils
