@@ -415,6 +415,7 @@ class Generation {
 	public void coder_EXP(Arbre a, Registre rc) { // Champey & Clémentin
 		
 		Noeud n = a.getNoeud();
+		Registre rc2;
 		// Si a est une feuille de l'arbre
 		if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
 		{
@@ -436,45 +437,45 @@ class Generation {
 				Prog.ajouterComment("PLUS, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.ADD);
 				Prog.ajouterComment("fin PLUS, ligne :" + a.getNumLigne());
-				break;
+				return;
 			case Moins:
 				Prog.ajouterComment("MOINS, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.SUB);
 				Prog.ajouterComment("fin MOINS, ligne :" + a.getNumLigne());
-				break;
+				return;
 			case Mult:
 				Prog.ajouterComment("MULT, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.MUL);
 				Prog.ajouterComment("fin MULT, ligne :" + a.getNumLigne());
-				break;
+				return;
 			case DivReel:
 				Prog.ajouterComment("DIVREEL, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.DIV);
 				Prog.ajouterComment("fin DIVREEL, ligne :" + a.getNumLigne());
-				break;
+				return;
 			case Reste:
 				Prog.ajouterComment("RESTE, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.MOD);
 				Prog.ajouterComment("fin RESTE, ligne :" + a.getNumLigne());
-				break;
+				return;
 			case Quotient:
 				Prog.ajouterComment("QUOTIENT, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.DIV);
 				Prog.ajouterComment("fin QUOTIENT, ligne :" + a.getNumLigne());
-				break;
+				return;
 			
 			// Opérations arithmétiques à un fils
 			case PlusUnaire:
 				Prog.ajouterComment("PLUSUNAIRE, ligne :" + a.getNumLigne());
 				coder_EXP(a.getFils1(), rc);
 				Prog.ajouterComment("fin PLUSUNAIRE, ligne :" + a.getNumLigne());
-				break;
+				return;
 			case MoinsUnaire:
 				Prog.ajouterComment("MOINSUNAIRE, ligne :" + a.getNumLigne());
 				coder_EXP(a.getFils1(), rc);
 				Prog.ajouter(Inst.creation2(Operation.OPP, Operande.opDirect(rc), Operande.opDirect(rc)));
 				Prog.ajouterComment("fin MOINSUNAIRE, ligne :" + a.getNumLigne());
-				break;
+				return;
 			case Conversion:
 				
 			// Opérations logiques à deux fils
@@ -489,17 +490,53 @@ class Generation {
 				Prog.ajouterComment("fin OU, ligne :" + a.getNumLigne());
 				return;
 			case Egal:
+				Prog.ajouterComment("EGAL, ligne :" + a.getNumLigne());
+				coder_EXP(a.getFils2(), rc2); // On met la valeur du fils2 dans RC2
+				/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
+				/* SEQ RC           */Prog.ajouter(Inst.creation1(Operation.SEQ, Operande.opDirect(rc)));
+				Prog.ajouterComment("fin EGAL, ligne :" + a.getNumLigne());
+				return;
 			case NonEgal:
+				Prog.ajouterComment("NONEGAL, ligne :" + a.getNumLigne());
+				coder_EXP(a.getFils2(), rc2); // On met la valeur du fils2 dans RC2
+				/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
+				/* SNE RC           */Prog.ajouter(Inst.creation1(Operation.SNE, Operande.opDirect(rc)));
+				Prog.ajouterComment("fin NONEGAL, ligne :" + a.getNumLigne());
+				return;
 			case Sup:
+				Prog.ajouterComment("SUP, ligne :" + a.getNumLigne());
+				coder_EXP(a.getFils2(), rc2); // On met la valeur du fils2 dans RC2
+				/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
+				/* SGT RC           */Prog.ajouter(Inst.creation1(Operation.SGT, Operande.opDirect(rc)));
+				Prog.ajouterComment("fin SUP, ligne :" + a.getNumLigne());
+				return;
 			case SupEgal:
+				Prog.ajouterComment("SUPEGAL, ligne :" + a.getNumLigne());
+				coder_EXP(a.getFils2(), rc2); // On met la valeur du fils2 dans RC2
+				/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
+				/* SGE RC           */Prog.ajouter(Inst.creation1(Operation.SGE, Operande.opDirect(rc)));
+				Prog.ajouterComment("fin SUPEGAL, ligne :" + a.getNumLigne());
+				return;
 			case Inf:
+				Prog.ajouterComment("INF, ligne :" + a.getNumLigne());
+				coder_EXP(a.getFils2(), rc2); // On met la valeur du fils2 dans RC2
+				/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
+				/* SLT RC           */Prog.ajouter(Inst.creation1(Operation.SLT, Operande.opDirect(rc)));
+				Prog.ajouterComment("fin INF, ligne :" + a.getNumLigne());
+				return;
 			case InfEgal:
+				Prog.ajouterComment("INFEGAL, ligne :" + a.getNumLigne());
+				coder_EXP(a.getFils2(), rc2); // On met la valeur du fils2 dans RC2
+				/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
+				/* SLE RC           */Prog.ajouter(Inst.creation1(Operation.SLE, Operande.opDirect(rc)));
+				Prog.ajouterComment("fin INFEGAL, ligne :" + a.getNumLigne());
+				return;
 				
 			// Opérations logiques à un fils
 			case Non:
 			
 			default:
-				break;
+				return;
 			}
 		}
 
