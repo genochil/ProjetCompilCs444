@@ -554,12 +554,13 @@ class Generation {
 		{
 			// Ici n est forcément un noeud.Conversion car c'est le seul noeud traité qui n'a pas de fils2
 			Prog.ajouterComment("CONVERSION, ligne :" + a.getNumLigne());
-			coder_EXP(a.getFils1(), rc);
+			coder_EXP(a.getFils2().getFils1(), rc);
 	    	if(a.getFils1().getDecor().getType().getNature() != NatureType.Array)
 	    	{
 	      		/*FLOAT RC, RC  */ Prog.ajouter(Inst.creation2(Operation.FLOAT, Operande.opDirect(rc), Operande.opDirect(rc)));
 	    	}
 	    	Prog.ajouterComment("fin CONVERSION, ligne :" + a.getNumLigne());
+	    	return; 
 		}
 
 	}
