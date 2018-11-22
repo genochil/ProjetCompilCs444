@@ -612,7 +612,7 @@ class Generation {
 		return;
 	}
 	
-	public void coder_OU(Arbre a, Registre rc)
+		public void coder_OU(Arbre a, Registre rc)
 	{
 		Etiq e1 = Etiq.nouvelle("finOU");
 		Etiq e2 = Etiq.nouvelle("returnTrue");
@@ -625,7 +625,7 @@ class Generation {
 		
 		/* CMP RC, #0      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(0), Operande.opDirect(rc)));
 		/* BNE returnTrue  */Prog.ajouter(Inst.creation1(Operation.BNE, Operande.creationOpEtiq(e2)));
-		/* LOAD #0, RC     */Prog.ajouter(Inst.creation1(Operation.LOAD, Operande.creationOpEtiq(e1)));
+		/* LOAD #0, RC     */Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpEntier(0), Operande.opDirect(rc)));
 		/* BRA finOU       */Prog.ajouter(Inst.creation1(Operation.BRA, Operande.creationOpEtiq(e1)));
 		/* returnTrue:     */Prog.ajouter(e2);
 		/* LOAD #1, RC     */Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpEntier(1), Operande.opDirect(rc)));
