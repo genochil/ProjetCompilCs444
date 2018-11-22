@@ -423,13 +423,16 @@ class Generation {
 			Prog.ajouterComment("fin LOAD, ligne :" + a.getNumLigne());
 			return;
 		}
-		if(a.getFils2() != null)
+		try
 		{
-			n = a.getFils2().getNoeud();
+			if(a.getFils2() != null)
+				n = a.getFils2().getNoeud();
+			else
+				n = null;
 		}
-		else
+		catch(Exception e)
 		{
-			n = null;
+			//nothing to do
 		}
 		// Si a est une opération et que le fils droit est une feuille de l'arbre
 		if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
