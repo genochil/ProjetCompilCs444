@@ -1,11 +1,10 @@
 program
-	i : boolean;
-	j : 1..3;
+	i : real;
+	j : integer;
 begin
-	i := false;
-	if i then 
+	j:=9;
+	i := j;
+	if (i > 7) then 
       	write("toto") ; 
-  	else 
-  		write("tat");
-  	end ; 
+      	end;
 end.
