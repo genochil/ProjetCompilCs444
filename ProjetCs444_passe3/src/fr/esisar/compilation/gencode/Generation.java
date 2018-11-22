@@ -363,6 +363,7 @@ class Generation {
 	 */
 	private void coder_CMP_BNE(Arbre a, int val, Etiq etiq) {
 		Registre Rd = Memory.allocate();
+		Prog.ajouterComment("a : "+a.getChaine());;
 		coder_EXP(a, Rd);// dans R0, on met 1 si le boolean est vrai, 0 sinon
 		Prog.ajouterComment("Registre utilisé : " + Rd.name());
 		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(val), Operande.opDirect(Rd)));// on test si
@@ -483,14 +484,7 @@ class Generation {
 				Prog.ajouter(Inst.creation2(Operation.OPP, Operande.opDirect(rc), Operande.opDirect(rc)));
 				Prog.ajouterComment("fin MOINSUNAIRE, ligne :" + a.getNumLigne());
 				return;
-			case Conversion:
-				Prog.ajouterComment("CONVERSION, ligne :" + a.getNumLigne());
-			    	if(a.getFils1().getDecor().getType().getNature() != NatureType.Array)
-			    	{
-			      		Prog.ajouter(Inst.creation2(Operation.FLOAT, Operande.opDirect(rc), Operande.opDirect(rc)));
-			    	}
-			    	Prog.ajouterComment("fin CONVERSION, ligne :" + a.getNumLigne());
-				return;
+			
 				
 			// Opérations logiques à deux fils
 			case Et:
@@ -556,6 +550,17 @@ class Generation {
 				return;
 			}
 		}
+		else if(n == Noeud.Conversion)
+		{
+			// Ici n est forcément un noeud.Conversion car c'est le seul noeud traité qui n'a pas de fils2
+			Prog.ajouterComment("CONVERSION, ligne :" + a.getNumLigne());
+			coder_EXP(a.getFils1(), rc);
+	    	if(a.getFils1().getDecor().getType().getNature() != NatureType.Array)
+	    	{
+	      		/*FLOAT RC, RC  */ Prog.ajouter(Inst.creation2(Operation.FLOAT, Operande.opDirect(rc), Operande.opDirect(rc)));
+	    	}
+	    	Prog.ajouterComment("fin CONVERSION, ligne :" + a.getNumLigne());
+		}
 
 	}
 
@@ -620,7 +625,7 @@ class Generation {
 		return;
 	}
 	
-		public void coder_OU(Arbre a, Registre rc)
+	public void coder_OU(Arbre a, Registre rc)
 	{
 		Etiq e1 = Etiq.nouvelle("finOU");
 		Etiq e2 = Etiq.nouvelle("returnTrue");
