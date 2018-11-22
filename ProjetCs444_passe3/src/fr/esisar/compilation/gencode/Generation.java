@@ -88,30 +88,49 @@ class Generation {
 	}
 
 	public Operande coder_PLACE(Arbre a,Registre rd) { // Couvi, a faire en premier
-        if(a.getNoeud()== Noeud.Ident )
-        {
-            Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpEntier(Variable.get_var(a.getChaine().toLowerCase())),Operande.opDirect(rd)));
-        }
-        else
-        {
-            Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpEntier(Variable.get_var(a.getChaine().toLowerCase())),Operande.opDirect(rd)));
-            Registre rb;
-            if((rb=Memory.allocate())!= Registre.GB ) 
-            {
-                coder_EXP(a.getFils2(),rb);
-                debord_Interval(a,rb);
-                Prog.ajouter(Inst.creation2(Operation.SUB, Operande.creationOpEntier(a.getDecor().getType().getIndice().getBorneInf()), Operande.opDirect(rb)));
-                Prog.ajouter(Inst.creation2(Operation.ADD,  Operande.opDirect(rb),  Operande.opDirect(rd)));
-                Memory.liberate(rb);;
-            }
-            else
-            {
-                System.out.println("Erreur coder place : tout registre utilisé");
-            }
-            
-        }
-    return Operande.opDirect(rd);    
-    }
+		if(a.getNoeud()== Noeud.Ident )
+		{
+			Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpEntier(Variable.get_var(a.getChaine().toLowerCase())),Operande.opDirect(rd)));
+		}
+		if(a.getNoeud()== Noeud.Index)
+		{
+			coder_PLACE(a.getFils1(),rd);
+			Registre rb;
+			if((rb=Memory.allocate())!= Registre.GB ) 
+			{
+				coder_EXP(a.getFils2(),rb);
+				debord_Interval(a,rb);
+				Prog.ajouter(Inst.creation2(Operation.SUB, Operande.creationOpEntier(a.getDecor().getType().getIndice().getBorneInf()), Operande.opDirect(rb)));
+				
+				int len;
+				if((len=taille_tab(a.getFils1().getDecor().getType().getElement()))>1)
+						{
+						Prog.ajouter(Inst.creation2(Operation.MUL, Operande.creationOpEntier(len), Operande.opDirect(rb)));
+						}
+				Prog.ajouter(Inst.creation2(Operation.ADD,  Operande.opDirect(rb),  Operande.opDirect(rd)));
+				Memory.liberate(rb);;
+			}
+		
+			
+		}
+	return Operande.opDirect(rd);	
+	}
+	
+	//Cette fonction permet de savoir si le tableau est un tableau indexé ou pas
+	//Elle retourne 1 si l'elément donnée est un intevalle ou un réel
+	//si c'est un sous tableau cette fonction renvoi la taille du sous tableau
+	public int taille_tab(Type t)
+	{
+		if(t.getNature()== NatureType.Array)
+		{
+			int len=(t.getIndice().getBorneSup()-t.getIndice().getBorneInf()+1);
+			return taille_tab(t.getElement())*len;
+		}
+		else{
+			return 1;
+		}
+	}
+
 
 	public void coder_INST(Arbre a) {// Loic
 		switch (a.getNoeud()) {
