@@ -110,11 +110,28 @@ class Generation {
 				Prog.ajouter(Inst.creation2(Operation.ADD,  Operande.opDirect(rb),  Operande.opDirect(rd)));
 				Memory.liberate(rb);;
 			}
+			else
+			{
+				int pile=Memory.allocate_Temp();
+				Prog.ajouter(Inst.creation2(Operation.STORE,Operande.opDirect(rd), Operande.creationOpIndirect(pile,Registre.LB)));
+				coder_EXP(a.getFils2(),rd);
+				debord_Interval(a,rd);
+				Prog.ajouter(Inst.creation2(Operation.SUB, Operande.creationOpEntier(a.getDecor().getType().getIndice().getBorneInf()), Operande.opDirect(rd)));
+				
+				int len;
+				if((len=taille_tab(a.getFils1().getDecor().getType().getElement()))>1)
+						{
+						Prog.ajouter(Inst.creation2(Operation.MUL, Operande.creationOpEntier(len), Operande.opDirect(rd)));
+						}
+				Prog.ajouter(Inst.creation2(Operation.ADD,  Operande.creationOpIndirect(pile, Registre.LB),  Operande.opDirect(rd)));
+				//libérer la pile pourrait être bien
+			}
 		
 			
 		}
 	return Operande.opDirect(rd);	
 	}
+	
 	
 	//Cette fonction permet de savoir si le tableau est un tableau indexé ou pas
 	//Elle retourne 1 si l'elément donnée est un intevalle ou un réel
