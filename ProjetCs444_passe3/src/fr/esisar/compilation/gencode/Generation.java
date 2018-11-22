@@ -414,7 +414,7 @@ class Generation {
 	public void coder_EXP(Arbre a, Registre rc) { // Champey & Clémentin
 		
 		Noeud n = a.getNoeud();
-		Registre rc2=Memory.allocate();
+		Registre rc2 = Memory.allocate();
 		// Si a est une feuille de l'arbre
 		if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
 		{
@@ -423,8 +423,14 @@ class Generation {
 			Prog.ajouterComment("fin LOAD, ligne :" + a.getNumLigne());
 			return;
 		}
-		
-		n = a.getFils2().getNoeud();
+		if(a.getFils2() != null)
+		{
+			n = a.getFils2().getNoeud();
+		}
+		else
+		{
+			n = null;
+		}
 		// Si a est une opération et que le fils droit est une feuille de l'arbre
 		if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
 		{
