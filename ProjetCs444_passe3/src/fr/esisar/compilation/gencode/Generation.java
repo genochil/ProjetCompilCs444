@@ -83,33 +83,65 @@ class Generation {
 		}
 	}
 
-	public Operande coder_PLACE(Arbre a,Registre rd) { // Couvi, a faire en premier
-		Prog.ajouterComment("Debut Place");
-        if(a.getNoeud()== Noeud.Ident )
-        {
-            Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpEntier(Variable.get_var(a.getChaine().toLowerCase())),Operande.opDirect(rd)));
-        }
-        else
-        {
-            Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpEntier(Variable.get_var(a.getChaine().toLowerCase())),Operande.opDirect(rd)));
-            Registre rb;
-            if((rb=Memory.allocate())!= Registre.GB ) 
-            {
-                coder_EXP(a.getFils2(),rb);
-                debord_Interval(a,rb);
-                Prog.ajouter(Inst.creation2(Operation.SUB, Operande.creationOpEntier(a.getDecor().getType().getIndice().getBorneInf()), Operande.opDirect(rb)));
-                Prog.ajouter(Inst.creation2(Operation.ADD,  Operande.opDirect(rb),  Operande.opDirect(rd)));
-                Memory.liberate(rb);;
-            }
-            else
-            {
-                System.out.println("Erreur coder place : tout registre utilisé");
-            }
-            
-        }
-        Prog.ajouterComment("Fin Place");
-    return Operande.opDirect(rd);    
-    }
+	public Operande coder_PLACE(Arbre a,Registre rd) { 
+		if(a.getNoeud()== Noeud.Ident )
+		{
+			Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpEntier(Variable.get_var(a.getChaine().toLowerCase())),Operande.opDirect(rd)));
+		}
+		if(a.getNoeud()== Noeud.Index)
+		{
+			coder_PLACE(a.getFils1(),rd);
+			Registre rb;
+			
+			if((rb=Memory.allocate())!= Registre.GB ) 
+			{
+				coder_EXP(a.getFils2(),rb);
+				debord_Interval(a.getFils1(),rb);
+				Prog.ajouter(Inst.creation2(Operation.SUB, Operande.creationOpEntier(a.getDecor().getType().getIndice().getBorneInf()), Operande.opDirect(rb)));
+				
+				int len;
+				if((len=taille_tab(a.getFils1().getDecor().getType().getElement()))>1)
+						{
+						Prog.ajouter(Inst.creation2(Operation.MUL, Operande.creationOpEntier(len), Operande.opDirect(rb)));
+						}
+				Prog.ajouter(Inst.creation2(Operation.ADD,  Operande.opDirect(rb),  Operande.opDirect(rd)));
+				Memory.liberate(rb);;
+			}
+			else
+			{
+				int pile=Memory.allocate_Temp();
+				Prog.ajouter(Inst.creation2(Operation.STORE,Operande.opDirect(rd), Operande.creationOpIndirect(pile,Registre.LB)));
+				coder_EXP(a.getFils2(),rd);
+				debord_Interval(a.getFils1(),rd);
+				Prog.ajouter(Inst.creation2(Operation.SUB, Operande.creationOpEntier(a.getDecor().getType().getIndice().getBorneInf()), Operande.opDirect(rd)));
+				
+				int len;
+				if((len=taille_tab(a.getFils1().getDecor().getType().getElement()))>1)
+						{
+						Prog.ajouter(Inst.creation2(Operation.MUL, Operande.creationOpEntier(len), Operande.opDirect(rd)));
+						}
+				Prog.ajouter(Inst.creation2(Operation.ADD,  Operande.creationOpIndirect(pile, Registre.LB),  Operande.opDirect(rd)));
+				//libérer la pile pourrait être bien
+			}
+		
+			
+		}
+	return Operande.opDirect(rd);	
+}
+	//Cette fonction permet de savoir si le tableau est un tableau indexé ou pas
+		//Elle retourne 1 si l'elément donnée est un intevalle ou un réel
+		//si c'est un sous tableau cette fonction renvoi la taille du sous tableau
+		public int taille_tab(Type t)
+		{
+			if(t.getNature()== NatureType.Array)
+			{
+				int len=(t.getIndice().getBorneSup()-t.getIndice().getBorneInf()+1);
+				return taille_tab(t.getElement())*len;
+			}
+			else{
+				return 1;
+			}
+	}
 
 	public void coder_INST(Arbre a) {// Loic
 		switch (a.getNoeud()) {
@@ -273,7 +305,7 @@ class Generation {
 		Prog.ajouter(E_debut);
 		coder_LISTE_INST(a.getFils2());
 		Prog.ajouter(E_cond);
-		coder_CMP_BNE(a.getFils1(), 1, E_debut);
+		coder_CMP_BNE(a.getFils1(), 0, E_debut);
 
 	}
 
@@ -288,54 +320,42 @@ class Generation {
 
 		boolean Increment = (a.getFils1().getNoeud().equals(Noeud.Increment));
 		Etiq boucle_for = Etiq.nouvelle("for");
-		Etiq fin_boucle_for = Etiq.nouvelle("fin_for");
-		int val_compteur = Variable.get_var(a.getFils1().getFils1().getChaine());// emplacement en pile de l'ident de la
-																					// boucle
-		int val_fin_compteur = 0;
-		int temp = Variable.add_new_var();
-		// Recupere valeur debut compteur : a.getFils1.getFils2
-		Registre R_comp = Memory.allocate();
-		coder_EXP(a.getFils1().getFils2(), R_comp); // on met la valeur du debut de compteur dans R0
-		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R_comp),
-				Operande.creationOpIndirect(val_compteur, Registre.GB)));// met la valeur de val_compteur dans la pile a
-																			// celle du fils2
-		// Recupere valeur fin compteur : a.getFils1.getFils3
-		Registre R_fin_comp = Memory.allocate();
-		coder_EXP(a.getFils1().getFils3(), R_fin_comp);
-		// recupere valeur val_fin_compteur
-		// load val_compteur dans le registre R0
-		Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpIndirect(val_compteur, Registre.GB),
-				Operande.opDirect(R_comp)));
+		int val_compteur = Variable.get_var(a.getFils1().getFils1().getChaine());
+		int fin_compteur= Variable.add_new_var();															
 
+		Registre R_comp = null;
+		coder_EXP(a.getFils1().getFils2(), R_comp); 
+		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R_comp), Operande.creationOpIndirect(val_compteur,Registre.GB)));
+		
+		coder_EXP(a.getFils1().getFils3(), R_comp);
+		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R_comp), Operande.creationOpIndirect(fin_compteur,Registre.GB)));
+		
 		Prog.ajouter(boucle_for);
-
-		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(R_comp), Operande.opDirect(R_fin_comp)));
-		if (Increment) {
-			Prog.ajouter(Inst.creation1(Operation.BGE, Operande.creationOpEtiq(fin_boucle_for)));
-		} else {
-			Prog.ajouter(Inst.creation1(Operation.BLE, Operande.creationOpEtiq(fin_boucle_for)));
-		}
-
 		coder_LISTE_INST(a.getFils2());
-
+		Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpIndirect(val_compteur,Registre.GB),Operande.opDirect(R_comp)));
 		// On incremente ou décremente la valeur du registre
 		if (Increment) {
 			Prog.ajouter(Inst.creation2(Operation.ADD, Operande.creationOpEntier(1), Operande.opDirect(R_comp)));
 		} else {
 			Prog.ajouter(Inst.creation2(Operation.SUB, Operande.creationOpEntier(1), Operande.opDirect(R_comp)));
 		}
-		Prog.ajouter(Inst.creation1(Operation.BRA, Operande.creationOpEtiq(boucle_for)));
-
-		Memory.liberate(R_fin_comp);
-		Memory.liberate(R_comp);
+		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R_comp), Operande.creationOpIndirect(val_compteur,Registre.GB)));
+		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpIndirect(fin_compteur, Registre.GB), Operande.opDirect(R_comp)));
+		if (Increment) {
+			Prog.ajouter(Inst.creation1(Operation.BLE, Operande.creationOpEtiq(boucle_for)));
+		} else {
+			Prog.ajouter(Inst.creation1(Operation.BGE, Operande.creationOpEtiq(boucle_for)));
+		}
+		Variable.free(fin_compteur);
+		
 	}
 
 	private void coder_Affect(Arbre a) {
 		// TODO Auto-generated method stub
 		Registre Rc=Memory.allocate();
 		coder_PLACE(a.getFils1(),Rc);
-		Registre Rd = Memory.allocate();
-		coder_EXP(a.getFils2(), Rd);// valeur de l'affect dans R1
+		Registre Rd = null;
+		coder_EXP(a.getFils2(), Rd);
 		NatureType affect_nat = a.getFils2().getDecor().getType().getNature();
 
 		if (affect_nat.equals(NatureType.Array)) {
@@ -363,7 +383,7 @@ class Generation {
 	 * :l'etiquette sur laquelle le branchement est effectué
 	 */
 	private void coder_CMP_BNE(Arbre a, int val, Etiq etiq) {
-		Registre Rd = Memory.allocate();
+		Registre Rd = null;
 		coder_EXP(a, Rd);// dans R0, on met 1 si le boolean est vrai, 0 sinon
 		Prog.ajouterComment("Registre utilisé : " + Rd.name());
 		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(val), Operande.opDirect(Rd)));// on test si
@@ -376,41 +396,6 @@ class Generation {
 		Memory.liberate(Rd);
 	}
 	
-
-	/*Retourne le type final d'un tableau dans le cas de tableaux dans un tableau*/
-	private Type Array_FinalType(Type array) {
-		if (array.getNature().equals(NatureType.Array)) {
-			return Array_FinalType(array.getElement());
-		}
-		else
-		{
-			return array;
-		}
-	}
-	/*Permet de calculer recursivement la taille totale d'un tableau
-	 * On retourne :
-	 * 1 si le type indexé n'est pas un tableau
-	 * La taille du sous-tableau en memoire sinon
-	 * */
-	private int Array_len(Type array)
-	{
-		if (array.getNature().equals(NatureType.Array)) {
-			int len=array.getIndice().getBorneSup()-array.getIndice().getBorneInf()+1;
-			return  Array_len(array.getElement())*len;
-		}
-		else
-		{
-			return 1;
-		}
-		
-	}
-	
-
-	/*
-	 * Procédure de génération de code Génère du code pour l’expression A tel que
-	 * l’expression soit --évaluée dans le registre Rc. --Précondition: le registre
-	 * Rc est alloué. procedure Coder_Exp (A : Arbre; Rc : Registre)
-	 */
 
 	
 	public void coder_EXP(Arbre a, Registre rc) { // Champey & Clémentin
