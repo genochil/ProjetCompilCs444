@@ -260,10 +260,11 @@ class Generation {
 	// fait
 	private void coder_TantQue(Arbre a) {
 		/*
-		 * Coder_Inst(Noeud_Tantque(C, I)) = declare E_Cond : Etiq := Nouvelle_Etiq;
+		 * Coder_Inst(Noeud_Tantque(C, I)) = 
+		 * declare E_Cond : Etiq := Nouvelle_Etiq;
 		 * E_Début : Etiq := Nouvelle_Etiq; begin Générer(BRA, E_Cond);
-		 * Générer_Etiq(E_Début); Coder_Inst(I); Générer_Etiq(E_Cond); Coder_Cond(C,
-		 * True, E_Début) end ;
+		 * Générer_Etiq(E_Début); Coder_Inst(I); Générer_Etiq(E_Cond); 
+		 * Coder_Cond(C,True, E_Début) end ;
 		 */
 		// TODO Auto-generated method stub
 		Etiq E_cond = Etiq.nouvelle("E_cond");
@@ -363,7 +364,6 @@ class Generation {
 	 */
 	private void coder_CMP_BNE(Arbre a, int val, Etiq etiq) {
 		Registre Rd = Memory.allocate();
-		Prog.ajouterComment("a : "+a.getChaine());;
 		coder_EXP(a, Rd);// dans R0, on met 1 si le boolean est vrai, 0 sinon
 		Prog.ajouterComment("Registre utilisé : " + Rd.name());
 		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(val), Operande.opDirect(Rd)));// on test si
@@ -375,6 +375,7 @@ class Generation {
 		// etiq ( on fait un saut)
 		Memory.liberate(Rd);
 	}
+	
 
 	/*Retourne le type final d'un tableau dans le cas de tableaux dans un tableau*/
 	private Type Array_FinalType(Type array) {
@@ -554,13 +555,12 @@ class Generation {
 		{
 			// Ici n est forcément un noeud.Conversion car c'est le seul noeud traité qui n'a pas de fils2
 			Prog.ajouterComment("CONVERSION, ligne :" + a.getNumLigne());
-			coder_EXP(a.getFils2().getFils1(), rc);
+			coder_EXP(a.getFils1(), rc);
 	    	if(a.getFils1().getDecor().getType().getNature() != NatureType.Array)
 	    	{
 	      		/*FLOAT RC, RC  */ Prog.ajouter(Inst.creation2(Operation.FLOAT, Operande.opDirect(rc), Operande.opDirect(rc)));
 	    	}
 	    	Prog.ajouterComment("fin CONVERSION, ligne :" + a.getNumLigne());
-	    	return; 
 		}
 
 	}
