@@ -346,6 +346,7 @@ class Generation {
 		} else {
 			Prog.ajouter(Inst.creation1(Operation.BGE, Operande.creationOpEtiq(boucle_for)));
 		}
+		Variable.free(fin_compteur);
 		
 	}
 
