@@ -1,7 +1,4 @@
 package fr.esisar.compilation.gencode;
-
-import java.lang.management.MemoryType;
-
 import fr.esisar.compilation.global.src.*;
 import fr.esisar.compilation.global.src3.*;
 import fr.esisar.compilation.verif.ErreurContext;
@@ -43,7 +40,6 @@ class Generation {
 		// On retourne le programme assembleur généré
 		return Prog.instance();
 	}
-
 	public void coder_LISTE_DECL(Arbre a) {
 		switch (a.getNoeud()) {
 		case Vide:
@@ -86,11 +82,7 @@ class Generation {
 		default:
 		}
 	}
-	/*
-   * Cette fonction permet de connaître l'offset de l'identificateur. 
-   *Celui-ci peut être un Ident, ou un tableau de n'importe quelle taille
-   */
-	
+
 	public Operande coder_PLACE(Arbre a,Registre rd) { 
 		if(a.getNoeud()== Noeud.Ident )
 		{
@@ -104,7 +96,7 @@ class Generation {
 			if((rb=Memory.allocate())!= Registre.GB ) 
 			{
 				coder_EXP(a.getFils2(),rb);
-				verif_borne_interval(a.getFils1().getDecor().getType().getIndice(),rb);
+				debord_Interval(a.getFils1(),rb);
 				Prog.ajouter(Inst.creation2(Operation.SUB, Operande.creationOpEntier(a.getDecor().getType().getIndice().getBorneInf()), Operande.opDirect(rb)));
 				
 				int len;
@@ -120,7 +112,7 @@ class Generation {
 				int pile=Memory.allocate_Temp();
 				Prog.ajouter(Inst.creation2(Operation.STORE,Operande.opDirect(rd), Operande.creationOpIndirect(pile,Registre.LB)));
 				coder_EXP(a.getFils2(),rd);
-				verif_borne_interval(a.getFils1().getDecor().getType().getIndice(),rd);
+				debord_Interval(a.getFils1(),rd);
 				Prog.ajouter(Inst.creation2(Operation.SUB, Operande.creationOpEntier(a.getDecor().getType().getIndice().getBorneInf()), Operande.opDirect(rd)));
 				
 				int len;
@@ -135,23 +127,21 @@ class Generation {
 			
 		}
 	return Operande.opDirect(rd);	
-	}
-	
+}
 	//Cette fonction permet de savoir si le tableau est un tableau indexé ou pas
-	//Elle retourne 1 si l'elément donnée est un intevalle ou un réel
-	//si c'est un sous tableau cette fonction renvoi la taille du sous tableau
-	public int taille_tab(Type t)
-	{
-		if(t.getNature()== NatureType.Array)
+		//Elle retourne 1 si l'elément donnée est un intevalle ou un réel
+		//si c'est un sous tableau cette fonction renvoi la taille du sous tableau
+		public int taille_tab(Type t)
 		{
-			int len=(t.getIndice().getBorneSup()-t.getIndice().getBorneInf()+1);
-			return taille_tab(t.getElement())*len;
-		}
-		else{
-			return 1;
-		}
+			if(t.getNature()== NatureType.Array)
+			{
+				int len=(t.getIndice().getBorneSup()-t.getIndice().getBorneInf()+1);
+				return taille_tab(t.getElement())*len;
+			}
+			else{
+				return 1;
+			}
 	}
-
 
 	public void coder_INST(Arbre a) {// Loic
 		switch (a.getNoeud()) {
@@ -255,24 +245,6 @@ class Generation {
 		// l'emplacement déterminé par R0
 
 	}
-	/*
-	 * Fonction de verification des bornes de l'interval
-	 */
-	
-		  private void verif_borne_interval(Type intervale, Registre rd) {
-		 
-		   
-		    Prog.ajouter(Inst.creation2(Operation.CMP, 
-		                                Operande.creationOpEntier(intervale.getBorneInf()), 
-		                                Operande.opDirect(rd)));
-		    Prog.ajouter(Inst.creation1(Operation.BLT, 
-		                                Operande.creationOpEtiq(Etiq.lEtiq("Débordement Intervale"))));
-		    Prog.ajouter(Inst.creation2(Operation.CMP, 
-		                                Operande.creationOpEntier(intervale.getBorneSup()), 
-		                                Operande.opDirect(rd)));
-		    Prog.ajouter(Inst.creation1(Operation.BGT, 
-		    		Operande.creationOpEtiq(Etiq.lEtiq("Débordement Intervale"))));
-		  }
 
 	/*
 	 * Fonction de verification des bornes de l'interval
@@ -320,10 +292,11 @@ class Generation {
 	// fait
 	private void coder_TantQue(Arbre a) {
 		/*
-		 * Coder_Inst(Noeud_Tantque(C, I)) = declare E_Cond : Etiq := Nouvelle_Etiq;
+		 * Coder_Inst(Noeud_Tantque(C, I)) = 
+		 * declare E_Cond : Etiq := Nouvelle_Etiq;
 		 * E_Début : Etiq := Nouvelle_Etiq; begin Générer(BRA, E_Cond);
-		 * Générer_Etiq(E_Début); Coder_Inst(I); Générer_Etiq(E_Cond); Coder_Cond(C,
-		 * True, E_Début) end ;
+		 * Générer_Etiq(E_Début); Coder_Inst(I); Générer_Etiq(E_Cond); 
+		 * Coder_Cond(C,True, E_Début) end ;
 		 */
 		// TODO Auto-generated method stub
 		Etiq E_cond = Etiq.nouvelle("E_cond");
@@ -332,7 +305,7 @@ class Generation {
 		Prog.ajouter(E_debut);
 		coder_LISTE_INST(a.getFils2());
 		Prog.ajouter(E_cond);
-		coder_CMP_BNE(a.getFils1(), 1, E_debut);
+		coder_CMP_BNE(a.getFils1(), 0, E_debut);
 
 	}
 
@@ -347,46 +320,33 @@ class Generation {
 
 		boolean Increment = (a.getFils1().getNoeud().equals(Noeud.Increment));
 		Etiq boucle_for = Etiq.nouvelle("for");
-		Etiq fin_boucle_for = Etiq.nouvelle("fin_for");
-		int val_compteur = Variable.get_var(a.getFils1().getFils1().getChaine());// emplacement en pile de l'ident de la
-																					// boucle
-		int val_fin_compteur = 0;
-		int temp = Variable.add_new_var();
-		// Recupere valeur debut compteur : a.getFils1.getFils2
+		int val_compteur = Variable.get_var(a.getFils1().getFils1().getChaine());
+		int fin_compteur= Variable.add_new_var();															
+
 		Registre R_comp = Memory.allocate();
-		coder_EXP(a.getFils1().getFils2(), R_comp); // on met la valeur du debut de compteur dans R0
-		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R_comp),
-				Operande.creationOpIndirect(val_compteur, Registre.GB)));// met la valeur de val_compteur dans la pile a
-																			// celle du fils2
-		// Recupere valeur fin compteur : a.getFils1.getFils3
-		Registre R_fin_comp = Memory.allocate();
-		coder_EXP(a.getFils1().getFils3(), R_fin_comp);
-		// recupere valeur val_fin_compteur
-		// load val_compteur dans le registre R0
-		Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpIndirect(val_compteur, Registre.GB),
-				Operande.opDirect(R_comp)));
-
+		coder_EXP(a.getFils1().getFils2(), R_comp); 
+		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R_comp), Operande.creationOpIndirect(val_compteur,Registre.GB)));
+		
+		coder_EXP(a.getFils1().getFils3(), R_comp);
+		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R_comp), Operande.creationOpIndirect(fin_compteur,Registre.GB)));
+		
 		Prog.ajouter(boucle_for);
-
-		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(R_comp), Operande.opDirect(R_fin_comp)));
-		if (Increment) {
-			Prog.ajouter(Inst.creation1(Operation.BGE, Operande.creationOpEtiq(fin_boucle_for)));
-		} else {
-			Prog.ajouter(Inst.creation1(Operation.BLE, Operande.creationOpEtiq(fin_boucle_for)));
-		}
-
 		coder_LISTE_INST(a.getFils2());
-
+		Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpIndirect(val_compteur,Registre.GB),Operande.opDirect(R_comp)));
 		// On incremente ou décremente la valeur du registre
 		if (Increment) {
 			Prog.ajouter(Inst.creation2(Operation.ADD, Operande.creationOpEntier(1), Operande.opDirect(R_comp)));
 		} else {
 			Prog.ajouter(Inst.creation2(Operation.SUB, Operande.creationOpEntier(1), Operande.opDirect(R_comp)));
 		}
-		Prog.ajouter(Inst.creation1(Operation.BRA, Operande.creationOpEtiq(boucle_for)));
-
-		Memory.liberate(R_fin_comp);
-		Memory.liberate(R_comp);
+		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(R_comp), Operande.creationOpIndirect(val_compteur,Registre.GB)));
+		Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpIndirect(fin_compteur, Registre.GB), Operande.opDirect(R_comp)));
+		if (Increment) {
+			Prog.ajouter(Inst.creation1(Operation.BLE, Operande.creationOpEtiq(boucle_for)));
+		} else {
+			Prog.ajouter(Inst.creation1(Operation.BGE, Operande.creationOpEtiq(boucle_for)));
+		}
+		
 	}
 
 	private void coder_Affect(Arbre a) {
@@ -434,49 +394,32 @@ class Generation {
 		// etiq ( on fait un saut)
 		Memory.liberate(Rd);
 	}
-
-	/*Retourne le type final d'un tableau dans le cas de tableaux dans un tableau*/
-	private Type Array_FinalType(Type array) {
-		if (array.getNature().equals(NatureType.Array)) {
-			return Array_FinalType(array.getElement());
-		}
-		else
-		{
-			return array;
-		}
-	}
-	/*Permet de calculer recursivement la taille totale d'un tableau
-	 * On retourne :
-	 * 1 si le type indexé n'est pas un tableau
-	 * La taille du sous-tableau en memoire sinon
-	 * */
-	private int Array_len(Type array)
-	{
-		if (array.getNature().equals(NatureType.Array)) {
-			int len=array.getIndice().getBorneSup()-array.getIndice().getBorneInf()+1;
-			return  Array_len(array.getElement())*len;
-		}
-		else
-		{
-			return 1;
-		}
-		
-	}
 	
+
 	
 	public void coder_EXP(Arbre a, Registre rc) { // Champey & Clémentin
 		
 		Noeud n = a.getNoeud();
+		Registre rc2 = Memory.allocate();
 		// Si a est une feuille de l'arbre
 		if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
 		{
-			Prog.ajouterComment("Debut LOAD EXP, ligne :" + a.getNumLigne());
+			Prog.ajouterComment("LOAD, ligne :" + a.getNumLigne());
 			coder_EXP_feuille(a, rc, Operation.LOAD);
-			Prog.ajouterComment("Fin LOAD EXP, ligne :" + a.getNumLigne());
+			Prog.ajouterComment("fin LOAD, ligne :" + a.getNumLigne());
 			return;
 		}
-		
-		n = a.getFils2().getNoeud();
+		try
+		{
+			if(a.getFils2() != null)
+				n = a.getFils2().getNoeud();
+			else
+				n = null;
+		}
+		catch(Exception e)
+		{
+			//nothing to do
+		}
 		// Si a est une opération et que le fils droit est une feuille de l'arbre
 		if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
 		{
@@ -485,50 +428,127 @@ class Generation {
 			{
 			// Opérations arithmétiques à deux fils
 			case Plus:
+				Prog.ajouterComment("PLUS, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.ADD);
-				break;
+				Prog.ajouterComment("fin PLUS, ligne :" + a.getNumLigne());
+				return;
 			case Moins:
+				Prog.ajouterComment("MOINS, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.SUB);
-				break;
+				Prog.ajouterComment("fin MOINS, ligne :" + a.getNumLigne());
+				return;
 			case Mult:
+				Prog.ajouterComment("MULT, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.MUL);
-				break;
+				Prog.ajouterComment("fin MULT, ligne :" + a.getNumLigne());
+				return;
 			case DivReel:
+				Prog.ajouterComment("DIVREEL, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.DIV);
-				break;
+				Prog.ajouterComment("fin DIVREEL, ligne :" + a.getNumLigne());
+				return;
 			case Reste:
+				Prog.ajouterComment("RESTE, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.MOD);
-				break;
+				Prog.ajouterComment("fin RESTE, ligne :" + a.getNumLigne());
+				return;
 			case Quotient:
+				Prog.ajouterComment("QUOTIENT, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a.getFils2(), rc, Operation.DIV);
-				break;
+				Prog.ajouterComment("fin QUOTIENT, ligne :" + a.getNumLigne());
+				return;
 			
 			// Opérations arithmétiques à un fils
 			case PlusUnaire:
+				Prog.ajouterComment("PLUSUNAIRE, ligne :" + a.getNumLigne());
+				Prog.ajouter(Inst.creation1(Operation.LOAD, Operande.opDirect(rc)));
+				Prog.ajouterComment("fin PLUSUNAIRE, ligne :" + a.getNumLigne());
+				return;
 			case MoinsUnaire:
-			case Conversion:
+				Prog.ajouterComment("MOINSUNAIRE, ligne :" + a.getNumLigne());
+				Prog.ajouter(Inst.creation2(Operation.OPP, Operande.opDirect(rc), Operande.opDirect(rc)));
+				Prog.ajouterComment("fin MOINSUNAIRE, ligne :" + a.getNumLigne());
+				return;
+			
 				
 			// Opérations logiques à deux fils
 			case Et:
+				Prog.ajouterComment("ET, ligne :" + a.getNumLigne());
+				coder_ET(a, rc);
+				Prog.ajouterComment("fin ET, ligne :" + a.getNumLigne());
+				return;
 			case Ou:
+				Prog.ajouterComment("OU, ligne :" + a.getNumLigne());
+				coder_OU(a, rc);
+				Prog.ajouterComment("fin OU, ligne :" + a.getNumLigne());
+				return;
 			case Egal:
+				Prog.ajouterComment("EGAL, ligne :" + a.getNumLigne());
+				coder_EXP(a.getFils2(), rc2); // On met la valeur du fils2 dans RC2
+				/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
+				/* SEQ RC           */Prog.ajouter(Inst.creation1(Operation.SEQ, Operande.opDirect(rc)));
+				Prog.ajouterComment("fin EGAL, ligne :" + a.getNumLigne());
+				return;
 			case NonEgal:
+				Prog.ajouterComment("NONEGAL, ligne :" + a.getNumLigne());
+				coder_EXP(a.getFils2(), rc2); // On met la valeur du fils2 dans RC2
+				/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
+				/* SNE RC           */Prog.ajouter(Inst.creation1(Operation.SNE, Operande.opDirect(rc)));
+				Prog.ajouterComment("fin NONEGAL, ligne :" + a.getNumLigne());
+				return;
 			case Sup:
+				Prog.ajouterComment("SUP, ligne :" + a.getNumLigne());
+				coder_EXP(a.getFils2(), rc2); // On met la valeur du fils2 dans RC2
+				/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
+				/* SGT RC           */Prog.ajouter(Inst.creation1(Operation.SGT, Operande.opDirect(rc)));
+				Prog.ajouterComment("fin SUP, ligne :" + a.getNumLigne());
+				return;
 			case SupEgal:
+				Prog.ajouterComment("SUPEGAL, ligne :" + a.getNumLigne());
+				coder_EXP(a.getFils2(), rc2); // On met la valeur du fils2 dans RC2
+				/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
+				/* SGE RC           */Prog.ajouter(Inst.creation1(Operation.SGE, Operande.opDirect(rc)));
+				Prog.ajouterComment("fin SUPEGAL, ligne :" + a.getNumLigne());
+				return;
 			case Inf:
+				Prog.ajouterComment("INF, ligne :" + a.getNumLigne());
+				coder_EXP(a.getFils2(), rc2); // On met la valeur du fils2 dans RC2
+				/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
+				/* SLT RC           */Prog.ajouter(Inst.creation1(Operation.SLT, Operande.opDirect(rc)));
+				Prog.ajouterComment("fin INF, ligne :" + a.getNumLigne());
+				return;
 			case InfEgal:
+				Prog.ajouterComment("INFEGAL, ligne :" + a.getNumLigne());
+				coder_EXP(a.getFils2(), rc2); // On met la valeur du fils2 dans RC2
+				/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
+				/* SLE RC           */Prog.ajouter(Inst.creation1(Operation.SLE, Operande.opDirect(rc)));
+				Prog.ajouterComment("fin INFEGAL, ligne :" + a.getNumLigne());
+				return;
 				
 			// Opérations logiques à un fils
 			case Non:
-			
+				Prog.ajouterComment("NON, ligne : " + a.getNumLigne());
+				Prog.ajouter(Inst.creation1(Operation.SNE, Operande.opDirect(rc)));
+				Prog.ajouterComment("fin NON, ligne :" + a.getNumLigne());
+				return;
 			default:
-				break;
+				return;
 			}
+		}
+		else if(n == Noeud.Conversion)
+		{
+			// Ici n est forcément un noeud.Conversion car c'est le seul noeud traité qui n'a pas de fils2
+			Prog.ajouterComment("CONVERSION, ligne :" + a.getNumLigne());
+			coder_EXP(a.getFils1(), rc);
+	    	if(a.getFils1().getDecor().getType().getNature() != NatureType.Array)
+	    	{
+	      		/*FLOAT RC, RC  */ Prog.ajouter(Inst.creation2(Operation.FLOAT, Operande.opDirect(rc), Operande.opDirect(rc)));
+	    	}
+	    	Prog.ajouterComment("fin CONVERSION, ligne :" + a.getNumLigne());
 		}
 
 	}
 
-	
 	public void coder_EXP_feuille(Arbre a, Registre rc, Operation operation)
 	{
 		switch (a.getNoeud())
@@ -545,7 +565,6 @@ class Generation {
 				Prog.ajouter(Inst.creation2(operation, Operande.creationOpReel(a.getReel()), Operande.opDirect(rc)));
 				return;
 			case Ident:
-				Prog.ajouterComment("chaine :"+a.getChaine().toLowerCase());
 				switch(a.getChaine().toLowerCase())
 				{
 					case "max_int":
@@ -558,7 +577,7 @@ class Generation {
 						Prog.ajouter(Inst.creation2(operation, Operande.creationOpEntier(0), Operande.opDirect(rc)));
 						return;
 					default:
-						Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpIndirect(Variable.get_var(a.getChaine().toLowerCase()), Registre.GB), Operande.opDirect(rc)));
+						Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpIndirect(Variable.get_var(a.getChaine().toLowerCase()), Registre.GB), Operande.opDirect(rc)));	
 						return;
 				}
 			default:
@@ -566,6 +585,51 @@ class Generation {
 				return;
 				
 		}
-
+	}
+	
+	public void coder_ET(Arbre a, Registre rc)
+	{
+		Etiq e1 = Etiq.nouvelle("finET");
+		Etiq e2 = Etiq.nouvelle("returnFalse");
+		// RC contient la valeur du fils1
+		
+		/* CMP RC, #0      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(0), Operande.opDirect(rc)));
+		/* BEQ returnFalse */Prog.ajouter(Inst.creation1(Operation.BEQ, Operande.creationOpEtiq(e2)));
+		
+		coder_EXP(a.getFils2(), rc); // On met la valeur du fils2 dans RC
+		
+		/* CMP RC, #0      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(0), Operande.opDirect(rc)));
+		/* SNE RC          */Prog.ajouter(Inst.creation1(Operation.SNE, Operande.opDirect(rc)));
+		/* BRA finET       */Prog.ajouter(Inst.creation1(Operation.BRA, Operande.creationOpEtiq(e1)));
+		
+		/* returnFalse:    */Prog.ajouter(e2);
+		/* LOAD #0, RC     */Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpEntier(0), Operande.opDirect(rc)));
+		
+		/* finET:          */Prog.ajouter(e1);
+		
+		return;
+	}
+	
+	public void coder_OU(Arbre a, Registre rc)
+	{
+		Etiq e1 = Etiq.nouvelle("finOU");
+		Etiq e2 = Etiq.nouvelle("returnTrue");
+		// RC contient la valeur du fils1
+		
+		/* CMP RC, #0      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(0), Operande.opDirect(rc)));
+		/* BNE returnTrue */Prog.ajouter(Inst.creation1(Operation.BNE, Operande.creationOpEtiq(e2)));
+		
+		coder_EXP(a.getFils2(), rc); // On met la valeur du fils2 dans RC
+		
+		/* CMP RC, #0      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.creationOpEntier(0), Operande.opDirect(rc)));
+		/* BNE returnTrue  */Prog.ajouter(Inst.creation1(Operation.BNE, Operande.creationOpEtiq(e2)));
+		/* LOAD #0, RC     */Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpEntier(0), Operande.opDirect(rc)));
+		/* BRA finOU       */Prog.ajouter(Inst.creation1(Operation.BRA, Operande.creationOpEtiq(e1)));
+		/* returnTrue:     */Prog.ajouter(e2);
+		/* LOAD #1, RC     */Prog.ajouter(Inst.creation2(Operation.LOAD, Operande.creationOpEntier(1), Operande.opDirect(rc)));
+		
+		/*finOU:           */Prog.ajouter(e1);
+		
+		return;
 	}
 }
