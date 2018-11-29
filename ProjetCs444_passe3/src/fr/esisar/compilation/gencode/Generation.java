@@ -430,6 +430,7 @@ class Generation {
 				Prog.ajouterComment("LOAD, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a, rc, Operation.LOAD);
 				Prog.ajouterComment("fin LOAD, ligne :" + a.getNumLigne());
+				Memory.liberate(rc2);
 				return;
 			}
 			if(!n.equals(Noeud.Conversion))
@@ -447,31 +448,37 @@ class Generation {
 					Prog.ajouterComment("PLUS, ligne :" + a.getNumLigne());
 					coder_EXP_feuille(a.getFils2(), rc, Operation.ADD);
 					Prog.ajouterComment("fin PLUS, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 				case Moins:
 					Prog.ajouterComment("MOINS, ligne :" + a.getNumLigne());
 					coder_EXP_feuille(a.getFils2(), rc, Operation.SUB);
 					Prog.ajouterComment("fin MOINS, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 				case Mult:
 					Prog.ajouterComment("MULT, ligne :" + a.getNumLigne());
 					coder_EXP_feuille(a.getFils2(), rc, Operation.MUL);
 					Prog.ajouterComment("fin MULT, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 				case DivReel:
 					Prog.ajouterComment("DIVREEL, ligne :" + a.getNumLigne());
 					coder_EXP_feuille(a.getFils2(), rc, Operation.DIV);
 					Prog.ajouterComment("fin DIVREEL, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 				case Reste:
 					Prog.ajouterComment("RESTE, ligne :" + a.getNumLigne());
 					coder_EXP_feuille(a.getFils2(), rc, Operation.MOD);
 					Prog.ajouterComment("fin RESTE, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 				case Quotient:
 					Prog.ajouterComment("QUOTIENT, ligne :" + a.getNumLigne());
 					coder_EXP_feuille(a.getFils2(), rc, Operation.DIV);
 					Prog.ajouterComment("fin QUOTIENT, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 				
 				// Opérations arithmétiques à un fils
@@ -479,16 +486,19 @@ class Generation {
 					Prog.ajouterComment("PLUSUNAIRE, ligne :" + a.getNumLigne());
 					Prog.ajouterComment("plusunaire, nothing to do");
 					Prog.ajouterComment("fin PLUSUNAIRE, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 				case MoinsUnaire:
 					Prog.ajouterComment("MOINSUNAIRE, ligne :" + a.getNumLigne());
 					Prog.ajouter(Inst.creation2(Operation.OPP, Operande.opDirect(rc), Operande.opDirect(rc)));
 					Prog.ajouterComment("fin MOINSUNAIRE, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 				case Conversion:
 					Prog.ajouterComment("CONVERSION, ligne :" + a.getNumLigne());
 	      				/*FLOAT RC, RC  */ Prog.ajouter(Inst.creation2(Operation.FLOAT, Operande.opDirect(rc), Operande.opDirect(rc)));
 					Prog.ajouterComment("fin CONVERSION, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 					
 				// Opérations logiques à deux fils
@@ -496,11 +506,13 @@ class Generation {
 					Prog.ajouterComment("ET, ligne :" + a.getNumLigne());
 					coder_ET(a, rc);
 					Prog.ajouterComment("fin ET, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 				case Ou:
 					Prog.ajouterComment("OU, ligne :" + a.getNumLigne());
 					coder_OU(a, rc);
 					Prog.ajouterComment("fin OU, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 				case Egal:
 					Prog.ajouterComment("EGAL, ligne :" + a.getNumLigne());
@@ -508,6 +520,7 @@ class Generation {
 					/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
 					/* SEQ RC           */Prog.ajouter(Inst.creation1(Operation.SEQ, Operande.opDirect(rc)));
 					Prog.ajouterComment("fin EGAL, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 				case NonEgal:
 					Prog.ajouterComment("NONEGAL, ligne :" + a.getNumLigne());
@@ -515,6 +528,7 @@ class Generation {
 					/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
 					/* SNE RC           */Prog.ajouter(Inst.creation1(Operation.SNE, Operande.opDirect(rc)));
 					Prog.ajouterComment("fin NONEGAL, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 				case Sup:
 					Prog.ajouterComment("SUP, ligne :" + a.getNumLigne());
@@ -522,6 +536,7 @@ class Generation {
 					/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
 					/* SGT RC           */Prog.ajouter(Inst.creation1(Operation.SGT, Operande.opDirect(rc)));
 					Prog.ajouterComment("fin SUP, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 				case SupEgal:
 					Prog.ajouterComment("SUPEGAL, ligne :" + a.getNumLigne());
@@ -529,6 +544,7 @@ class Generation {
 					/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
 					/* SGE RC           */Prog.ajouter(Inst.creation1(Operation.SGE, Operande.opDirect(rc)));
 					Prog.ajouterComment("fin SUPEGAL, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 				case Inf:
 					Prog.ajouterComment("INF, ligne :" + a.getNumLigne());
@@ -536,6 +552,7 @@ class Generation {
 					/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
 					/* SLT RC           */Prog.ajouter(Inst.creation1(Operation.SLT, Operande.opDirect(rc)));
 					Prog.ajouterComment("fin INF, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 				case InfEgal:
 					Prog.ajouterComment("INFEGAL, ligne :" + a.getNumLigne());
@@ -543,6 +560,7 @@ class Generation {
 					/* CMP RC, RC2      */Prog.ajouter(Inst.creation2(Operation.CMP, Operande.opDirect(rc2), Operande.opDirect(rc)));
 					/* SLE RC           */Prog.ajouter(Inst.creation1(Operation.SLE, Operande.opDirect(rc)));
 					Prog.ajouterComment("fin INFEGAL, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 					
 				// Opérations logiques à un fils
@@ -550,8 +568,10 @@ class Generation {
 					Prog.ajouterComment("NON, ligne : " + a.getNumLigne());
 					Prog.ajouter(Inst.creation1(Operation.SNE, Operande.opDirect(rc)));
 					Prog.ajouterComment("fin NON, ligne :" + a.getNumLigne());
+					Memory.liberate(rc2);
 					return;
 				default:
+					Memory.liberate(rc2);
 					return;
 				}
 			}
