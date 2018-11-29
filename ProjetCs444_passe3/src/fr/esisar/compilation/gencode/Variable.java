@@ -63,5 +63,12 @@ public class Variable {
 	public static Map<String, Integer> getVariable() {
 		return variable;
 	}
+	
+	public static void free(int pos) {
+		if (pos == taille) {
+			taille--;
+			Prog.ajouter(Inst.creation1(Operation.SUBSP, Operande.creationOpEntier(1)));
+		}
+}
 
 }
