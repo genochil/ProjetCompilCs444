@@ -425,26 +425,19 @@ class Generation {
 			Registre rc2 = Memory.allocate();
 			
 			// Si a est une feuille de l'arbre
-			if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
+			if(n.equals(Noeud.Vide) || n.equals(Noeud.Chaine) || n.equals(Noeud.Entier) || n.equals(Noeud.Reel) || n.equals(Noeud.Ident))
 			{
 				Prog.ajouterComment("LOAD, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a, rc, Operation.LOAD);
 				Prog.ajouterComment("fin LOAD, ligne :" + a.getNumLigne());
 				return;
 			}
-			try
+			if(!n.equals(Noeud.Conversion))
 			{
-				if(a.getFils2() != null)
-					n = a.getFils2().getNoeud();
-				else
-					n = null;
-			}
-			catch(Exception e)
-			{
-				//nothing to do
+				n = a.getFils2().getNoeud();
 			}
 			// Si a est une opération et que le fils droit est une feuille de l'arbre
-			if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
+			if(n.equals(Noeud.Vide) || n.equals(Noeud.Chaine) || n.equals(Noeud.Entier) || n.equals(Noeud.Reel) || n.equals(Noeud.Ident) || n.equals(Noeud.Conversion))
 			{
 				coder_EXP(a.getFils1(), rc);
 				switch(a.getNoeud())
@@ -492,7 +485,11 @@ class Generation {
 					Prog.ajouter(Inst.creation2(Operation.OPP, Operande.opDirect(rc), Operande.opDirect(rc)));
 					Prog.ajouterComment("fin MOINSUNAIRE, ligne :" + a.getNumLigne());
 					return;
-				
+				case Conversion:
+					Prog.ajouterComment("CONVERSION, ligne :" + a.getNumLigne());
+	      				/*FLOAT RC, RC  */ Prog.ajouter(Inst.creation2(Operation.FLOAT, Operande.opDirect(rc), Operande.opDirect(rc)));
+					Prog.ajouterComment("fin CONVERSION, ligne :" + a.getNumLigne());
+					return;
 					
 				// Opérations logiques à deux fils
 				case Et:
@@ -558,18 +555,7 @@ class Generation {
 					return;
 				}
 			}
-			else if(n == Noeud.Conversion)
-			{
-				// Ici n est forcément un noeud.Conversion car c'est le seul noeud traité qui n'a pas de fils2
-				Prog.ajouterComment("CONVERSION, ligne :" + a.getNumLigne());
-				coder_EXP(a.getFils2().getFils1(), rc);
-		    	if(a.getFils1().getDecor().getType().getNature() != NatureType.Array)
-		    	{
-		      		/*FLOAT RC, RC  */ Prog.ajouter(Inst.creation2(Operation.FLOAT, Operande.opDirect(rc), Operande.opDirect(rc)));
-		    	}
-		    	Prog.ajouterComment("fin CONVERSION, ligne :" + a.getNumLigne());
-		    	return; 
-			}
+
 		}
 		
 		
@@ -579,26 +565,19 @@ class Generation {
 			int var_temp;
 			
 			// Si a est une feuille de l'arbre
-			if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
+			if(n.equals(Noeud.Vide) || n.equals(Noeud.Chaine) || n.equals(Noeud.Entier) || n.equals(Noeud.Reel) || n.equals(Noeud.Ident))
 			{
 				Prog.ajouterComment("LOAD, ligne :" + a.getNumLigne());
 				coder_EXP_feuille(a, rc, Operation.LOAD);
 				Prog.ajouterComment("fin LOAD, ligne :" + a.getNumLigne());
 				return;
 			}
-			try
+			if(!n.equals(Noeud.Conversion))
 			{
-				if(a.getFils2() != null)
-					n = a.getFils2().getNoeud();
-				else
-					n = null;
-			}
-			catch(Exception e)
-			{
-				//nothing to do
+				n = a.getFils2().getNoeud();
 			}
 			// Si a est une opération et que le fils droit est une feuille de l'arbre
-			if(n==Noeud.Vide || n==Noeud.Chaine || n==Noeud.Entier || n==Noeud.Reel || n==Noeud.Ident)
+			if(n.equals(Noeud.Vide) || n.equals(Noeud.Chaine) || n.equals(Noeud.Entier) || n.equals(Noeud.Reel) || n.equals(Noeud.Ident) || n.equals(Noeud.Conversion))
 			{
 				coder_EXP(a.getFils1(), rc);
 				switch(a.getNoeud())
@@ -646,7 +625,11 @@ class Generation {
 					Prog.ajouter(Inst.creation2(Operation.OPP, Operande.opDirect(rc), Operande.opDirect(rc)));
 					Prog.ajouterComment("fin MOINSUNAIRE, ligne :" + a.getNumLigne());
 					return;
-				
+				case Conversion:
+					Prog.ajouterComment("CONVERSION, ligne :" + a.getNumLigne());
+	      				/*FLOAT RC, RC  */ Prog.ajouter(Inst.creation2(Operation.FLOAT, Operande.opDirect(rc), Operande.opDirect(rc)));
+					Prog.ajouterComment("fin CONVERSION, ligne :" + a.getNumLigne());
+					return;
 					
 				// Opérations logiques à deux fils
 				case Et:
@@ -755,18 +738,7 @@ class Generation {
 					return;
 				}
 			}
-			else if(n == Noeud.Conversion)
-			{
-				// Ici n est forcément un noeud.Conversion car c'est le seul noeud traité qui n'a pas de fils2
-				Prog.ajouterComment("CONVERSION, ligne :" + a.getNumLigne());
-				coder_EXP(a.getFils2().getFils1(), rc);
-		    	if(a.getFils1().getDecor().getType().getNature() != NatureType.Array)
-		    	{
-		      		/*FLOAT RC, RC  */ Prog.ajouter(Inst.creation2(Operation.FLOAT, Operande.opDirect(rc), Operande.opDirect(rc)));
-		    	}
-		    	Prog.ajouterComment("fin CONVERSION, ligne :" + a.getNumLigne());
-		    	return; 
-			}
+			
 		}	
 	}
 
