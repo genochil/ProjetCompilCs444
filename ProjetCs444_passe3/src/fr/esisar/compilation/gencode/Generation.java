@@ -660,6 +660,7 @@ class Generation {
 					// On remet le résultat dans le registre rc
 					Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpIndirect(var_temp, Registre.GB),Operande.opDirect(rc)));
 					Prog.ajouterComment("fin EGAL, ligne :" + a.getNumLigne());
+					Variable.free(var_temp);
 					return;
 				case NonEgal:
 					Prog.ajouterComment("NONEGAL, ligne :" + a.getNumLigne());
@@ -674,6 +675,7 @@ class Generation {
 					// On remet le résultat dans le registre rc
 					Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpIndirect(var_temp, Registre.GB),Operande.opDirect(rc)));
 					Prog.ajouterComment("fin NONEGAL, ligne :" + a.getNumLigne());
+					Variable.free(var_temp);
 					return;
 				case Sup:
 					Prog.ajouterComment("SUP, ligne :" + a.getNumLigne());
@@ -688,6 +690,7 @@ class Generation {
 					// On remet le résultat dans le registre rc
 					Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpIndirect(var_temp, Registre.GB),Operande.opDirect(rc)));
 					Prog.ajouterComment("fin SUP, ligne :" + a.getNumLigne());
+					Variable.free(var_temp);
 					return;
 				case SupEgal:
 					Prog.ajouterComment("SUPEGAL, ligne :" + a.getNumLigne());
@@ -703,6 +706,7 @@ class Generation {
 					// On remet le résultat dans le registre rc
 					Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpIndirect(var_temp, Registre.GB),Operande.opDirect(rc)));
 					Prog.ajouterComment("fin SUPEGAL, ligne :" + a.getNumLigne());
+					Variable.free(var_temp);
 					return;
 				case Inf:
 					Prog.ajouterComment("INF, ligne :" + a.getNumLigne());
@@ -717,6 +721,7 @@ class Generation {
 					// On remet le résultat dans le registre rc
 					Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpIndirect(var_temp, Registre.GB),Operande.opDirect(rc)));
 					Prog.ajouterComment("fin INF, ligne :" + a.getNumLigne());
+					Variable.free(var_temp);
 					return;
 				case InfEgal:
 					Prog.ajouterComment("INFEGAL, ligne :" + a.getNumLigne());
@@ -731,6 +736,7 @@ class Generation {
 					// On remet le résultat dans le registre rc
 					Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpIndirect(var_temp, Registre.GB),Operande.opDirect(rc)));
 					Prog.ajouterComment("fin INFEGAL, ligne :" + a.getNumLigne());
+					Variable.free(var_temp);
 					return;
 					
 				// Opérations logiques à un fils
