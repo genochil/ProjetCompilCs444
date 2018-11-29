@@ -1,5 +1,4 @@
 program
 begin
-   null;
+    for := 3;
 end.
-

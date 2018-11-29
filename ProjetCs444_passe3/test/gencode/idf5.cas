@@ -1,5 +1,4 @@
 program
 begin
-   null;
+    forwhile := 3;
 end.
-

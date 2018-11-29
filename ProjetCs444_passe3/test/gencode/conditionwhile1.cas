@@ -1,0 +1,10 @@
+program
+	i : boolean;
+	j : 1..3;
+begin
+	i := true;
+	while true do 
+      		null ; 
+  	end ; 
+	
+end.
