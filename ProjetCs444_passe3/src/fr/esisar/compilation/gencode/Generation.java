@@ -86,8 +86,12 @@ class Generation {
 		default:
 		}
 	}
-
-	public Operande coder_PLACE(Arbre a,Registre rd) { // Couvi, a faire en premier
+	/*
+   * Cette fonction permet de connaître l'offset de l'identificateur. 
+   *Celui-ci peut être un Ident, ou un tableau de n'importe quelle taille
+   */
+	
+	public Operande coder_PLACE(Arbre a,Registre rd) { 
 		if(a.getNoeud()== Noeud.Ident )
 		{
 			Prog.ajouter(Inst.creation2(Operation.LOAD,Operande.creationOpEntier(Variable.get_var(a.getChaine().toLowerCase())),Operande.opDirect(rd)));
@@ -96,10 +100,11 @@ class Generation {
 		{
 			coder_PLACE(a.getFils1(),rd);
 			Registre rb;
+			
 			if((rb=Memory.allocate())!= Registre.GB ) 
 			{
 				coder_EXP(a.getFils2(),rb);
-				debord_Interval(a,rb);
+				verif_borne_interval(a.getFils1().getDecor().getType().getIndice(),rb);
 				Prog.ajouter(Inst.creation2(Operation.SUB, Operande.creationOpEntier(a.getDecor().getType().getIndice().getBorneInf()), Operande.opDirect(rb)));
 				
 				int len;
@@ -115,7 +120,7 @@ class Generation {
 				int pile=Memory.allocate_Temp();
 				Prog.ajouter(Inst.creation2(Operation.STORE,Operande.opDirect(rd), Operande.creationOpIndirect(pile,Registre.LB)));
 				coder_EXP(a.getFils2(),rd);
-				debord_Interval(a,rd);
+				verif_borne_interval(a.getFils1().getDecor().getType().getIndice(),rd);
 				Prog.ajouter(Inst.creation2(Operation.SUB, Operande.creationOpEntier(a.getDecor().getType().getIndice().getBorneInf()), Operande.opDirect(rd)));
 				
 				int len;
@@ -131,7 +136,6 @@ class Generation {
 		}
 	return Operande.opDirect(rd);	
 	}
-	
 	
 	//Cette fonction permet de savoir si le tableau est un tableau indexé ou pas
 	//Elle retourne 1 si l'elément donnée est un intevalle ou un réel
@@ -251,6 +255,24 @@ class Generation {
 		// l'emplacement déterminé par R0
 
 	}
+	/*
+	 * Fonction de verification des bornes de l'interval
+	 */
+	
+		  private void verif_borne_interval(Type intervale, Registre rd) {
+		 
+		   
+		    Prog.ajouter(Inst.creation2(Operation.CMP, 
+		                                Operande.creationOpEntier(intervale.getBorneInf()), 
+		                                Operande.opDirect(rd)));
+		    Prog.ajouter(Inst.creation1(Operation.BLT, 
+		                                Operande.creationOpEtiq(Etiq.lEtiq("Débordement Intervale"))));
+		    Prog.ajouter(Inst.creation2(Operation.CMP, 
+		                                Operande.creationOpEntier(intervale.getBorneSup()), 
+		                                Operande.opDirect(rd)));
+		    Prog.ajouter(Inst.creation1(Operation.BGT, 
+		    		Operande.creationOpEtiq(Etiq.lEtiq("Débordement Intervale"))));
+		  }
 
 	/*
 	 * Fonction de verification des bornes de l'interval
