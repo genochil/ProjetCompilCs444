@@ -291,13 +291,6 @@ class Generation {
 
 	// fait
 	private void coder_TantQue(Arbre a) {
-		/*
-		 * Coder_Inst(Noeud_Tantque(C, I)) = 
-		 * declare E_Cond : Etiq := Nouvelle_Etiq;
-		 * E_Début : Etiq := Nouvelle_Etiq; begin Générer(BRA, E_Cond);
-		 * Générer_Etiq(E_Début); Coder_Inst(I); Générer_Etiq(E_Cond); 
-		 * Coder_Cond(C,True, E_Début) end ;
-		 */
 		// TODO Auto-generated method stub
 		Etiq E_cond = Etiq.nouvelle("E_cond");
 		Etiq E_debut = Etiq.nouvelle("E_debut");
