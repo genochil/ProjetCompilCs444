@@ -26,4 +26,4 @@ La méthode add_new_var() permet d'allouer un emplacement en pile et retourne ce
 
 <PROBLEMES CONNUS>
 Notre projet de gère pas les tableaux.
-
+Erreur d'allocation des registres.
