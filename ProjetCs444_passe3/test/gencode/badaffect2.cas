@@ -1,5 +1,0 @@
-program
-	B : boolean;
-begin
-	B := -B;
-end.

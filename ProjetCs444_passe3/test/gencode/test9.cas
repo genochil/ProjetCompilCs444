@@ -1,0 +1,11 @@
+program
+	A : real;
+	B : real;
+begin
+	A:=3;
+	B:=5
+	if (A < B) and (B = 5) then
+		null;
+	end;
+
+end.

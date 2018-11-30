@@ -44,12 +44,13 @@ public class Memory {
 
 	public static void liberate(Registre r) {
 		Reg.replace(r, 0, 1);
-		Prog.ajouterComment("Registre libéré : " + r);
+		
 	}
 	public static int Nb_Reg_Free()
 	{
 		int nb=0;
 		for (Map.Entry<Registre, Integer> entry : Reg.entrySet()) {
+			Prog.ajouterComment("Registre" + entry.getKey()+ " : " + entry.getValue());
 			if (entry.getValue() == 1) {
 				nb++;
 			}

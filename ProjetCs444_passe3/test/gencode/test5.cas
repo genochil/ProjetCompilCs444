@@ -1,0 +1,7 @@
+program
+	A : array [0 .. 1] of integer;
+	B : array [0 .. 1] of 2..5;
+begin
+    A[0] := 10;
+    B[1] := -6;
+end.

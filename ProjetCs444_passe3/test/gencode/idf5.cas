@@ -1,4 +1,0 @@
-program
-begin
-    forwhile := 3;
-end.

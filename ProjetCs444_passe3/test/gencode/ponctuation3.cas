@@ -1,8 +1,0 @@
-program
-  begin
-  i : 5..2 ;
-  tab : array[6..5] of integer ;
-  Array[1..10] of array[1..5] of boolean;
-
-  j : 5...2;
-end.

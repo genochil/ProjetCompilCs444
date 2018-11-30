@@ -1,6 +1,0 @@
-program
-	B : String;
-	A : real;
-begin
-	B := A;
-end.

@@ -1,0 +1,8 @@
+program
+    A : real;
+	B : real;
+begin
+    A := 10 ;
+	B := 0 ;
+	A := A/B;
+end.

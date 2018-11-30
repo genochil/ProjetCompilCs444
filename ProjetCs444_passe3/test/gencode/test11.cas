@@ -1,0 +1,11 @@
+program
+	A : boolean;
+	B : boolean;
+	C : boolean;
+begin
+	A := false;
+	B := not(A);
+	C := A and B;
+	C := A or not(B);
+
+end.

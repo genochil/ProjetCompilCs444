@@ -1,0 +1,10 @@
+program
+	A : real;
+	B : real;
+
+begin
+	A:=13;
+	B:=12;
+	A := A*B;
+	B := B/25;
+end.

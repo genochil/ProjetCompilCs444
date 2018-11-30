@@ -1,6 +1,0 @@
-program
-   i : integer ;
-   j : i ; 
-begin
-  NULL;
-end.

@@ -1,4 +1,0 @@
-program
-begin
-    var1 := 15949849841651681984951; --out of range
-end.

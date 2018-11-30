@@ -76,8 +76,8 @@ class Generation {
 			return;
 		case ListeIdent:
 			coder_LISTE_IDF(a.getFils1());
-			Variable.add_var(a.getFils2());// Ajoute la variable dans notre HashMap, on add le duo : Nom_var,
-											// Emplacement
+			Variable.add_var(a.getFils2());
+											
 			return;
 		default:
 		}
@@ -303,13 +303,7 @@ class Generation {
 	}
 
 	private void coder_Pour(Arbre a) {
-		/*
-		 * int x = ...; for (unsigned i = 0; i < 5; i ++) { x = x + 4; }
-		 * 
-		 * movl $0, %ecx for: cmpl $5, %ecx jae fin_for addl $4, %eax addl $1, %ecx jmp
-		 * for fin_for:
-		 */
-		// TODO Auto-generated method stub
+		
 
 		boolean Increment = (a.getFils1().getNoeud().equals(Noeud.Increment));
 		Etiq boucle_for = Etiq.nouvelle("for");
@@ -355,7 +349,7 @@ class Generation {
 			// affectarray
 
 		} else if (affect_nat.equals(NatureType.Interval)) {
-			debord_Interval(a.getFils2(), Rd);
+			//debord_Interval(a.getFils2(), Rd);
 		}
 
 		Prog.ajouter(Inst.creation2(Operation.STORE, Operande.opDirect(Rd),

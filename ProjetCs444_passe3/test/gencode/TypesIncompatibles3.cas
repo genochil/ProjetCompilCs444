@@ -1,7 +1,0 @@
-program
-	i : boolean;
-	j : integer;
-	erreur : boolean;
-begin
-	erreur := i or j;
-end.

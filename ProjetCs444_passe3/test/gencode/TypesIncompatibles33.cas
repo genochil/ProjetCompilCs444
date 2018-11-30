@@ -1,7 +1,0 @@
-program
-	i : 1..3;
-	j : 1..3;
-	erreur : Integer;
-begin
-	erreur := i div j;
-end.

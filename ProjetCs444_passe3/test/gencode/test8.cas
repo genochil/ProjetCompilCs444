@@ -1,0 +1,9 @@
+program
+	A : real;
+	B : real;
+begin
+	for A := 1 to 5 do
+      		B := B+1 ; 
+  	end ;
+
+end.

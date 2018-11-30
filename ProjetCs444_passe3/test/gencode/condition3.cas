@@ -1,8 +1,0 @@
-program
-  BEGIN
-    if a <=1 then
-      null;
-   else if b =< then
-      null;
-   end ;
-end.

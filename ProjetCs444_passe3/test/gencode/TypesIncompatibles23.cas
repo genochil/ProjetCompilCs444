@@ -1,6 +1,0 @@
-program
-	i : real;
-	erreur : boolean;
-begin
-	erreur := +i;
-end.

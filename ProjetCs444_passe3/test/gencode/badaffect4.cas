@@ -1,6 +1,0 @@
-program
-	B : real;
-	A : boolean;
-begin
-	B := A;
-end.

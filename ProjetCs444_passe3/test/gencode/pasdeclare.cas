@@ -1,6 +1,0 @@
--- Recherche dichotomique dans un tableau trie 
-program
-   
-begin
- A := 32;
-end.

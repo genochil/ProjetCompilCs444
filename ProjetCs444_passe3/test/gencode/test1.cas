@@ -1,0 +1,14 @@
+program
+	a, b, r : integer;
+begin
+	a:=6;
+	b:=5;
+	r:=a mod b;
+	while (r /= 0 ) do
+		a:=b;
+		b:=r;
+		r:=a mod b;
+	end;
+write(b);
+
+end.
